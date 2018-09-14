@@ -14,7 +14,7 @@ class Eplayer {
     this.currentTime = document.querySelector('.current')
     this.dot = document.querySelector('.dot')
     let full = document.querySelector('.full')
-    let progress = document.querySelector('.progress')
+    this.progress = document.querySelector('.progress')
     this.currentProgress = document.querySelector('.current-progress')
 
     this.tTime = 0
@@ -22,6 +22,7 @@ class Eplayer {
     this.video.oncanplay = this.oncanplay.bind(this)
     this.isPlay.onclick = this.play.bind(this)
     this.video.ontimeupdate = this.timeupdate.bind(this)
+    this.progress.onclick = e => this.progressClick(e)
   }
 
   oncanplay() {
@@ -49,6 +50,11 @@ class Eplayer {
     let offsetPre = (cTime / this.tTime) * 100 + '%'
     this.currentProgress.style.width = offsetPre
     this.dot.style.left = offsetPre
+  }
+
+  progressClick(e){
+    let event = e || window.event
+    this.video.currentTime=(event.offsetX / this.progress.offsetWidth) * this.video.duration
   }
 }
 
