@@ -5,7 +5,7 @@
 
 # eplayer
 
-A simple html5 video player
+:dart: A simple and lovely html5 video player
 
 #### Install
 

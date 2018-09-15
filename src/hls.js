@@ -1,4 +1,4 @@
-class Hls {
+export class Hls {
   constructor(el, data) {
     this.src = data.src
     this.el = el
