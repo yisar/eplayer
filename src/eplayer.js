@@ -10,6 +10,7 @@ class Eplayer {
     new Init(this.el, this.data)
 
     this.video = document.querySelector('video')
+    this.loading = document.querySelector('.loading')
     this.isPlay = document.querySelector('.switch')
     this.panel = document.querySelector('.panel')
     this.totalTime = document.querySelector('.total')
@@ -25,6 +26,7 @@ class Eplayer {
 
     this.tTime = 0
 
+    this.video.onwaiting = () => this.waiting()
     this.video.oncanplay = () => this.canplay()
     this.isPlay.onclick = () => this.play()
     this.panel.onclick = () => this.play()
@@ -34,8 +36,13 @@ class Eplayer {
     this.full.onclick = () => this.fullScreen()
   }
 
+  waiting() {
+    this.loading.style.display = 'block'
+  }
+
   canplay() {
     this.tTime = this.video.duration
+    this.loading.style.display = 'none'
     let tTimeStr = getTimeStr(this.tTime)
     this.totalTime.innerHTML = tTimeStr
   }
@@ -102,7 +109,6 @@ class Eplayer {
       return rfs.call(this.el)
     }
   }
-
 }
 
 export default Eplayer

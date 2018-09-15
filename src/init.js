@@ -82,11 +82,33 @@ export class Init {
         cursor: pointer;
         transition: 0.3s;
       }
+      .loading{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin:-20px 0 0 -20px;
+        width: 40px;
+        height: 40px;
+        border: 5px solid;
+        border-color: rgba(255, 255, 255, 0.8) rgba(255, 255, 255, 0.8) transparent;
+        border-radius: 50%;
+        box-sizing: border-box;
+        animation: loading 1s linear infinite;
+      }
+      @keyframes loading{
+          0%{
+              transform: rotate(0deg);
+          }
+          100%{
+              transform: rotate(360deg);
+          }
+      }
     </style>
 
     <video src="${data.src}" id="video"></video>
       <div class="panels">
-        <i class="epicon ep-play panel" style:"display:none;"></i>
+        <div class="loading"></div>
+        <i class="epicon ep-play panel" style="display:none;"></i>
       </div>
       <div class="controls">
         <div class="control">
