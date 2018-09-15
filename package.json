@@ -2,7 +2,7 @@
   "name": "eplayer",
   "version": "0.0.2",
   "description": "A simple html5 video player",
-  "main": "index.js",
+  "main": "./lib/eplayer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel index.html"
