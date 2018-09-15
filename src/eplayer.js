@@ -1,4 +1,5 @@
 import { Init } from './init'
+import { Hls } from './hls'
 import { getTimeStr } from './util'
 
 class Eplayer {
@@ -13,19 +14,24 @@ class Eplayer {
     this.totalTime = document.querySelector('.total')
     this.currentTime = document.querySelector('.current')
     this.dot = document.querySelector('.dot')
-    let full = document.querySelector('.full')
+    this.full = document.querySelector('.full')
     this.progress = document.querySelector('.progress')
     this.currentProgress = document.querySelector('.current-progress')
 
+    if (data.hls) {
+      new Hls(this.video, this.data)
+    }
+
     this.tTime = 0
 
-    this.video.oncanplay = this.oncanplay.bind(this)
-    this.isPlay.onclick = this.play.bind(this)
-    this.video.ontimeupdate = this.timeupdate.bind(this)
+    this.video.oncanplay = () => this.canplay()
+    this.isPlay.onclick = () => this.play()
+    this.video.ontimeupdate = () => this.timeupdate()
     this.progress.onclick = e => this.progressClick(e)
+    this.video.onended = () => this.ended()
   }
 
-  oncanplay() {
+  canplay() {
     this.tTime = this.video.duration
     let tTimeStr = getTimeStr(this.tTime)
     this.totalTime.innerHTML = tTimeStr
@@ -52,9 +58,19 @@ class Eplayer {
     this.dot.style.left = offsetPre
   }
 
-  progressClick(e){
+  progressClick(e) {
     let event = e || window.event
-    this.video.currentTime=(event.offsetX / this.progress.offsetWidth) * this.video.duration
+    this.video.currentTime =
+      (event.offsetX / this.progress.offsetWidth) * this.video.duration
+  }
+
+  ended() {
+    this.isPlay.classList.remove('ep-pause')
+    this.isPlay.classList.add('ep-play')
+    this.currentProgress.style.width = 0
+    this.dot.style.left = 0
+    this.currentTime.innerHTML = getTimeStr()
+    this.video.currentTime = 0
   }
 }
 
