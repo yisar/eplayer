@@ -17,7 +17,7 @@ npm i eplayer -S
 
 dom:
 ```html
-  <div id=player></div>
+<div id=player></div>
 ```
 js:
 ```javascript
@@ -37,7 +37,7 @@ if m3u8 need supported，please install `hls.js` first
 npm i hls.js -S
 ```
 
-and `hls` turns to `true`
+and `hls` value turns to `true`
 
 ```javascript
 new Eplayer(el, {
