@@ -80,20 +80,20 @@ class Eplayer {
     let cTimeStr = getTimeStr(cTime)
     this.currentTime.innerHTML = cTimeStr
     let offsetCom = cTime / this.tTime
-    let offsetPre = offsetCom * 100 + '%'
     if (!this.isDown) {
-      this.currentProgress.style.width = offsetPre
+      this.currentProgress.style.width =
+        offsetCom * this.progress.clientWidth + 'px'
       this.dot.style.left =
         offsetCom * this.progress.clientWidth - OFFSETDOT + 'px'
+      this.l = offsetCom * this.progress.clientWidth
     }
   }
 
   progressClick(e) {
     let event = e || window.event
-    if (this.isDown) {
-      this.video.currentTime =
-        (event.offsetX / this.progress.offsetWidth) * this.video.duration
-    }
+
+    this.video.currentTime =
+      (event.offsetX / this.progress.offsetWidth) * this.video.duration
   }
 
   Dotonmousedown(e) {
@@ -125,6 +125,7 @@ class Eplayer {
     this.video.currentTime =
       (this.nl / this.progress.offsetWidth) * this.video.duration
     this.isDown = false
+    return false
   }
 
   ended() {

@@ -38,13 +38,15 @@ export class Init {
       .control{
         padding: 0 15px
       }
-      .progress {
+      .progress-bar {
         flex: 1;
-        height: 5px;
         width: 100%;
-        background-color: rgba(255, 255, 255, 0.8);
         position: relative;
         cursor: pointer;
+      }
+      .progress {
+        height: 5px;
+        background-color: rgba(255, 255, 255, 0.8);
       }
       .dot {
         padding: 20px;
@@ -66,6 +68,8 @@ export class Init {
         width: 0%;
         height: 100%;
         background: ${data.themeColor};
+        position: absolute;
+        top: 0;
       }
       .time {
         text-align: center;
@@ -114,7 +118,8 @@ export class Init {
         <div class="control">
           <i class="epicon ep-play switch"></i>
         </div>
-        <div class="progress">
+        <div class="progress-bar">
+          <div class="progress"></div>
           <div class="current-progress"></div>
           <div class="dot">
             <i></i>
