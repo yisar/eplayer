@@ -19,9 +19,10 @@ class Eplayer {
     this.currentTime = document.querySelector('.current')
     this.dot = document.querySelector('.dot')
     this.full = document.querySelector('.full')
-    this.progress = document.querySelector('.progress')
+    this.progress = document.querySelector('.progress-bar')
     this.currentProgress = document.querySelector('.current-progress')
     this.controls = document.querySelector('.controls')
+    this.buffer = document.querySelector('.buffer')
 
     if (data.hls) {
       new Hls(this.video, this.data)
@@ -33,6 +34,7 @@ class Eplayer {
     this.isDown = false
     this.nl = 0
     this.nx = 0
+    this.bufferEnd = 0
 
     this.video.onwaiting = () => this.waiting()
     this.video.oncanplay = () => this.canplay()
@@ -77,6 +79,12 @@ class Eplayer {
 
   timeupdate() {
     let cTime = this.video.currentTime
+    if (this.video.buffered.length) {
+      this.bufferEnd += this.video.buffered.end(0)
+      this.buffer.style.width =
+        (this.bufferEnd / this.video.duration) * this.progress.clientWidth + 'px'
+    }
+
     let cTimeStr = getTimeStr(cTime)
     this.currentTime.innerHTML = cTimeStr
     let offsetCom = cTime / this.tTime

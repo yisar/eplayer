@@ -71,6 +71,14 @@ export class Init {
         position: absolute;
         top: 0;
       }
+      .buffer {
+        width: 0%;
+        height: 100%;
+        background: ${data.themeColor};
+        opacity:.4;
+        position: absolute;
+        top: 0;
+      }
       .time {
         text-align: center;
         font-size: 12px;
@@ -84,9 +92,9 @@ export class Init {
         color: rgba(255, 255, 255, 0.8);
         cursor: pointer;
         transition: 0.3s;
-        font-size: 30px
+        font-size: 24px
       }
-      .loading{
+      .loading {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -121,6 +129,7 @@ export class Init {
         <div class="progress-bar">
           <div class="progress"></div>
           <div class="current-progress"></div>
+          <div class="buffer"></div>
           <div class="dot">
             <i></i>
           </div>
