@@ -54,6 +54,7 @@ class Eplayer {
   canplay() {
     this.tTime = this.video.duration
     this.loading.style.display = 'none'
+    this.panel.style.display = 'block'
     let tTimeStr = getTimeStr(this.tTime)
     this.totalTime.innerHTML = tTimeStr
   }
@@ -69,7 +70,6 @@ class Eplayer {
       this.video.pause()
       this.isPlay.classList.remove('ep-pause')
       this.isPlay.classList.add('ep-play')
-      this.panel.style.display = 'block'
       this.panel.classList.remove('wrap')
       this.panel.classList.add('ep-play')
     }
