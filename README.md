@@ -52,4 +52,4 @@ yarn start
 ```
 
 #### Screenshot
-![free eplayer](http://wx4.sinaimg.cn/mw690/0060lm7Tly1fva62b1tqdj30rp0fmalc.jpg)
+![free eplayer](http://ww1.sinaimg.cn/large/0065Zy9egy1fva8spz7j6j30rn0fhk4p.jpg)

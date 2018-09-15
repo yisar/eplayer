@@ -4,6 +4,7 @@ export class Init {
     <link rel="stylesheet" href="//at.alicdn.com/t/font_836948_ouzixiva2b.css">
     <style>
       #player {
+        background:#000;
         width: 800px;
         height: 450px;
         margin: 100px auto;
