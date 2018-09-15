@@ -7,13 +7,13 @@
 
 :dart: A simple and lovely html5 video player
 
-#### Install
+### Install
 
 ```shell
 npm i eplayer -S
 ```
 
-#### Use
+### Use
 
 dom:
 ```html
@@ -45,7 +45,7 @@ new Eplayer(el, {
   hls: true
 })
 ```
-### development
+#### development
 
 ```shell
 yarn start
