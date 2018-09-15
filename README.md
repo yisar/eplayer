@@ -1,4 +1,4 @@
-<p align="center"><img src="http://wx2.sinaimg.cn/mw690/0060lm7Tly1fva3l3izvtj30dw0dwjs1.jpg" alt="eplayer logo" width="180px"></p>
+<p align="center"><img src="http://wx2.sinaimg.cn/mw690/0060lm7Tly1fva3l3izvtj30dw0dwjs1.jpg" alt="eplayer logo" width="150px"></p>
 
 [![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
 [![NPM downloads](https://img.shields.io/npm/dm/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
@@ -17,7 +17,7 @@ npm i eplayer -S
 
 dom:
 ```html
-  <div id=player></player>
+  <div id=player></div>
 ```
 js:
 ```javascript
@@ -45,3 +45,6 @@ new Eplayer(el, {
   hls: true
 })
 ```
+
+#### Screenshot
+![111](http://wx2.sinaimg.cn/mw690/0060lm7Tly1fva41qp5zkj30rl0fhk7u.jpg)
