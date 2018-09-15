@@ -2,6 +2,8 @@ import { Init } from './init'
 import { Hls } from './hls'
 import { getTimeStr, isFullScreen } from './util'
 
+const OFFSETDOT = 18
+
 class Eplayer {
   constructor(el, data) {
     this.el = el
@@ -19,12 +21,18 @@ class Eplayer {
     this.full = document.querySelector('.full')
     this.progress = document.querySelector('.progress')
     this.currentProgress = document.querySelector('.current-progress')
+    this.controls = document.querySelector('.controls')
 
     if (data.hls) {
       new Hls(this.video, this.data)
     }
 
     this.tTime = 0
+    this.x = 0
+    this.l = 0
+    this.isDown = false
+    this.nl = 0
+    this.nx = 0
 
     this.video.onwaiting = () => this.waiting()
     this.video.oncanplay = () => this.canplay()
@@ -34,6 +42,9 @@ class Eplayer {
     this.progress.onclick = e => this.progressClick(e)
     this.video.onended = () => this.ended()
     this.full.onclick = () => this.fullScreen()
+    this.dot.onmousedown = e => this.Dotonmousedown(e)
+    this.dot.onmousemove = e => this.Dotonmousemove(e)
+    this.dot.onmouseup = e => this.Dotonmouseup(e)
   }
 
   waiting() {
@@ -68,15 +79,52 @@ class Eplayer {
     let cTime = this.video.currentTime
     let cTimeStr = getTimeStr(cTime)
     this.currentTime.innerHTML = cTimeStr
-    let offsetPre = (cTime / this.tTime) * 100 + '%'
-    this.currentProgress.style.width = offsetPre
-    this.dot.style.left = offsetPre
+    let offsetCom = cTime / this.tTime
+    let offsetPre = offsetCom * 100 + '%'
+    if (!this.isDown) {
+      this.currentProgress.style.width = offsetPre
+      this.dot.style.left =
+        offsetCom * this.progress.clientWidth - OFFSETDOT + 'px'
+    }
   }
 
   progressClick(e) {
     let event = e || window.event
+    if (this.isDown) {
+      this.video.currentTime =
+        (event.offsetX / this.progress.offsetWidth) * this.video.duration
+    }
+  }
+
+  Dotonmousedown(e) {
+    let event = e || window.event
+    this.x = event.clientX
+    this.l = this.l !== 0 ? this.l : event.offsetX
+    this.isDown = true
+    return false
+  }
+
+  Dotonmousemove(e) {
+    if (this.isDown) {
+      let event = e || window.event
+
+      this.nx = event.clientX
+      this.nl = this.nx - (this.x - this.l)
+      if (this.nl <= 0) this.nl = 0
+      if (this.nl >= this.progress.clientWidth)
+        this.nl = this.progress.clientWidth
+      this.dot.style.left = this.nl - OFFSETDOT + 'px'
+      this.currentProgress.style.width = this.nl + 'px'
+      this.x = this.nx
+      this.l = this.nl
+    }
+  }
+
+  Dotonmouseup(e) {
+    let event = e || window.event
     this.video.currentTime =
-      (event.offsetX / this.progress.offsetWidth) * this.video.duration
+      (this.nl / this.progress.offsetWidth) * this.video.duration
+    this.isDown = false
   }
 
   ended() {
@@ -86,6 +134,8 @@ class Eplayer {
     this.dot.style.left = 0
     this.currentTime.innerHTML = getTimeStr()
     this.video.currentTime = 0
+    this.x = this.l = this.nx = this.nl = 0
+    this.isDown = false
   }
 
   fullScreen() {

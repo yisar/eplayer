@@ -1,7 +1,7 @@
 export class Init {
   constructor(el, data) {
     let html = `
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_836948_ouzixiva2b.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_836948_8so67ueev32.css">
     <style>
       #player {
         background:#000;
@@ -47,13 +47,20 @@ export class Init {
         cursor: pointer;
       }
       .dot {
+        padding: 20px;
+        position: absolute;
+        top: -18px;
+        left: -18px;
+      }
+      .dot i {
         height: 13px;
         width: 13px;
-        margin-left:-7px;
         background: ${data.themeColor};
         position: absolute;
         border-radius: 50%;
-        top: -4px;
+        top: 50%;
+        left:50%;
+        transform:translate(-50%,-50%)
       }
       .current-progress {
         width: 0%;
@@ -64,15 +71,7 @@ export class Init {
         text-align: center;
         font-size: 12px;
         color: #fff;
-        padding-left: 18px;
-      }
-      .ep-play,
-      .ep-pause {
-        font-size: 30px;
-      }
-      .ep-full {
-        font-size: 24px;
-        padding: 0 8px;
+        padding-left: 15px;
       }
       .epicon:hover {
         color: #fff;
@@ -81,6 +80,7 @@ export class Init {
         color: rgba(255, 255, 255, 0.8);
         cursor: pointer;
         transition: 0.3s;
+        font-size: 30px
       }
       .loading{
         position: absolute;
@@ -116,7 +116,9 @@ export class Init {
         </div>
         <div class="progress">
           <div class="current-progress"></div>
-          <div class="dot"></div>
+          <div class="dot">
+            <i></i>
+          </div>
         </div>
         <div class="time">
           <span class="current">00:00</span>
