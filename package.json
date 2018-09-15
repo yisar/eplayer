@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"parcel index.html"
+    "start": "parcel index.html"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/132yse/eplayer/issues"
   },
-  "homepage": "https://github.com/132yse/eplayer#readme"
+  "homepage": "https://github.com/132yse/eplayer#readme",
+  "dependencies": {
+    "hls.js": "^0.11.0"
+  }
 }
