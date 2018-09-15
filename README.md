@@ -45,6 +45,11 @@ new Eplayer(el, {
   hls: true
 })
 ```
+### development
+
+```shell
+yarn start
+```
 
 #### Screenshot
-![111](http://wx2.sinaimg.cn/mw690/0060lm7Tly1fva41qp5zkj30rl0fhk7u.jpg)
+![free eplayer](http://wx4.sinaimg.cn/mw690/0060lm7Tly1fva62b1tqdj30rp0fmalc.jpg)
