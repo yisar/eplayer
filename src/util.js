@@ -7,3 +7,11 @@ export function getTimeStr(time) {
   s = s >= 10 ? s : '0' + s
   return h === '00' ? m + ':' + s : h + ':' + m + ':' + s
 }
+
+export function isFullScreen() {
+  return (
+    document.isFullScreen ||
+    document.mozIsFullScreen ||
+    document.webkitIsFullScreen
+  )
+}

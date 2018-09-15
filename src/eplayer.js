@@ -1,6 +1,6 @@
 import { Init } from './init'
 import { Hls } from './hls'
-import { getTimeStr } from './util'
+import { getTimeStr, isFullScreen } from './util'
 
 class Eplayer {
   constructor(el, data) {
@@ -31,6 +31,7 @@ class Eplayer {
     this.video.ontimeupdate = () => this.timeupdate()
     this.progress.onclick = e => this.progressClick(e)
     this.video.onended = () => this.ended()
+    this.full.onclick = () => this.fullScreen()
   }
 
   canplay() {
@@ -79,6 +80,29 @@ class Eplayer {
     this.currentTime.innerHTML = getTimeStr()
     this.video.currentTime = 0
   }
+
+  fullScreen() {
+    if (isFullScreen()) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen()
+      } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen()
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen()
+      }
+    } else {
+      let rfs =
+        this.el.requestFullScreen ||
+        this.el.webkitRequestFullScreen ||
+        this.el.mozRequestFullScreen ||
+        this.el.msRequestFullscreen
+
+      return rfs.call(this.el)
+    }
+  }
+
 }
 
 export default Eplayer
