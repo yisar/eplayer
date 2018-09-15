@@ -9,9 +9,6 @@ export class Hls {
       let hls = new Hls()
       hls.loadSource(this.src)
       hls.attachMedia(this.el)
-      hls.on(Hls.Events.MANIFEST_PARSED, function() {
-        video.play()
-      })
     }
   }
 }

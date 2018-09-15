@@ -13,6 +13,19 @@ export class Init {
         width: 100%;
         height: 100%;
       }
+      .panel {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+      }
+      .wrap{
+        height: 100%;
+        width: 100%;
+      }
+      .panels .epicon {
+        font-size: 80px
+      }
       .controls {
         display: flex;
         align-items: center;
@@ -68,9 +81,12 @@ export class Init {
         cursor: pointer;
         transition: 0.3s;
       }
-    
     </style>
+
     <video src="${data.src}" id="video"></video>
+      <div class="panels">
+        <i class="epicon ep-play panel" style:"display:none;"></i>
+      </div>
       <div class="controls">
         <div class="control">
           <i class="epicon ep-play switch"></i>

@@ -11,6 +11,7 @@ class Eplayer {
 
     this.video = document.querySelector('video')
     this.isPlay = document.querySelector('.switch')
+    this.panel = document.querySelector('.panel')
     this.totalTime = document.querySelector('.total')
     this.currentTime = document.querySelector('.current')
     this.dot = document.querySelector('.dot')
@@ -26,6 +27,7 @@ class Eplayer {
 
     this.video.oncanplay = () => this.canplay()
     this.isPlay.onclick = () => this.play()
+    this.panel.onclick = () => this.play()
     this.video.ontimeupdate = () => this.timeupdate()
     this.progress.onclick = e => this.progressClick(e)
     this.video.onended = () => this.ended()
@@ -42,10 +44,15 @@ class Eplayer {
       this.video.play()
       this.isPlay.classList.remove('ep-play')
       this.isPlay.classList.add('ep-pause')
+      this.panel.classList.remove('ep-play')
+      this.panel.classList.add('wrap')
     } else {
       this.video.pause()
       this.isPlay.classList.remove('ep-pause')
       this.isPlay.classList.add('ep-play')
+      this.panel.style.display = 'block'
+      this.panel.classList.remove('wrap')
+      this.panel.classList.add('ep-play')
     }
   }
 
