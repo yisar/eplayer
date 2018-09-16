@@ -7,9 +7,9 @@
 
 :dart: A simple and lovely html5 video player
 
-### Demo
+### who use eplayer？
 
-[clicli.us](https://www.clicli.us/p/82)
+[clicli.us](https://www.clicli.us/)
 
 ### Install
 
