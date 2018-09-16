@@ -9,7 +9,7 @@
 
 ### Demo
 
-[clicli](http://localhost:3000/p/82)
+[clicli.us](https://www.clicli.us/p/82)
 
 ### Install
 
