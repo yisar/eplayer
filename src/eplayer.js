@@ -103,10 +103,10 @@ class Eplayer {
     if (this.video.muted) {
       this.video.muted = false
       this.volumeBtn.classList.remove('ep-volume-off')
-      this.volumeBtn.classList.add('ep-volume-down')
+      this.volumeBtn.classList.add('ep-volume-up')
     } else {
       this.video.muted = true
-      this.volumeBtn.classList.remove('ep-volume-down')
+      this.volumeBtn.classList.remove('ep-volume-up')
       this.volumeBtn.classList.add('ep-volume-off')
     }
   }

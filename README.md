@@ -7,6 +7,10 @@
 
 :dart: A simple and lovely html5 video player
 
+### Demo
+
+[clicli](http://localhost:3000/p/82)
+
 ### Install
 
 ```shell
