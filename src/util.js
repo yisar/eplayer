@@ -18,7 +18,7 @@ export function isFullScreen() {
 
 export function copyright() {
   console.log(
-    '\n %c EPlayer 0.2.5 %c eplayer.js.org \n',
+    '\n %c EPlayer 0.2.6 %c eplayer.js.org \n',
     'color: #fff; background: linear-gradient(to right,#57a1fc ,#6beaf7); padding:5px;',
     'color: #7192c3; background: #ecfaff; padding:5px 0;'
   )
