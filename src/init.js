@@ -61,11 +61,13 @@ export class Init {
         cursor: pointer;
       }
       #player .volume-progress {
-        height: 5px;
+        border-radius:2px;
+        height: 4px;
         background-color: rgba(255, 255, 255, 0.8);
       }
       #player .progress {
-        height: 5px;
+        border-radius:2px;
+        height: 4px;
         background-color: rgba(255, 255, 255, 0.8);
       }
       #player .dot {
@@ -94,6 +96,7 @@ export class Init {
         height: 100%;
         background: ${data.themeColor};
         position: absolute;
+        border-radius:2px;
         top: 0;
       }
       #player .buffer {
@@ -102,6 +105,7 @@ export class Init {
         background: ${data.themeColor};
         opacity:.4;
         position: absolute;
+        border-radius:2px;
         top: 0;
       }
       #player .time {
@@ -129,7 +133,7 @@ export class Init {
         margin:-20px 0 0 -20px;
         width: 40px;
         height: 40px;
-        border: 5px solid;
+        border: 4px solid;
         border-color: rgba(255, 255, 255, 0.8) rgba(255, 255, 255, 0.8) transparent;
         border-radius: 50%;
         box-sizing: border-box;
