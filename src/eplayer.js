@@ -11,24 +11,24 @@ class Eplayer {
 
     new Init(this.el, this.data)
 
-    this.video = document.querySelector('video')
-    this.loading = document.querySelector('.loading')
-    this.isPlay = document.querySelector('.switch')
-    this.panel = document.querySelector('.panel')
-    this.totalTime = document.querySelector('.total')
-    this.currentTime = document.querySelector('.current')
-    this.dot = document.querySelector('.progress-bar .dot')
-    this.vdot = document.querySelector('.volume .dot')
-    this.full = document.querySelector('.full')
-    this.progress = document.querySelector('.progress')
-    this.currentProgress = document.querySelector('.current-progress')
+    this.video = document.querySelector('#player video')
+    this.loading = document.querySelector('#player .loading')
+    this.isPlay = document.querySelector('#player .switch')
+    this.panel = document.querySelector('#player .panel')
+    this.totalTime = document.querySelector('#player .total')
+    this.currentTime = document.querySelector('#player .current')
+    this.dot = document.querySelector('#player .progress-bar .dot')
+    this.vdot = document.querySelector('#player .volume .dot')
+    this.full = document.querySelector('#player .full')
+    this.progress = document.querySelector('#player .progress')
+    this.currentProgress = document.querySelector('#player .current-progress')
     this.currentVolumeProgress = document.querySelector(
-      '.volume .current-progress'
+      '#player .volume .current-progress'
     )
-    this.volumeBtn = document.querySelector('.volume-button')
-    this.controls = document.querySelector('.controls')
-    this.buffer = document.querySelector('.buffer')
-    this.volumeProgress = document.querySelector('.volume-progress')
+    this.volumeBtn = document.querySelector('#player .volume-button')
+    this.controls = document.querySelector('#player .controls')
+    this.buffer = document.querySelector('#player .buffer')
+    this.volumeProgress = document.querySelector('#player .volume-progress')
 
     if (data.hls) {
       new Hls(this.video, this.data)
@@ -77,6 +77,7 @@ class Eplayer {
     let tTimeStr = getTimeStr(this.tTime)
     this.totalTime.innerHTML = tTimeStr
     let vWidth = this.volumeProgress.clientWidth
+    this.video.volume = 0.7
     this.currentVolumeProgress.style.width = this.video.volume * vWidth + 'px'
     this.vdot.style.left = this.video.volume * vWidth - OFFSETDOT + 'px'
     this.vl = this.video.volume * vWidth

@@ -13,71 +13,68 @@ export class Init {
         width: 100%;
         height: 100%;
       }
-      .panel {
+      #player .panel {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%,-50%);
       }
-      .wrap {
+      #player .wrap {
         height: 100%;
         width: 100%;
       }
-      .panels .epicon {
+      #player .panels .epicon {
         font-size: 80px
       }
-      .controls {
+      #player .controls {
         width: 100%;
-        position: relative;
-        bottom: 55px;
-        padding:0 15px;
+        position: absolute;
+        bottom: 0;
+        padding: 0 15px;
         box-sizing: border-box;
       }
-      .option {
+      #player .option {
         position: relative;
         display:flex;
         align-items: center;
         padding: 10px 0;
       }
-      .option .left{
+      #player .option-left{
         display: flex;
         flex: 1;
         align-items: center;
       }
-      .option .right{
+      #player .option-right{
         display: flex;
         flex: 1;
         align-items: center;
         justify-content: flex-end
       }
-      .wrap:hover #player{
-        background:#fff
-      }
-      .progress-bar {
+      #player .progress-bar {
         width: 100%;
         position: relative;
         cursor: pointer;
       }
-      .volume-progress-bar {
+      #player .volume-progress-bar {
         width: 100px;
         position: relative;
         cursor: pointer;
       }
-      .volume-progress {
+      #player .volume-progress {
         height: 5px;
         background-color: rgba(255, 255, 255, 0.8);
       }
-      .progress {
+      #player .progress {
         height: 5px;
         background-color: rgba(255, 255, 255, 0.8);
       }
-      .dot {
+      #player .dot {
         padding: 20px;
         position: absolute;
         top: -18px;
         left: -18px;
       }
-      .dot i {
+      #player .dot i {
         height: 13px;
         width: 13px;
         background: ${data.themeColor};
@@ -87,19 +84,19 @@ export class Init {
         left:50%;
         transform:translate(-50%,-50%)
       }
-      .volume {
+      #player .volume {
         display: flex;
         align-items: center;
         padding-right: 15px;
       }
-      .current-progress {
+      #player .current-progress {
         width: 0%;
         height: 100%;
         background: ${data.themeColor};
         position: absolute;
         top: 0;
       }
-      .buffer {
+      #player .buffer {
         width: 0%;
         height: 100%;
         background: ${data.themeColor};
@@ -107,25 +104,25 @@ export class Init {
         position: absolute;
         top: 0;
       }
-      .time {
+      #player .time {
         text-align: center;
         font-size: 12px;
         color: #fff;
         padding-left: 15px;
       }
-      .epicon:hover {
+      #player .epicon:hover {
         color: #fff;
       }
-      .epicon {
+      #player .epicon {
         color: rgba(255, 255, 255, 0.8);
         cursor: pointer;
         transition: 0.3s;
         font-size: 24px;
       }
-      .ep-volume-down,.ep-volume-off {
+      #player .ep-volume-down,.ep-volume-up,.ep-volume-off {
         padding-right: 15px
       }
-      .loading {
+      #player .loading {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -155,51 +152,53 @@ export class Init {
         }
       }
     </style>
-
-    <video src="${data.src}" id="video"></video>
-      <div class="panels">
-        <div class="loading"></div>
-        <i class="epicon ep-play panel" style="display:none;"></i>
-      </div>
-      <div class="controls">
-        <div class="progress-bar">
-          <div class="current-progress"></div>
-          <div class="buffer"></div>
-          <div class="dot">
-            <i></i>
-          </div>
-          <div class="progress"></div>
+    <div id="player">
+      <video src="${data.src}" id="video"></video>
+        <div class="panels">
+          <div class="loading"></div>
+          <i class="epicon ep-play panel" style="display:none;"></i>
         </div>
-        <div class="option">
-          <div class="left">
-            <div class="control">
-              <i class="epicon ep-play switch"></i>
+        <div class="controls">
+          <div class="progress-bar">
+            <div class="current-progress"></div>
+            <div class="buffer"></div>
+            <div class="dot">
+              <i></i>
             </div>
-            <div class="time">
-              <span class="current">00:00</span>
-              /
-              <span class="total">00:00</span>
-            </div>
+            <div class="progress"></div>
           </div>
-          <div class="right"> 
-            <div class="volume">
-              <i class="epicon ep-volume-down volume-button"></i>
-              <div class="volume-progress-bar">
-                <div class="volume-progress"></div>
-                <div class="current-progress"></div>
-                <div class="dot">
-                  <i></i>
-                </div>
+          <div class="option">
+            <div class="option-left">
+              <div class="control">
+                <i class="epicon ep-play switch"></i>
               </div>
-            </div> 
-            <div class="control">
-              <i class="epicon ep-full full"></i>
-            </div>  
+              <div class="time">
+                <span class="current">00:00</span>
+                /
+                <span class="total">00:00</span>
+              </div>
+            </div>
+            <div class="option-right"> 
+              <div class="volume">
+                <i class="epicon ep-volume-up volume-button"></i>
+                <div class="volume-progress-bar">
+                  <div class="volume-progress"></div>
+                  <div class="current-progress"></div>
+                  <div class="dot">
+                    <i></i>
+                  </div>
+                </div>
+              </div> 
+              <div class="control">
+                <i class="epicon ep-full full"></i>
+              </div>  
+            </div>
           </div>
         </div>
-       
-      </div>
+    </div>
     `
     el.innerHTML = html
   }
 }
+
+

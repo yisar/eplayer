@@ -1,6 +1,6 @@
 import Eplayer from './src/eplayer'
 
-let el = document.getElementById('player')
+let el = document.getElementById('ep')
 
 let ep = new Eplayer(el, {
   src: 'https://new.jsyunbf.com/20180809/sT5p3w5X/index.m3u8',
