@@ -19,7 +19,7 @@ class Eplayer {
     this.currentTime = document.querySelector('.current')
     this.dot = document.querySelector('.dot')
     this.full = document.querySelector('.full')
-    this.progress = document.querySelector('.progress-bar')
+    this.progress = document.querySelector('.progress')
     this.currentProgress = document.querySelector('.current-progress')
     this.controls = document.querySelector('.controls')
     this.buffer = document.querySelector('.buffer')
@@ -94,7 +94,7 @@ class Eplayer {
   timeupdate() {
     let cTime = this.video.currentTime
     if (this.video.buffered.length) {
-      this.bufferEnd = this.video.buffered.end(0)
+      this.bufferEnd = this.video.buffered.end(this.video.buffered.length - 1)
       this.buffer.style.width =
         (this.bufferEnd / this.video.duration) * this.progress.clientWidth +
         'px'
@@ -114,9 +114,10 @@ class Eplayer {
 
   progressClick(e) {
     let event = e || window.event
-
-    this.video.currentTime =
-      (event.offsetX / this.progress.offsetWidth) * this.video.duration
+    if (!this.isDown) {
+      this.video.currentTime =
+        (event.offsetX / this.progress.offsetWidth) * this.video.duration
+    }
   }
 
   Dotonmousedown(e) {

@@ -28,22 +28,33 @@ export class Init {
         font-size: 80px
       }
       .controls {
-        display: flex;
-        align-items: center;
         width: 100%;
-        height: 40px;
         position: relative;
-        bottom: 50px;
-        display: none
+        bottom: 55px;
+        padding:0 15px;
+        box-sizing: border-box;
+      }
+      .option {
+        position: relative;
+        display:flex;
+        align-items: center;
+        padding: 10px 0;
+      }
+      .option .left{
+        display: flex;
+        flex: 1;
+        align-items: center;
+      }
+      .option .right{
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: flex-end
       }
       .wrap:hover #player{
         background:#fff
       }
-      .control{
-        padding-left: 15px
-      }
       .progress-bar {
-        flex: 1;
         width: 100%;
         position: relative;
         cursor: pointer;
@@ -97,10 +108,9 @@ export class Init {
         cursor: pointer;
         transition: 0.3s;
         font-size: 24px;
-        padding-right: 15px
       }
       .ep-volume-down,.ep-volume-off {
-        padding: 0
+        padding-right: 15px
       }
       .loading {
         position: absolute;
@@ -139,28 +149,35 @@ export class Init {
         <i class="epicon ep-play panel" style="display:none;"></i>
       </div>
       <div class="controls">
-        <div class="control">
-          <i class="epicon ep-play switch"></i>
-        </div>
         <div class="progress-bar">
-          <div class="progress"></div>
           <div class="current-progress"></div>
           <div class="buffer"></div>
           <div class="dot">
             <i></i>
           </div>
+          <div class="progress"></div>
         </div>
-        <div class="time">
-          <span class="current">00:00</span>
-          /
-          <span class="total">00:00</span>
+        <div class="option">
+          <div class="left">
+            <div class="control">
+              <i class="epicon ep-play switch"></i>
+            </div>
+            <div class="time">
+              <span class="current">00:00</span>
+              /
+              <span class="total">00:00</span>
+            </div>
+          </div>
+          <div class="right"> 
+            <div class="control">
+              <i class="epicon ep-volume-down volume"></i>
+            </div> 
+            <div class="control">
+              <i class="epicon ep-full full"></i>
+            </div>  
+          </div>
         </div>
-        <div class="control">
-        <i class="epicon ep-volume-down volume"></i>
-        </div> 
-        <div class="control">
-          <i class="epicon ep-full full"></i>
-        </div>  
+       
       </div>
     `
     el.innerHTML = html
