@@ -36,7 +36,7 @@ export class Init {
         padding: 0 15px;
         box-sizing: border-box;
         opacity: 0;
-        transition: .7s ease-out;
+        transition: .5s ease-out;
       }
       #player .option {
         position: relative;
@@ -80,7 +80,7 @@ export class Init {
         position: absolute;
         top: -18px;
         left: -18px;
-        transition: .5s
+        transition: 0.01s
       }
       #player .dot i {
         height: 13px;
@@ -104,7 +104,7 @@ export class Init {
         position: absolute;
         border-radius:2px;
         top: 0;
-        transition: .5s
+        transition: .1s
       }
       #player .buffer {
         width: 0%;
@@ -114,7 +114,7 @@ export class Init {
         position: absolute;
         border-radius:2px;
         top: 0;
-        transition: .5s;
+        transition: .3s;
       }
       #player .time {
         text-align: center;
