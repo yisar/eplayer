@@ -20,7 +20,7 @@ export class Init {
         left: 50%;
         transform: translate(-50%,-50%);
       }
-      .wrap{
+      .wrap {
         height: 100%;
         width: 100%;
       }
@@ -34,9 +34,13 @@ export class Init {
         height: 40px;
         position: relative;
         bottom: 50px;
+        display: none
+      }
+      .wrap:hover #player{
+        background:#fff
       }
       .control{
-        padding: 0 15px
+        padding-left: 15px
       }
       .progress-bar {
         flex: 1;
@@ -92,7 +96,11 @@ export class Init {
         color: rgba(255, 255, 255, 0.8);
         cursor: pointer;
         transition: 0.3s;
-        font-size: 24px
+        font-size: 24px;
+        padding-right: 15px
+      }
+      .ep-volume-down,.ep-volume-off {
+        padding: 0
       }
       .loading {
         position: absolute;
@@ -108,12 +116,20 @@ export class Init {
         animation: loading 1s linear infinite;
       }
       @keyframes loading{
-          0%{
-              transform: rotate(0deg);
-          }
-          100%{
-              transform: rotate(360deg);
-          }
+        0%{
+          transform: rotate(0deg);
+        }
+        100%{
+          transform: rotate(360deg);
+        }  
+      }
+      @keyframes display{
+        0%{
+          opacity: 1;
+        }
+        100%{
+          opacity: 0;
+        }
       }
     </style>
 
@@ -139,6 +155,9 @@ export class Init {
           /
           <span class="total">00:00</span>
         </div>
+        <div class="control">
+        <i class="epicon ep-volume-down volume"></i>
+        </div> 
         <div class="control">
           <i class="epicon ep-full full"></i>
         </div>  

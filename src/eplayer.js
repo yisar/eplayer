@@ -23,6 +23,7 @@ class Eplayer {
     this.currentProgress = document.querySelector('.current-progress')
     this.controls = document.querySelector('.controls')
     this.buffer = document.querySelector('.buffer')
+    this.volume = document.querySelector('.volume')
 
     if (data.hls) {
       new Hls(this.video, this.data)
@@ -47,6 +48,7 @@ class Eplayer {
     this.dot.onmousedown = e => this.Dotonmousedown(e)
     this.dot.onmousemove = e => this.Dotonmousemove(e)
     this.dot.onmouseup = e => this.Dotonmouseup(e)
+    this.volume.onclick = () => this.isVolume()
   }
 
   waiting() {
@@ -77,12 +79,25 @@ class Eplayer {
     }
   }
 
+  isVolume() {
+    if (this.video.muted) {
+      this.video.muted = false
+      this.volume.classList.remove('ep-volume-off')
+      this.volume.classList.add('ep-volume-down')
+    } else {
+      this.video.muted = true
+      this.volume.classList.remove('ep-volume-down')
+      this.volume.classList.add('ep-volume-off')
+    }
+  }
+
   timeupdate() {
     let cTime = this.video.currentTime
     if (this.video.buffered.length) {
-      this.bufferEnd += this.video.buffered.end(0)
+      this.bufferEnd = this.video.buffered.end(0)
       this.buffer.style.width =
-        (this.bufferEnd / this.video.duration) * this.progress.clientWidth + 'px'
+        (this.bufferEnd / this.video.duration) * this.progress.clientWidth +
+        'px'
     }
 
     let cTimeStr = getTimeStr(cTime)
