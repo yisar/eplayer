@@ -5,9 +5,8 @@ export class Init {
     <style>
       #player {
         background:#000;
-        width: 800px;
-        height: 450px;
-        margin: 100px auto;
+        width: 100%;
+        height: 100%;
         position: relative;
       }
       #player video {
