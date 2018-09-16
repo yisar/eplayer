@@ -37,7 +37,6 @@ class Eplayer {
     this.tTime = 0
     this.x = 0
     this.l = 0
-    this.isDown = false
     this.nl = 0
     this.nx = 0
     this.vx = 0
@@ -45,6 +44,7 @@ class Eplayer {
     this.vnl = 0
     this.vnx = 0
     this.bufferEnd = 0
+    this.isDown = false
 
     this.video.onwaiting = () => this.waiting()
     this.video.oncanplay = () => this.canplay()
@@ -151,9 +151,8 @@ class Eplayer {
   Dotonmousedown(e) {
     let event = e || window.event
     this.x = event.clientX
-    this.l = this.l !== 0 ? this.l : event.offsetX
+    this.l = this.l ? this.l : event.offsetX
     this.isDown = true
-    return false
   }
 
   Dotonmousemove(e) {
@@ -177,7 +176,6 @@ class Eplayer {
     this.video.currentTime =
       (this.nl / this.progress.offsetWidth) * this.video.duration
     this.isDown = false
-    return false
   }
 
   Volumeonmousedown(e) {
@@ -207,7 +205,6 @@ class Eplayer {
     let event = e || window.event
     this.isDown = false
     this.video.volume = this.vnl / this.volumeProgress.clientWidth
-    return false
   }
 
   ended() {
