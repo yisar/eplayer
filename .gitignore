@@ -6,4 +6,5 @@ yarn-error.log
 package-lock.json
 yarn.lock
 .DS_Store
+dist/
 .cache/
