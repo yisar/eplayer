@@ -59,6 +59,15 @@ export class Init {
         position: relative;
         cursor: pointer;
       }
+      .volume-progress-bar {
+        width: 100px;
+        position: relative;
+        cursor: pointer;
+      }
+      .volume-progress {
+        height: 5px;
+        background-color: rgba(255, 255, 255, 0.8);
+      }
       .progress {
         height: 5px;
         background-color: rgba(255, 255, 255, 0.8);
@@ -78,6 +87,11 @@ export class Init {
         top: 50%;
         left:50%;
         transform:translate(-50%,-50%)
+      }
+      .volume {
+        display: flex;
+        align-items: center;
+        padding-right: 15px;
       }
       .current-progress {
         width: 0%;
@@ -169,8 +183,15 @@ export class Init {
             </div>
           </div>
           <div class="right"> 
-            <div class="control">
-              <i class="epicon ep-volume-down volume"></i>
+            <div class="volume">
+              <i class="epicon ep-volume-down volume-button"></i>
+              <div class="volume-progress-bar">
+                <div class="volume-progress"></div>
+                <div class="current-progress"></div>
+                <div class="dot">
+                  <i></i>
+                </div>
+              </div>
             </div> 
             <div class="control">
               <i class="epicon ep-full full"></i>

@@ -17,13 +17,18 @@ class Eplayer {
     this.panel = document.querySelector('.panel')
     this.totalTime = document.querySelector('.total')
     this.currentTime = document.querySelector('.current')
-    this.dot = document.querySelector('.dot')
+    this.dot = document.querySelector('.progress-bar .dot')
+    this.vdot = document.querySelector('.volume .dot')
     this.full = document.querySelector('.full')
     this.progress = document.querySelector('.progress')
     this.currentProgress = document.querySelector('.current-progress')
+    this.currentVolumeProgress = document.querySelector(
+      '.volume .current-progress'
+    )
+    this.volumeBtn = document.querySelector('.volume-button')
     this.controls = document.querySelector('.controls')
     this.buffer = document.querySelector('.buffer')
-    this.volume = document.querySelector('.volume')
+    this.volumeProgress = document.querySelector('.volume-progress')
 
     if (data.hls) {
       new Hls(this.video, this.data)
@@ -35,6 +40,10 @@ class Eplayer {
     this.isDown = false
     this.nl = 0
     this.nx = 0
+    this.vx = 0
+    this.vl = 0
+    this.vnl = 0
+    this.vnx = 0
     this.bufferEnd = 0
 
     this.video.onwaiting = () => this.waiting()
@@ -42,13 +51,19 @@ class Eplayer {
     this.isPlay.onclick = () => this.play()
     this.panel.onclick = () => this.play()
     this.video.ontimeupdate = () => this.timeupdate()
-    this.progress.onclick = e => this.progressClick(e)
+    this.progress.onclick = this.currentProgress.onclick = this.buffer.onclick = e =>
+      this.progressClick(e)
+    this.volumeProgress.onclick = this.currentVolumeProgress.onclick = e =>
+      this.volumeClick(e)
     this.video.onended = () => this.ended()
     this.full.onclick = () => this.fullScreen()
     this.dot.onmousedown = e => this.Dotonmousedown(e)
     this.dot.onmousemove = e => this.Dotonmousemove(e)
     this.dot.onmouseup = e => this.Dotonmouseup(e)
-    this.volume.onclick = () => this.isVolume()
+    this.vdot.onmousedown = e => this.Volumeonmousedown(e)
+    this.vdot.onmousemove = e => this.Volumeonmousemove(e)
+    this.vdot.onmouseup = e => this.Volumeonmouseup(e)
+    this.volumeBtn.onclick = () => this.isVolume()
   }
 
   waiting() {
@@ -61,6 +76,10 @@ class Eplayer {
     this.panel.style.display = 'block'
     let tTimeStr = getTimeStr(this.tTime)
     this.totalTime.innerHTML = tTimeStr
+    let vWidth = this.volumeProgress.clientWidth
+    this.currentVolumeProgress.style.width = this.video.volume * vWidth + 'px'
+    this.vdot.style.left = this.video.volume * vWidth - OFFSETDOT + 'px'
+    this.vl = this.video.volume * vWidth
   }
 
   play() {
@@ -82,12 +101,12 @@ class Eplayer {
   isVolume() {
     if (this.video.muted) {
       this.video.muted = false
-      this.volume.classList.remove('ep-volume-off')
-      this.volume.classList.add('ep-volume-down')
+      this.volumeBtn.classList.remove('ep-volume-off')
+      this.volumeBtn.classList.add('ep-volume-down')
     } else {
       this.video.muted = true
-      this.volume.classList.remove('ep-volume-down')
-      this.volume.classList.add('ep-volume-off')
+      this.volumeBtn.classList.remove('ep-volume-down')
+      this.volumeBtn.classList.add('ep-volume-off')
     }
   }
 
@@ -120,6 +139,15 @@ class Eplayer {
     }
   }
 
+  volumeClick(e) {
+    let event = e || window.event
+    if (!this.isDown) {
+      this.vdot.style.left = event.offsetX - OFFSETDOT + 'px'
+      this.currentVolumeProgress.style.width = event.offsetX + 'px'
+      this.video.volume = event.offsetX / this.volumeProgress.offsetWidth
+    }
+  }
+
   Dotonmousedown(e) {
     let event = e || window.event
     this.x = event.clientX
@@ -149,6 +177,36 @@ class Eplayer {
     this.video.currentTime =
       (this.nl / this.progress.offsetWidth) * this.video.duration
     this.isDown = false
+    return false
+  }
+
+  Volumeonmousedown(e) {
+    let event = e || window.event
+    this.vx = event.clientX
+    this.vl = this.vl !== 0 ? this.vl : event.offsetX
+    this.isDown = true
+  }
+
+  Volumeonmousemove(e) {
+    if (this.isDown) {
+      let event = e || window.event
+
+      this.vnx = event.clientX
+      this.vnl = this.vnx - (this.vx - this.vl)
+      if (this.vnl <= 0) this.vnl = 0
+      if (this.vnl >= this.volumeProgress.clientWidth)
+        this.vnl = this.volumeProgress.clientWidth
+      this.vdot.style.left = this.vnl - OFFSETDOT + 'px'
+      this.currentVolumeProgress.style.width = this.vnl + 'px'
+      this.vx = this.vnx
+      this.vl = this.vnl
+    }
+  }
+
+  Volumeonmouseup(e) {
+    let event = e || window.event
+    this.isDown = false
+    this.video.volume = this.vnl / this.volumeProgress.clientWidth
     return false
   }
 
