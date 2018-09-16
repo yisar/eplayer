@@ -1,8 +1,9 @@
 import { Init } from './init'
 import { Hls } from './hls'
-import { getTimeStr, isFullScreen } from './util'
+import { getTimeStr, isFullScreen, copyright } from './util'
 
 const OFFSETDOT = 18
+copyright()
 
 class Eplayer {
   constructor(el, data) {
