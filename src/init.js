@@ -1,7 +1,7 @@
 export class Init {
   constructor(el, data) {
     let html = `
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_836948_8so67ueev32.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_836948_g9ctpaubgfq.css">
     <style>
       #player {
         background:#000;
@@ -23,6 +23,9 @@ export class Init {
         height: 100%;
         width: 100%;
       }
+      #player:hover .controls {
+        opacity: 1
+      }
       #player .panels .epicon {
         font-size: 80px
       }
@@ -32,6 +35,8 @@ export class Init {
         bottom: 0;
         padding: 0 15px;
         box-sizing: border-box;
+        opacity: 0;
+        transition: .7s ease-out;
       }
       #player .option {
         position: relative;
@@ -75,6 +80,7 @@ export class Init {
         position: absolute;
         top: -18px;
         left: -18px;
+        transition: .5s
       }
       #player .dot i {
         height: 13px;
@@ -98,6 +104,7 @@ export class Init {
         position: absolute;
         border-radius:2px;
         top: 0;
+        transition: .5s
       }
       #player .buffer {
         width: 0%;
@@ -107,6 +114,7 @@ export class Init {
         position: absolute;
         border-radius:2px;
         top: 0;
+        transition: .5s;
       }
       #player .time {
         text-align: center;
@@ -121,7 +129,7 @@ export class Init {
         color: rgba(255, 255, 255, 0.8);
         cursor: pointer;
         transition: 0.3s;
-        font-size: 24px;
+        font-size: 20px;
       }
       #player .ep-volume-down,.ep-volume-up,.ep-volume-off {
         padding-right: 15px
