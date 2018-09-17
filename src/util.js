@@ -18,8 +18,15 @@ export function isFullScreen() {
 
 export function copyright() {
   console.log(
-    '\n %c EPlayer 0.2.7 %c eplayer.js.org \n',
+    '\n %c EPlayer 0.2.8 %c eplayer.js.org \n',
     'color: #fff; background: linear-gradient(to right,#57a1fc ,#6beaf7); padding:5px;',
     'color: #7192c3; background: #ecfaff; padding:5px 0;'
   )
+}
+
+export function UAtype(){
+  let u = navigator.userAgent;
+  let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+  let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+  return isiOS
 }

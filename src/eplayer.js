@@ -1,6 +1,6 @@
 import { Init } from './init'
 import { Hls } from './hls'
-import { getTimeStr, isFullScreen, copyright } from './util'
+import { getTimeStr, isFullScreen, copyright, UAtype } from './util'
 
 const OFFSETDOT = 18
 copyright()
@@ -69,6 +69,10 @@ class Eplayer {
 
   waiting() {
     this.loading.style.display = 'block'
+    if(UAtype()){
+      this.loading.style.display = 'none'
+      this.panel.style.display = 'block'
+    }
   }
 
   canplay() {
