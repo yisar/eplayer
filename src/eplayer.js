@@ -9,8 +9,8 @@ class Eplayer {
   constructor(el, data) {
     this.el = el
     this.data = data
-    this.height = el.clientHeight
-    this.width = el.clientWidth
+    this.h = el.clientHeight
+    this.w = el.clientWidth
 
     new Init(this.el, this.data)
 
@@ -72,6 +72,7 @@ class Eplayer {
     this.vdot.onmousemove = e => this.Volumeonmousemove(e)
     this.vdot.onmouseup = e => this.Volumeonmouseup(e)
     this.volumeBtn.onclick = () => this.isVolume()
+    window.onresize = e => this.windowResize(e)
   }
 
   waiting() {
@@ -238,8 +239,8 @@ class Eplayer {
       } else if (document.msExitFullscreen) {
         document.msExitFullscreen()
       }
-      this.el.style.height = this.height + 'px'
-      this.el.style.width = this.width + 'px'
+      this.el.style.height = this.h + 'px'
+      this.el.style.width = this.w + 'px'
     } else {
       let rfs =
         this.el.requestFullScreen ||
@@ -250,6 +251,13 @@ class Eplayer {
       this.el.style.width = '100%'
 
       return rfs.call(this.el)
+    }
+  }
+
+  windowResize(e) {
+    if(!isFullScreen()){
+      this.el.style.height = this.h + 'px'
+      this.el.style.width = this.w + 'px'
     }
   }
 }

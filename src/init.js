@@ -1,3 +1,4 @@
+
 export class Init {
   constructor(el, data) {
     let html = `
@@ -165,7 +166,9 @@ export class Init {
       }
     </style>
     <div class="player">
-      <video src="${data.src}" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
+      <video src="${
+        data.src
+      }" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
         <div class="panels">
           <div class="loading"></div>
           <i class="epicon ep-play panel" style="display:none;"></i>
@@ -212,5 +215,3 @@ export class Init {
     el.innerHTML = html
   }
 }
-
-
