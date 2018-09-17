@@ -1,6 +1,6 @@
 import { Init } from './init'
 import { Hls } from './hls'
-import { getTimeStr, isFullScreen, copyright, UAtype } from './util'
+import { getTimeStr, isFullScreen, copyright, isSafari } from './util'
 
 const OFFSETDOT = 18
 copyright()
@@ -33,6 +33,11 @@ class Eplayer {
 
     if (data.hls) {
       new Hls(this.video, this.data)
+    }
+
+    if(isSafari()){
+      this.loading.style.display = 'none'
+      this.panel.style.display = 'block'
     }
 
     this.tTime = 0
@@ -69,10 +74,6 @@ class Eplayer {
 
   waiting() {
     this.loading.style.display = 'block'
-    if(UAtype()){
-      this.loading.style.display = 'none'
-      this.panel.style.display = 'block'
-    }
   }
 
   canplay() {
