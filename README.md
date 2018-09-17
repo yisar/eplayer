@@ -1,4 +1,4 @@
-<p align="center"><img src="http://wx2.sinaimg.cn/mw690/0060lm7Tly1fva3l3izvtj30dw0dwjs1.jpg" alt="eplayer logo" width="150px"></p>
+<p align="center"><img src="http://ww1.sinaimg.cn/large/0065Zy9egy1fvcjfzaa1lj30dw0dwwhe.jpg" alt="eplayer logo" width="150px"></p>
 
 [![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
 [![NPM downloads](https://img.shields.io/npm/dm/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)

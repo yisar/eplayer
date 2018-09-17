@@ -14,24 +14,24 @@ class Eplayer {
 
     new Init(this.el, this.data)
 
-    this.video = document.querySelector('#player video')
-    this.loading = document.querySelector('#player .loading')
-    this.isPlay = document.querySelector('#player .switch')
-    this.panel = document.querySelector('#player .panel')
-    this.totalTime = document.querySelector('#player .total')
-    this.currentTime = document.querySelector('#player .current')
-    this.dot = document.querySelector('#player .progress-bar .dot')
-    this.vdot = document.querySelector('#player .volume .dot')
-    this.full = document.querySelector('#player .full')
-    this.progress = document.querySelector('#player .progress')
-    this.currentProgress = document.querySelector('#player .current-progress')
+    this.video = document.querySelector('.player video')
+    this.loading = document.querySelector('.player .loading')
+    this.isPlay = document.querySelector('.player .switch')
+    this.panel = document.querySelector('.player .panel')
+    this.totalTime = document.querySelector('.player .total')
+    this.currentTime = document.querySelector('.player .current')
+    this.dot = document.querySelector('.player .progress-bar .dot')
+    this.vdot = document.querySelector('.player .volume .dot')
+    this.full = document.querySelector('.player .full')
+    this.progress = document.querySelector('.player .progress')
+    this.currentProgress = document.querySelector('.player .current-progress')
     this.currentVolumeProgress = document.querySelector(
-      '#player .volume .current-progress'
+      '.player .volume .current-progress'
     )
-    this.volumeBtn = document.querySelector('#player .volume-button')
-    this.controls = document.querySelector('#player .controls')
-    this.buffer = document.querySelector('#player .buffer')
-    this.volumeProgress = document.querySelector('#player .volume-progress')
+    this.volumeBtn = document.querySelector('.player .volume-button')
+    this.controls = document.querySelector('.player .controls')
+    this.buffer = document.querySelector('.player .buffer')
+    this.volumeProgress = document.querySelector('.player .volume-progress')
 
     if (data.hls) {
       new Hls(this.video, this.data)

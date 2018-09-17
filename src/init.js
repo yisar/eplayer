@@ -3,33 +3,33 @@ export class Init {
     let html = `
     <link rel="stylesheet" href="//at.alicdn.com/t/font_836948_g9ctpaubgfq.css">
     <style>
-      #player {
+      .player {
         background:#000;
         width: 100%;
         height: 100%;
         position: relative;
       }
-      #player video {
+      .player video {
         width: 100%;
         height: 100%;
       }
-      #player .panel {
+      .player .panel {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%,-50%);
       }
-      #player .wrap {
+      .player .wrap {
         height: 100%;
         width: 100%;
       }
-      #player:hover .controls {
+      .player:hover .controls {
         opacity: 1
       }
-      #player .panels .epicon {
+      .player .panels .epicon {
         font-size: 80px
       }
-      #player .controls {
+      .player .controls {
         width: 100%;
         position: absolute;
         bottom: 0;
@@ -38,51 +38,51 @@ export class Init {
         opacity: 0;
         transition: .5s ease-out;
       }
-      #player .option {
+      .player .option {
         position: relative;
         display:flex;
         align-items: center;
         padding: 10px 0;
       }
-      #player .option-left{
+      .player .option-left{
         display: flex;
         flex: 1;
         align-items: center;
       }
-      #player .option-right{
+      .player .option-right{
         display: flex;
         flex: 1;
         align-items: center;
         justify-content: flex-end
       }
-      #player .progress-bar {
+      .player .progress-bar {
         width: 100%;
         position: relative;
         cursor: pointer;
       }
-      #player .volume-progress-bar {
+      .player .volume-progress-bar {
         width: 100px;
         position: relative;
         cursor: pointer;
       }
-      #player .volume-progress {
+      .player .volume-progress {
         border-radius:2px;
         height: 4px;
         background-color: rgba(255, 255, 255, 0.8);
       }
-      #player .progress {
+      .player .progress {
         border-radius:2px;
         height: 4px;
         background-color: rgba(255, 255, 255, 0.8);
       }
-      #player .dot {
+      .player .dot {
         padding: 20px;
         position: absolute;
         top: -18px;
         left: -18px;
         transition: 0.01s
       }
-      #player .dot i {
+      .player .dot i {
         height: 13px;
         width: 13px;
         background: ${data.themeColor};
@@ -92,12 +92,12 @@ export class Init {
         left:50%;
         transform:translate(-50%,-50%)
       }
-      #player .volume {
+      .player .volume {
         display: flex;
         align-items: center;
         padding-right: 15px;
       }
-      #player .current-progress {
+      .player .current-progress {
         width: 0%;
         height: 100%;
         background: ${data.themeColor};
@@ -106,7 +106,7 @@ export class Init {
         top: 0;
         transition: .1s
       }
-      #player .buffer {
+      .player .buffer {
         width: 0%;
         height: 100%;
         background: ${data.themeColor};
@@ -116,25 +116,25 @@ export class Init {
         top: 0;
         transition: .3s;
       }
-      #player .time {
+      .player .time {
         text-align: center;
         font-size: 12px;
         color: #fff;
         padding-left: 15px;
       }
-      #player .epicon:hover {
+      .player .epicon:hover {
         color: #fff;
       }
-      #player .epicon {
+      .player .epicon {
         color: rgba(255, 255, 255, 0.8);
         cursor: pointer;
         transition: 0.3s;
         font-size: 20px;
       }
-      #player .ep-volume-down,.ep-volume-up,.ep-volume-off {
+      .player .ep-volume-down,.ep-volume-up,.ep-volume-off {
         padding-right: 15px
       }
-      #player .loading {
+      .player .loading {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -164,8 +164,8 @@ export class Init {
         }
       }
     </style>
-    <div id="player">
-      <video src="${data.src}" id="video" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
+    <div class="player">
+      <video src="${data.src}" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
         <div class="panels">
           <div class="loading"></div>
           <i class="epicon ep-play panel" style="display:none;"></i>
