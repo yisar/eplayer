@@ -9,6 +9,8 @@ class Eplayer {
   constructor(el, data) {
     this.el = el
     this.data = data
+    this.height = el.clientHeight
+    this.width = el.clientWidth
 
     new Init(this.el, this.data)
 
@@ -35,7 +37,7 @@ class Eplayer {
       new Hls(this.video, this.data)
     }
 
-    if(isSafari()){
+    if (isSafari()) {
       this.loading.style.display = 'none'
       this.panel.style.display = 'block'
     }
@@ -236,12 +238,16 @@ class Eplayer {
       } else if (document.msExitFullscreen) {
         document.msExitFullscreen()
       }
+      this.el.style.height = this.height + 'px'
+      this.el.style.width = this.width + 'px'
     } else {
       let rfs =
         this.el.requestFullScreen ||
         this.el.webkitRequestFullScreen ||
         this.el.mozRequestFullScreen ||
         this.el.msRequestFullscreen
+      this.el.style.height = '100%'
+      this.el.style.width = '100%'
 
       return rfs.call(this.el)
     }
