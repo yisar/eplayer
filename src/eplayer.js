@@ -239,23 +239,22 @@ class Eplayer {
       } else if (document.msExitFullscreen) {
         document.msExitFullscreen()
       }
-      this.el.style.height = this.h + 'px'
-      this.el.style.width = this.w + 'px'
     } else {
       let rfs =
         this.el.requestFullScreen ||
         this.el.webkitRequestFullScreen ||
         this.el.mozRequestFullScreen ||
         this.el.msRequestFullscreen
-      this.el.style.height = '100%'
-      this.el.style.width = '100%'
 
       return rfs.call(this.el)
     }
   }
 
   windowResize(e) {
-    if(!isFullScreen()){
+    if (isFullScreen()) {
+      this.el.style.height = '100%'
+      this.el.style.width = '100%'
+    } else {
       this.el.style.height = this.h + 'px'
       this.el.style.width = this.w + 'px'
     }
