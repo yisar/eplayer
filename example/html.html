@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>传统引入demo</title>
+</head>
+<script src="./eplayer.js"></script>
+<script src="./hls.js"></script>
+
+<body>
+  <div id="player"></div>
+  <script>
+    var el = document.getElementById('player')
+    new Eplyaer(el, {
+      src: "001.mp4",
+      themeColor: "#2ef"
+    })
+  </script>
+</body>
+
+</html>

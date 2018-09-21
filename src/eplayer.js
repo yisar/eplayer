@@ -33,7 +33,7 @@ class Eplayer {
     this.buffer = document.querySelector('.player .buffer')
     this.volumeProgress = document.querySelector('.player .volume-progress')
 
-    if (data.hls) {
+    if (data.src.indexOf('m3u8') !== -1) {
       new Hls(this.video, this.data)
     }
 

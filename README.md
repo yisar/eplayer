@@ -9,7 +9,9 @@
 
 #### who use eplayer？
 
-[clicli.us](https://www.clicli.us/)
+[clicli.us - C站](https://www.clicli.us/)
+
+[FATENESS - 肥站](https://fateness.com/)
 
 ### Install
 
@@ -41,14 +43,6 @@ if m3u8 need supported，please install `hls.js` first
 npm i hls.js -S
 ```
 
-and `hls` value turns to `true`
-
-```javascript
-new Eplayer(el, {
-  src: '002.m3u8',
-  hls: true
-})
-```
 #### development
 
 ```shell
