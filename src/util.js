@@ -27,3 +27,8 @@ export function copyright() {
 export function isSafari(){
   return /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
 }
+
+
+export function isMoblie(){
+  return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)
+}

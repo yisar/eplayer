@@ -6,15 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>传统引入demo</title>
+  <script src="https://rawgithubusercontent.com/132yse/eplayer/master/lib/eplayer/0.2.10/eplayer.js"></script>
+  <script src="https://cdn.staticfile.org/hls.js/0.10.1/hls.light.min.js"></script>
 </head>
-<script src="https://raw.githubusercontent.com/132yse/eplayer/master/lib/eplayer/0.2.10/eplayer.js"></script>
-<script src="https://cdn.staticfile.org/hls.js/0.10.1/hls.light.min.js"></script>
 
 <body>
   <div id="player"></div>
   <script>
     var el = document.getElementById('player')
-    new Eplyaer(el, {
+    new Eplayer(el, {
       src: "001.mp4",
       themeColor: "#2ef"
     })

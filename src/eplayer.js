@@ -1,6 +1,6 @@
 import { Init } from './init'
 import { Hls } from './hls'
-import { getTimeStr, isFullScreen, copyright, isSafari } from './util'
+import { getTimeStr, isFullScreen, copyright, isMoblie } from './util'
 
 const OFFSETDOT = 18
 copyright()
@@ -37,11 +37,6 @@ class Eplayer {
       new Hls(this.video, this.data)
     }
 
-    if (isSafari()) {
-      this.loading.style.display = 'none'
-      this.panel.style.display = 'block'
-    }
-
     this.tTime = 0
     this.x = 0
     this.l = 0
@@ -66,11 +61,17 @@ class Eplayer {
     this.video.onended = () => this.ended()
     this.full.onclick = () => this.fullScreen()
     this.dot.onmousedown = e => this.Dotonmousedown(e)
-    this.dot.onmousemove = e => this.Dotonmousemove(e)
-    this.dot.onmouseup = e => this.Dotonmouseup(e)
+    this.dot.ontouchstart = e => this.Dotonmousedown(e)
+    this.el.onmousemove = e => this.Dotonmousemove(e)
+    this.el.ontouchmove = e => this.Dotonmousemove(e)
+    this.el.onmouseup = e => this.Dotonmouseup(e)
+    this.el.ontouchend = e => this.Dotonmouseup(e)
     this.vdot.onmousedown = e => this.Volumeonmousedown(e)
+    this.vdot.ontouchstart = e => this.Volumeonmousedown(e)
     this.vdot.onmousemove = e => this.Volumeonmousemove(e)
+    this.vdot.ontouchmove = e => this.Volumeonmousemove(e)
     this.vdot.onmouseup = e => this.Volumeonmouseup(e)
+    this.vdot.ontouchend = e => this.Volumeonmouseup(e)
     this.volumeBtn.onclick = () => this.isVolume()
     window.onresize = e => this.windowResize(e)
   }
@@ -80,11 +81,12 @@ class Eplayer {
   }
 
   canplay() {
+    console.log(this.controls.style.opacity)
     this.tTime = this.video.duration
     this.loading.style.display = 'none'
     this.panel.style.display = 'block'
     let tTimeStr = getTimeStr(this.tTime)
-    this.totalTime.innerHTML = tTimeStr
+    if (tTimeStr) this.totalTime.innerHTML = tTimeStr
     let vWidth = this.volumeProgress.clientWidth
     this.video.volume = 0.7
     this.currentVolumeProgress.style.width = this.video.volume * vWidth + 'px'
@@ -159,17 +161,25 @@ class Eplayer {
   }
 
   Dotonmousedown(e) {
-    let event = e || window.event
-    this.x = event.clientX
-    this.l = this.l ? this.l : event.offsetX
+    if (e.changedTouches) {
+      this.x = e.changedTouches[0].clientX
+    } else {
+      this.x = e.clientX
+    }
+    this.l = this.l ? this.l : 0
+    console.log(this.x, this.l)
+
     this.isDown = true
   }
 
   Dotonmousemove(e) {
     if (this.isDown) {
-      let event = e || window.event
+      if (e.changedTouches) {
+        this.nx = e.changedTouches[0].clientX
+      } else {
+        this.nx = e.clientX
+      }
 
-      this.nx = event.clientX
       this.nl = this.nx - (this.x - this.l)
       if (this.nl <= 0) this.nl = 0
       if (this.nl >= this.progress.clientWidth)
@@ -182,24 +192,30 @@ class Eplayer {
   }
 
   Dotonmouseup(e) {
-    let event = e || window.event
     this.video.currentTime =
       (this.nl / this.progress.offsetWidth) * this.video.duration
     this.isDown = false
   }
 
   Volumeonmousedown(e) {
-    let event = e || window.event
-    this.vx = event.clientX
-    this.vl = this.vl !== 0 ? this.vl : event.offsetX
+    if (e.changedTouches) {
+      this.vx = e.changedTouches[0].clientX
+    } else {
+      this.vx = e.clientX
+    }
+    this.vl = this.vl !== 0 ? this.vl : 0
     this.isDown = true
+    e.stopPropagation()
   }
 
   Volumeonmousemove(e) {
     if (this.isDown) {
-      let event = e || window.event
-
-      this.vnx = event.clientX
+      if (e.changedTouches) {
+        this.vnx = e.changedTouches[0].clientX
+      } else {
+        this.vnx = e.clientX
+      }
+      console.log(this.vx,this.vl,this.vnx)
       this.vnl = this.vnx - (this.vx - this.vl)
       if (this.vnl <= 0) this.vnl = 0
       if (this.vnl >= this.volumeProgress.clientWidth)
@@ -209,12 +225,13 @@ class Eplayer {
       this.vx = this.vnx
       this.vl = this.vnl
     }
+    e.stopPropagation()
   }
 
   Volumeonmouseup(e) {
-    let event = e || window.event
     this.isDown = false
     this.video.volume = this.vnl / this.volumeProgress.clientWidth
+    e.stopPropagation()
   }
 
   ended() {
