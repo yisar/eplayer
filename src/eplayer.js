@@ -81,7 +81,6 @@ class Eplayer {
   }
 
   canplay() {
-    console.log(this.controls.style.opacity)
     this.tTime = this.video.duration
     this.loading.style.display = 'none'
     this.panel.style.display = 'block'
@@ -167,7 +166,6 @@ class Eplayer {
       this.x = e.clientX
     }
     this.l = this.l ? this.l : 0
-    console.log(this.x, this.l)
 
     this.isDown = true
   }
