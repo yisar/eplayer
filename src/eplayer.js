@@ -12,6 +12,7 @@ class Eplayer {
     this.data = data
     this.h = el.clientHeight
     this.w = el.clientWidth
+    this.cTime = 0
 
     new Init(this.el, this.data)
 
@@ -19,6 +20,7 @@ class Eplayer {
     this.loading = document.querySelector('.player .loading')
     this.isPlay = document.querySelector('.player .switch')
     this.panel = document.querySelector('.player .panel')
+    this.playBtn = document.querySelector('.player .panel .ep-play')
     this.totalTime = document.querySelector('.player .total')
     this.currentTime = document.querySelector('.player .current')
     this.dot = document.querySelector('.player .progress-bar .dot')
@@ -84,7 +86,7 @@ class Eplayer {
   canplay() {
     this.tTime = this.video.duration
     this.loading.style.display = 'none'
-    this.panel.style.display = 'block'
+    this.playBtn.style.display = 'block'
     let tTimeStr = getTimeStr(this.tTime)
     if (tTimeStr) this.totalTime.innerHTML = tTimeStr
     let vWidth = this.volumeProgress.clientWidth
@@ -96,17 +98,17 @@ class Eplayer {
 
   play() {
     if (this.video.paused) {
+      this.video.currentTime = this.cTime
       this.video.play()
       this.isPlay.classList.remove('ep-play')
       this.isPlay.classList.add('ep-pause')
-      this.panel.classList.remove('ep-play')
-      this.panel.classList.add('wrap')
+      this.playBtn.classList.remove('ep-play')
     } else {
       this.video.pause()
+      this.video.currentTime = this.cTime
       this.isPlay.classList.remove('ep-pause')
       this.isPlay.classList.add('ep-play')
-      this.panel.classList.remove('wrap')
-      this.panel.classList.add('ep-play')
+      this.playBtn.classList.add('ep-play')
     }
   }
 
@@ -123,7 +125,7 @@ class Eplayer {
   }
 
   timeupdate() {
-    let cTime = this.video.currentTime
+    this.cTime = this.video.currentTime
     if (this.video.buffered.length) {
       this.bufferEnd = this.video.buffered.end(this.video.buffered.length - 1)
       this.buffer.style.width =
@@ -131,9 +133,9 @@ class Eplayer {
         'px'
     }
 
-    let cTimeStr = getTimeStr(cTime)
+    let cTimeStr = getTimeStr(this.cTime)
     this.currentTime.innerHTML = cTimeStr
-    let offsetCom = cTime / this.tTime
+    let offsetCom = this.cTime / this.tTime
     if (!this.isDown) {
       this.currentProgress.style.width =
         offsetCom * this.progress.clientWidth + 'px'
@@ -172,6 +174,10 @@ class Eplayer {
   }
 
   Dotonmousemove(e) {
+    this.controls.style.opacity = 1
+    setTimeout(() => {
+      this.controls.style.opacity = 0
+    }, 3000)
     if (this.isDown) {
       if (e.changedTouches) {
         this.nx = e.changedTouches[0].clientX

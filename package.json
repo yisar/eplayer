@@ -1,6 +1,6 @@
 {
   "name": "eplayer",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A simple html5 video player",
   "main": "./lib/eplayer.js",
   "scripts": {

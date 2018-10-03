@@ -1,4 +1,3 @@
-
 export class Init {
   constructor(el, data) {
     let html = `
@@ -14,7 +13,7 @@ export class Init {
         width: 100%;
         height: 100%;
       }
-      .player .panel {
+      .player .panel .ep-play,.player .panel {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -24,7 +23,7 @@ export class Init {
         height: 100%;
         width: 100%;
       }
-      .player:hover .controls {
+      .controls {
         opacity: 1
       }
       .player .panels .epicon {
@@ -171,7 +170,9 @@ export class Init {
       }" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
         <div class="panels">
           <div class="loading"></div>
-          <i class="epicon ep-play panel" style="display:none;"></i>
+          <div class="panel wrap">
+            <i class="epicon ep-play" style="display:none;"></i>
+          </div>
         </div>
         <div class="controls">
           <div class="progress-bar">
