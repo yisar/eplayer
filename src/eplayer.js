@@ -1,5 +1,6 @@
 import { Init } from './init'
 import { Hls } from './hls'
+import { Flv } from './flv'
 import { getTimeStr, isFullScreen, copyright, isMoblie } from './util'
 
 const OFFSETDOT = 18
@@ -33,9 +34,9 @@ class Eplayer {
     this.buffer = document.querySelector('.player .buffer')
     this.volumeProgress = document.querySelector('.player .volume-progress')
 
-    if (data.src.indexOf('m3u8') !== -1) {
-      new Hls(this.video, this.data)
-    }
+    new Hls(this.video, this.data)
+
+    new Flv(this.video, this.data)
 
     this.tTime = 0
     this.x = 0
@@ -213,7 +214,7 @@ class Eplayer {
       } else {
         this.vnx = e.clientX
       }
-      console.log(this.vx,this.vl,this.vnx)
+      console.log(this.vx, this.vl, this.vnx)
       this.vnl = this.vnx - (this.vx - this.vl)
       if (this.vnl <= 0) this.vnl = 0
       if (this.vnl >= this.volumeProgress.clientWidth)
