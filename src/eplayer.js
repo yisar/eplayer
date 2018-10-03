@@ -90,7 +90,7 @@ class Eplayer {
     let tTimeStr = getTimeStr(this.tTime)
     if (tTimeStr) this.totalTime.innerHTML = tTimeStr
     let vWidth = this.volumeProgress.clientWidth
-    this.video.volume = 0.7
+    this.video.volume = 0.5
     this.currentVolumeProgress.style.width = this.video.volume * vWidth + 'px'
     this.vdot.style.left = this.video.volume * vWidth - OFFSETDOT + 'px'
     this.vl = this.video.volume * vWidth
@@ -177,7 +177,7 @@ class Eplayer {
     this.controls.style.opacity = 1
     setTimeout(() => {
       this.controls.style.opacity = 0
-    }, 3000)
+    }, 6000)
     if (this.isDown) {
       if (e.changedTouches) {
         this.nx = e.changedTouches[0].clientX
