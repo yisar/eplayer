@@ -1,7 +1,7 @@
 import { Init } from './init'
 import { Hls } from './hls'
 import { Flv } from './flv'
-import { getTimeStr, isFullScreen, copyright, isMoblie } from './util'
+import { getTimeStr, isFullScreen, copyright, browser } from './util'
 
 const OFFSETDOT = 18
 copyright()
@@ -17,6 +17,7 @@ class Eplayer {
     new Init(this.el, this.data)
 
     this.video = document.querySelector('.player video')
+    this.player = document.querySelector('.player')
     this.loading = document.querySelector('.player .loading')
     this.isPlay = document.querySelector('.player .switch')
     this.panel = document.querySelector('.player .panel')
@@ -36,9 +37,9 @@ class Eplayer {
     this.buffer = document.querySelector('.player .buffer')
     this.volumeProgress = document.querySelector('.player .volume-progress')
 
-    new Hls(this.video, this.data)
+    if (data.type === 'hls') new Hls(this.video, this.data)
 
-    new Flv(this.video, this.data)
+    if (data.type === 'flv') new Flv(this.video, this.data)
 
     this.tTime = 0
     this.x = 0
@@ -49,6 +50,7 @@ class Eplayer {
     this.vl = 0
     this.vnl = 0
     this.vnx = 0
+    this.transTop = 0
     this.bufferEnd = 0
     this.isDown = false
 
@@ -252,33 +254,50 @@ class Eplayer {
 
   fullScreen() {
     if (isFullScreen()) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen()
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen()
-      } else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen()
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen()
+      if (browser.versions.mobile && !browser.versions.iPad) {
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen()
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen()
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen()
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen()
+        }
       }
     } else {
-      let rfs =
-        this.el.requestFullScreen ||
-        this.el.webkitRequestFullScreen ||
-        this.el.mozRequestFullScreen ||
-        this.el.msRequestFullscreen
+      if (browser.versions.mobile && !browser.versions.iPad) {
+        this.player.style.transform = `rotate(-90deg) translate(-50%, 50%)`
+        this.player.style.transformOrigin = '0 50%'
+        this.transTop = this.player.getBoundingClientRect().top
+        let ot = -(this.transTop + window.innerHeight / 2) + 'px'
+        this.player.style.transform = `rotate(-90deg) translate(${ot}, 50%)`
+        this.player.style.height = window.innerWidth + 'px'
+        this.player.style.width = window.innerHeight + 'px'
+      } else {
+        let rfs =
+          this.el.requestFullScreen ||
+          this.el.webkitRequestFullScreen ||
+          this.el.mozRequestFullScreen ||
+          this.el.msRequestFullscreen
 
-      return rfs.call(this.el)
+        return rfs.call(this.el)
+      }
     }
   }
 
   windowResize(e) {
-    if (isFullScreen()) {
-      this.el.style.height = '100%'
-      this.el.style.width = '100%'
+    if (browser.versions.mobile && !browser.versions.iPad) {
+      return
     } else {
-      this.el.style.height = this.h + 'px'
-      this.el.style.width = this.w + 'px'
+      if (isFullScreen()) {
+        this.el.style.height = '100%'
+        this.el.style.width = '100%'
+      } else {
+        this.el.style.height = this.h + 'px'
+        this.el.style.width = this.w + 'px'
+      }
     }
   }
 }
