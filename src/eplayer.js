@@ -16,26 +16,26 @@ class Eplayer {
 
     new Init(this.el, this.data)
 
-    this.video = document.querySelector('.player video')
-    this.player = document.querySelector('.player')
-    this.loading = document.querySelector('.player .loading')
-    this.isPlay = document.querySelector('.player .switch')
-    this.panel = document.querySelector('.player .panel')
-    this.playBtn = document.querySelector('.player .panel .ep-play')
-    this.totalTime = document.querySelector('.player .total')
-    this.currentTime = document.querySelector('.player .current')
-    this.dot = document.querySelector('.player .progress-bar .dot')
-    this.vdot = document.querySelector('.player .volume .dot')
-    this.full = document.querySelector('.player .full')
-    this.progress = document.querySelector('.player .progress')
-    this.currentProgress = document.querySelector('.player .current-progress')
+    this.video = document.querySelector('.eplayer video')
+    this.player = document.querySelector('.eplayer')
+    this.loading = document.querySelector('.eplayer .loading')
+    this.isPlay = document.querySelector('.eplayer .switch')
+    this.panel = document.querySelector('.eplayer .panel')
+    this.playBtn = document.querySelector('.eplayer .panel .ep-play')
+    this.totalTime = document.querySelector('.eplayer .total')
+    this.currentTime = document.querySelector('.eplayer .current')
+    this.dot = document.querySelector('.eplayer .progress-bar .dot')
+    this.vdot = document.querySelector('.eplayer .volume .dot')
+    this.full = document.querySelector('.eplayer .full')
+    this.progress = document.querySelector('.eplayer .progress')
+    this.currentProgress = document.querySelector('.eplayer .current-progress')
     this.currentVolumeProgress = document.querySelector(
-      '.player .volume .current-progress'
+      '.eplayer .volume .current-progress'
     )
-    this.volumeBtn = document.querySelector('.player .volume-button')
-    this.controls = document.querySelector('.player .controls')
-    this.buffer = document.querySelector('.player .buffer')
-    this.volumeProgress = document.querySelector('.player .volume-progress')
+    this.volumeBtn = document.querySelector('.eplayer .volume-button')
+    this.controls = document.querySelector('.eplayer .controls')
+    this.buffer = document.querySelector('.eplayer .buffer')
+    this.volumeProgress = document.querySelector('.eplayer .volume-progress')
 
     if (data.type === 'hls') new Hls(this.video, this.data)
 
@@ -268,13 +268,20 @@ class Eplayer {
       }
     } else {
       if (browser.versions.mobile && !browser.versions.iPad) {
-        this.player.style.transform = `rotate(-90deg) translate(-50%, 50%)`
-        this.player.style.transformOrigin = '0 50%'
-        this.transTop = this.player.getBoundingClientRect().top
-        let ot = -(this.transTop + window.innerHeight / 2) + 'px'
-        this.player.style.transform = `rotate(-90deg) translate(${ot}, 50%)`
-        this.player.style.height = window.innerWidth + 'px'
-        this.player.style.width = window.innerHeight + 'px'
+        this.el.style.position = 'fixed';
+          this.el.style.top = '0';
+          this.el.style.bottom = '0';
+          this.el.style.left = '0';
+          this.el.style.right = '0';
+          this.el.style.height = '100%';
+          this.el.style.width = '100%';
+          this.eplayer.style.transform = 'rotate(-90deg) translate(-50%, 50%)';
+          this.eplayer.style.transformOrigin = '0 50%';
+          this.transTop = this.eplayer.getBoundingClientRect().top;
+          var ot = -(this.transTop + window.innerHeight / 2) + 'px';
+          this.eplayer.style.transform = 'rotate(-90deg) translate(' + ot + ', 50%)';
+          this.eplayer.style.height = window.innerWidth + 'px';
+          this.eplayer.style.width = window.innerHeight + 'px';
       } else {
         let rfs =
           this.el.requestFullScreen ||
