@@ -17,13 +17,14 @@ class Eplayer {
     new Init(this.el, this.data)
 
     this.video = document.querySelector('.eplayer video')
-    this.player = document.querySelector('.eplayer')
+    this.ep = document.querySelector('.eplayer')
     this.loading = document.querySelector('.eplayer .loading')
     this.isPlay = document.querySelector('.eplayer .switch')
     this.panel = document.querySelector('.eplayer .panel')
     this.playBtn = document.querySelector('.eplayer .panel .ep-play')
     this.totalTime = document.querySelector('.eplayer .total')
     this.currentTime = document.querySelector('.eplayer .current')
+    this.controlWrap = document.querySelector('.eplayer .controls-wrap')
     this.dot = document.querySelector('.eplayer .progress-bar .dot')
     this.vdot = document.querySelector('.eplayer .volume .dot')
     this.full = document.querySelector('.eplayer .full')
@@ -36,6 +37,7 @@ class Eplayer {
     this.controls = document.querySelector('.eplayer .controls')
     this.buffer = document.querySelector('.eplayer .buffer')
     this.volumeProgress = document.querySelector('.eplayer .volume-progress')
+    this.msg = document.querySelector('.eplayer .msg')
 
     if (data.type === 'hls') new Hls(this.video, this.data)
 
@@ -56,8 +58,6 @@ class Eplayer {
 
     this.video.onwaiting = () => this.waiting()
     this.video.oncanplay = () => this.canplay()
-    this.isPlay.onclick = () => this.play()
-    this.panel.onclick = () => this.play()
     this.video.ontimeupdate = () => this.timeupdate()
     this.progress.onclick = this.currentProgress.onclick = this.buffer.onclick = e =>
       this.progressClick(e)
@@ -67,10 +67,10 @@ class Eplayer {
     this.full.onclick = () => this.fullScreen()
     this.dot.onmousedown = e => this.Dotonmousedown(e)
     this.dot.ontouchstart = e => this.Dotonmousedown(e)
-    this.el.onmousemove = e => this.Dotonmousemove(e)
-    this.el.ontouchmove = e => this.Dotonmousemove(e)
-    this.el.onmouseup = e => this.Dotonmouseup(e)
-    this.el.ontouchend = e => this.Dotonmouseup(e)
+    this.ep.onmousemove = e => this.Dotonmousemove(e)
+    this.ep.ontouchmove = e => this.Dotonmousemove(e)
+    this.ep.onmouseup = e => this.Dotonmouseup(e)
+    this.ep.ontouchend = e => this.Dotonmouseup(e)
     this.vdot.onmousedown = e => this.Volumeonmousedown(e)
     this.vdot.ontouchstart = e => this.Volumeonmousedown(e)
     this.vdot.onmousemove = e => this.Volumeonmousemove(e)
@@ -79,10 +79,33 @@ class Eplayer {
     this.vdot.ontouchend = e => this.Volumeonmouseup(e)
     this.volumeBtn.onclick = () => this.isVolume()
     window.onresize = e => this.windowResize(e)
+    window.onkeyup = e => this.keyup(e)
   }
 
   waiting() {
     this.loading.style.display = 'block'
+    this.setMsg('加载中…')
+  }
+
+  setMsg(msg) {
+    if (msg !== '') {
+      this.msg.style.display = 'block'
+      this.msg.innerHTML = msg
+      setTimeout(() => {
+        this.msg.style.display = 'none'
+      }, 2000)
+    }
+  }
+
+  keyup(e) {
+    if (e && e.keyCode == 39) {
+      this.video.currentTime += 10
+      this.setMsg('前进10秒')
+    }
+    if (e && e.keyCode == 37) {
+      this.video.currentTime -= 10
+      this.setMsg('后退10秒')
+    }
   }
 
   canplay() {
@@ -100,14 +123,12 @@ class Eplayer {
 
   play() {
     if (this.video.paused) {
-      this.video.currentTime = this.cTime
       this.video.play()
       this.isPlay.classList.remove('ep-play')
       this.isPlay.classList.add('ep-pause')
       this.playBtn.classList.remove('ep-play')
     } else {
       this.video.pause()
-      this.video.currentTime = this.cTime
       this.isPlay.classList.remove('ep-pause')
       this.isPlay.classList.add('ep-play')
       this.playBtn.classList.add('ep-play')
@@ -165,6 +186,7 @@ class Eplayer {
   }
 
   Dotonmousedown(e) {
+    e.stopPropagation()
     if (e.changedTouches) {
       this.x = e.changedTouches[0].clientX
     } else {
@@ -173,13 +195,11 @@ class Eplayer {
     this.l = this.l ? this.l : 0
 
     this.isDown = true
+    return false
   }
 
   Dotonmousemove(e) {
     this.controls.style.opacity = 1
-    setTimeout(() => {
-      this.controls.style.opacity = 0
-    }, 6000)
     if (this.isDown) {
       if (e.changedTouches) {
         this.nx = e.changedTouches[0].clientX
@@ -199,8 +219,12 @@ class Eplayer {
   }
 
   Dotonmouseup(e) {
-    this.video.currentTime =
-      (this.nl / this.progress.offsetWidth) * this.video.duration
+    if (this.isDown) {
+      this.video.currentTime =
+        (this.nl / this.progress.offsetWidth) * this.video.duration
+    } else {
+      this.play()
+    }
     this.isDown = false
   }
 
@@ -212,7 +236,6 @@ class Eplayer {
     }
     this.vl = this.vl !== 0 ? this.vl : 0
     this.isDown = true
-    e.stopPropagation()
   }
 
   Volumeonmousemove(e) {
@@ -268,20 +291,28 @@ class Eplayer {
       }
     } else {
       if (browser.versions.mobile && !browser.versions.iPad) {
-        this.el.style.position = 'fixed';
-          this.el.style.top = '0';
-          this.el.style.bottom = '0';
-          this.el.style.left = '0';
-          this.el.style.right = '0';
-          this.el.style.height = '100%';
-          this.el.style.width = '100%';
-          this.eplayer.style.transform = 'rotate(-90deg) translate(-50%, 50%)';
-          this.eplayer.style.transformOrigin = '0 50%';
-          this.transTop = this.eplayer.getBoundingClientRect().top;
-          var ot = -(this.transTop + window.innerHeight / 2) + 'px';
-          this.eplayer.style.transform = 'rotate(-90deg) translate(' + ot + ', 50%)';
-          this.eplayer.style.height = window.innerWidth + 'px';
-          this.eplayer.style.width = window.innerHeight + 'px';
+        this.el.style.position = 'fixed'
+        this.el.style.top = '0'
+        this.el.style.bottom = '0'
+        this.el.style.left = '0'
+        this.el.style.right = '0'
+        this.el.style.height = '100%'
+        this.el.style.width = '100%'
+        this.eplayer.style.transform = 'rotate(-90deg) translate(-50%, 50%)'
+        this.eplayer.style.transformOrigin = '0 50%'
+        this.transTop = this.eplayer.getBoundingClientRect().top
+        var ot = -(this.transTop + window.innerHeight / 2) + 'px'
+        this.eplayer.style.transform =
+          'rotate(-90deg) translate(' + ot + ', 50%)'
+        this.eplayer.style.height = window.innerWidth + 'px'
+        this.eplayer.style.width = window.innerHeight + 'px'
+        let rfs =
+          this.el.requestFullScreen ||
+          this.el.webkitRequestFullScreen ||
+          this.el.mozRequestFullScreen ||
+          this.el.msRequestFullscreen
+
+        return rfs.call(this.el)
       } else {
         let rfs =
           this.el.requestFullScreen ||

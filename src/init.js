@@ -13,7 +13,12 @@ export class Init {
         width: 100%;
         height: 100%;
       }
-      .eplayer .panel .ep-play,.player .panel {
+      .eplayer .panel {
+        position: absolute;
+        top: 0
+      }
+      .eplayer .panel .ep-play ,.eplayer .panels .epicon{
+        font-size: 80px;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -26,16 +31,24 @@ export class Init {
       .controls {
         opacity: 1
       }
-      .eplayer .panels .epicon {
-        font-size: 80px
-      }
       .eplayer .controls {
         width: 100%;
         position: absolute;
         bottom: 0;
         padding: 0 15px;
         box-sizing: border-box;
-        opacity: 0;
+        transition: .5s ease-out;
+      }
+
+      .eplayer .msg{
+        display:none;
+        position: absolute;
+        bottom: 60px;
+        left: 20px;
+        background: rgba(0,0,0,.8);
+        color: #fff;
+        padding: 5px 30px;
+        border-radius: 4px;
         transition: .5s ease-out;
       }
       .eplayer .option {
@@ -141,7 +154,7 @@ export class Init {
         margin:-20px 0 0 -20px;
         width: 40px;
         height: 40px;
-        border: 4px solid;
+        border: 2px solid;
         border-color: rgba(255, 255, 255, 0.8) rgba(255, 255, 255, 0.8) transparent;
         border-radius: 50%;
         box-sizing: border-box;
@@ -165,22 +178,22 @@ export class Init {
       }
     </style>
     <div class="eplayer">
-      <video src="${
-        data.src
-      }" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
+      <video src="${data.src}" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
         <div class="panels">
           <div class="loading"></div>
           <div class="panel wrap">
             <i class="epicon ep-play" style="display:none;"></i>
+          </div>
+          <div class="msg">
           </div>
         </div>
         <div class="controls">
           <div class="progress-bar">
             <div class="current-progress"></div>
             <div class="buffer"></div>
-            <div class="dot">
-              <i></i>
-            </div>
+              <div class="dot">
+                <i></i>
+              </div>
             <div class="progress"></div>
           </div>
           <div class="option">
