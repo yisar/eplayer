@@ -10,6 +10,13 @@ export class Init {
         position: relative;
         overflow: hidden;
       }
+
+      #ep-canvas{
+        position absolute
+        height 100%
+        width: 100%
+      }
+      
       .eplayer video {
         width: 100%;
         height: 100%;
@@ -170,7 +177,8 @@ export class Init {
     <div class="eplayer">
       <video src="${
         data.src
-      }" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
+      }" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow" id="ep-video"></video>
+      <canvas id="ep-canvas"></cavans>
         <div class="panels">
           <div class="loading"></div>
           <div class="panel wrap">
