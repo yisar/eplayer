@@ -12,11 +12,11 @@ export class Init {
       }
 
       #ep-canvas{
-        position absolute
-        height 100%
+        position:absolute;
+        height: 100%;
         width: 100%
       }
-      
+
       .eplayer video {
         width: 100%;
         height: 100%;
