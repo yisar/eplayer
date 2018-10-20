@@ -14,7 +14,8 @@ export class Init {
       #ep-canvas{
         position:absolute;
         height: 100%;
-        width: 100%
+        width: 100%;
+        top: 0
       }
 
       .eplayer video {
@@ -178,7 +179,7 @@ export class Init {
       <video src="${
         data.src
       }" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow" id="ep-video"></video>
-      <canvas id="ep-canvas"></cavans>
+      <canvas id="ep-canvas"></canvas>
         <div class="panels">
           <div class="loading"></div>
           <div class="panel wrap">
