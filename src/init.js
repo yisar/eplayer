@@ -8,6 +8,7 @@ export class Init {
         width: 100%;
         height: 100%;
         position: relative;
+        overflow: hidden;
       }
       .eplayer video {
         width: 100%;
@@ -27,9 +28,6 @@ export class Init {
       .eplayer .wrap {
         height: 100%;
         width: 100%;
-      }
-      .controls {
-        opacity: 1
       }
       .eplayer .controls {
         width: 100%;
@@ -167,14 +165,6 @@ export class Init {
         100%{
           transform: rotate(360deg);
         }  
-      }
-      @keyframes display{
-        0%{
-          opacity: 1;
-        }
-        100%{
-          opacity: 0;
-        }
       }
     </style>
     <div class="eplayer">

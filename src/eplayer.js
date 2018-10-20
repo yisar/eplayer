@@ -55,6 +55,7 @@ class Eplayer {
     this.transTop = 0
     this.bufferEnd = 0
     this.isDown = false
+    this.timer = 0
 
     this.video.onwaiting = () => this.waiting()
     this.video.oncanplay = () => this.canplay()
@@ -186,7 +187,6 @@ class Eplayer {
   }
 
   Dotonmousedown(e) {
-    e.stopPropagation()
     if (e.changedTouches) {
       this.x = e.changedTouches[0].clientX
     } else {
@@ -199,7 +199,6 @@ class Eplayer {
   }
 
   Dotonmousemove(e) {
-    this.controls.style.opacity = 1
     if (this.isDown) {
       if (e.changedTouches) {
         this.nx = e.changedTouches[0].clientX
@@ -223,6 +222,11 @@ class Eplayer {
       this.video.currentTime =
         (this.nl / this.progress.offsetWidth) * this.video.duration
     } else {
+      clearTimeout(this.timer)
+      this.controls.style.bottom = 0
+      this.timer = setTimeout(() => {
+        this.controls.style.bottom = -50 + 'px'
+      }, 5000)
       this.play()
     }
     this.isDown = false
@@ -245,7 +249,6 @@ class Eplayer {
       } else {
         this.vnx = e.clientX
       }
-      console.log(this.vx, this.vl, this.vnx)
       this.vnl = this.vnx - (this.vx - this.vl)
       if (this.vnl <= 0) this.vnl = 0
       if (this.vnl >= this.volumeProgress.clientWidth)
