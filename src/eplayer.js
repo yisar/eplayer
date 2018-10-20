@@ -85,7 +85,6 @@ class Eplayer {
 
   waiting() {
     this.loading.style.display = 'block'
-    this.setMsg('加载中…')
   }
 
   setMsg(msg) {
@@ -214,6 +213,12 @@ class Eplayer {
       this.currentProgress.style.width = this.nl + 'px'
       this.x = this.nx
       this.l = this.nl
+    } else {
+      clearTimeout(this.timer)
+      this.controls.style.bottom = 0
+      this.timer = setTimeout(() => {
+        this.controls.style.bottom = -60 + 'px'
+      }, 5000)
     }
   }
 
@@ -222,11 +227,6 @@ class Eplayer {
       this.video.currentTime =
         (this.nl / this.progress.offsetWidth) * this.video.duration
     } else {
-      clearTimeout(this.timer)
-      this.controls.style.bottom = 0
-      this.timer = setTimeout(() => {
-        this.controls.style.bottom = -60 + 'px'
-      }, 5000)
       this.play()
     }
     this.isDown = false

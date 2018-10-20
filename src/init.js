@@ -39,7 +39,7 @@ export class Init {
       }
 
       .eplayer .msg{
-        display:none;
+        display: none;
         position: absolute;
         bottom: 60px;
         left: 20px;
@@ -47,7 +47,7 @@ export class Init {
         color: #fff;
         padding: 5px 30px;
         border-radius: 4px;
-        transition: .5s ease-out;
+        transition: .5s;
       }
       .eplayer .option {
         position: relative;
@@ -168,7 +168,9 @@ export class Init {
       }
     </style>
     <div class="eplayer">
-      <video src="${data.src}" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
+      <video src="${
+        data.src
+      }" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
         <div class="panels">
           <div class="loading"></div>
           <div class="panel wrap">
