@@ -35,7 +35,7 @@ export class Init {
         bottom: 0;
         padding: 0 15px;
         box-sizing: border-box;
-        transition: .5s ease-out;
+        transition: .3s ease-out;
       }
 
       .eplayer .msg{

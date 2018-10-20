@@ -225,7 +225,7 @@ class Eplayer {
       clearTimeout(this.timer)
       this.controls.style.bottom = 0
       this.timer = setTimeout(() => {
-        this.controls.style.bottom = -50 + 'px'
+        this.controls.style.bottom = -60 + 'px'
       }, 5000)
       this.play()
     }
