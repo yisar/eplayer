@@ -176,9 +176,9 @@ export class Init {
       }
     </style>
     <div class="eplayer">
-      <video src="${
-        data.src
-      }" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow" id="ep-video"></video>
+      <video id="ep-video">
+        <source src="${data.src}" type="video/${data.type}">
+      </video>
       <canvas id="ep-canvas"></canvas>
         <div class="panels">
           <div class="loading"></div>
