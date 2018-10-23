@@ -177,11 +177,11 @@ export class Init {
     </style>
     <div class="eplayer">
       <video id="ep-video">
-        <source src="${data.src}" type="video/${data.type}">
+        <source src="${data.src}" type="video/${data.type?data.type:'mp4'}">
       </video>
       <canvas id="ep-canvas"></canvas>
         <div class="panels">
-          <div class="loading"></div>
+        <div class="loading"></div>
           <div class="panel wrap">
             <i class="epicon ep-play" style="display:none;"></i>
           </div>
