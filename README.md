@@ -12,6 +12,11 @@
 
 [clicli.us - C 站](https://www.clicli.us/)
 
+### Install
+```shell
+yarn add eplayer -S
+```
+
 ### Use
 
 dom，这是一个 web-components 组件
