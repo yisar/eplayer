@@ -1,6 +1,7 @@
 <p align="center"><img src="http://ww1.sinaimg.cn/large/0065Zy9egy1fvcjfzaa1lj30dw0dwwhe.jpg" alt="eplayer logo" width="200px"></p>
 
 [![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
+
 [![NPM downloads](https://img.shields.io/npm/dm/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
 
 # eplayer
@@ -9,31 +10,37 @@
 
 #### who use eplayer？
 
-[clicli.us - C站](https://www.clicli.us/)
-
-[FATENESS - 肥站](https://fateness.com/)
-
-### Install
-
-```shell
-npm i eplayer -S
-```
+[clicli.us - C 站](https://www.clicli.us/)
 
 ### Use
 
-dom:
+dom，这是一个 web-components 组件
+
 ```html
-<div id=player></div>
+<e-player></e-player>
 ```
+自定义 css，可选，默认为蓝色
+```css
+e-player{
+  /* 进度条底色 */
+  --progress:rgba(255,255,255,.3)
+  /* 进度条偏移颜色 */
+  --buffer:#f2e
+  /* 按钮颜色 */
+  --button:#f2e
+  /* 图标颜色 */
+  --icon:#fff
+}
+```
+
 js:
+
 ```javascript
 import Eplayer from 'eplayer'
 
-const el = document.getElementById('player')
-
-new Eplayer(el, {
+customElements.define('e-player',new Eplayer({
   src: '001.mp4',
-  themeColor: '#000'
+  type:'mp4'
 })
 ```
 
@@ -50,4 +57,5 @@ yarn start
 ```
 
 #### Screenshot
+
 ![free eplayer](http://wx3.sinaimg.cn/mw690/0060lm7Tly1fvbny9g6ycj30rr0fmtol.jpg)
