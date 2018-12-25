@@ -26,13 +26,13 @@ dom，这是一个 web-components 组件
 ```
 css，可选，用于穿透 shadow-dom 预留的默认样式，默认为蓝色
 ```css
-e-player{
+e-player {
   /* 进度条底色 */
-  --progress:rgba(255,255,255,.3)
+  --progress:rgba(255,255,255,.3);
   /* 进度条偏移颜色 */
-  --buffer:#f2e
+  --buffer:#f2e;
   /* 按钮颜色 */
-  --button:#f2e
+  --button:#f2e;
   /* 图标颜色 */
   --icon:#fff
 }
