@@ -24,7 +24,7 @@ dom，这是一个 web-components 组件
 ```html
 <e-player></e-player>
 ```
-自定义 css，可选，默认为蓝色
+css，可选，用于穿透 shadow-dom 预留的默认样式，默认为蓝色
 ```css
 e-player{
   /* 进度条底色 */
@@ -38,7 +38,7 @@ e-player{
 }
 ```
 
-js:
+js，需要定义一个 `customElements`，并将 Ep 类传入
 
 ```javascript
 import Eplayer from 'eplayer'
