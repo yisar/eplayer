@@ -95,6 +95,10 @@ class Eplayer {
             this.$('.ep-video').style.bottom = 25 + 'px'
           }, 5000)
         }
+        end() {
+          this.$('.is-play').classList.remove('ep-pause')
+          this.$('.is-play').classList.add('ep-play')
+        }
         full() {
           if (isFullScreen()) {
             if (document.exitFullscreen) {
@@ -326,7 +330,9 @@ class Eplayer {
 
           this.$('.eplayer').onmousemove = () => this.alow()
           this.$('.ep-full').onclick = () => this.full()
-          this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
+          this.$('.ep-video').onclick = this.$('.is-play').onclick = () =>
+            this.play()
+          this.video.onended = () => this.ended()
         }
 
         $(node) {
