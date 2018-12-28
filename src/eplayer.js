@@ -14,7 +14,6 @@ class Eplayer {
         }
         canplay() {
           this.$('.loading').style.display = 'none'
-          this.$('.ep-video').style.display = 'block'
           this.$('.total').innerHTML = getTimeStr(this.video.duration)
         }
         play() {

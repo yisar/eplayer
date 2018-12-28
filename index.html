@@ -1,80 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Eplayer</title>
-  <meta name="referrer" content="no-referrer" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      height: 100%
-    }
-
-    body {
-      height: 100%;
-      background: #f8fcff;
-      color: #7192c3;
-      position: relative;
-    }
-
-
-    .container {
-      text-align: center
-    }
-
-    #ep {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background: #9d9fb8
-    }
-
-    h1 {
-      margin-top: 100px;
-      font-size: 40px;
-      font-weight: lighter;
-    }
-
-    p {
-      color: #9d9fb8;
-      padding: 20px
-    }
-
-    a {
-      display: block;
-      width: 80px;
-      text-align: center;
-      margin: 50px auto;
-      padding: 10px 30px;
-      border-radius: 20px;
-      background: linear-gradient(to right, #0072ff, #00e7ff);
-      color: #fff;
-      text-decoration: none
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <h1>Eplayer</h1>
-    <p>:dart: A simple and lovely html5 video player</p>
-    <div id="ep"></div>
-    <a href="https://github.com/132yse/eplayer">
-      Github
-    </a>
-  </div>
-
-  <script src="./index.js"></script>
-
-</body>
-
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>eplayer</title>
+  </head>
+  <body>
+    <style>
+      .wrapper {
+        width: 800px;
+        margin: 100px auto;
+        height: 450px;
+      }
+    </style>
+    <div class="wrapper">
+      <e-player></e-player>
+    </div>
+  </body>
+  <script type="module">
+      new Eplayer({
+        url: "https://gss3.baidu.com/6LZ0ej3k1Qd3ote6lo7D0j9wehsv/tieba-smallvideo/7_395524ebf5b87a58e3b743ea8200727e.mp4",
+        type: "mp4"
+      })
+  </script>
+  <script src="./src/eplayer.js"></script>
 </html>
