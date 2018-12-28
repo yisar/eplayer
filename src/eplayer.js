@@ -334,9 +334,9 @@ class Eplayer extends HTMLElement {
 customElements.define('e-player', Eplayer)
 
 function getTimeStr(time) {
-  var h = Math.floor(time / 3600)
-  var m = Math.floor((time % 3600) / 60)
-  var s = Math.floor(time % 60)
+  let h = Math.floor(time / 3600)
+  let m = Math.floor((time % 3600) / 60)
+  let s = Math.floor(time % 60)
   h = h >= 10 ? h : '0' + h
   m = m >= 10 ? m : '0' + m
   s = s >= 10 ? s : '0' + s
