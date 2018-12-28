@@ -19,9 +19,10 @@ yarn add eplayer -S
 ### Use
 
 dom，这是一个 web-components 组件，只需要将平时用的 `video` 换成 `e-player` 即可
+type 属性可选，默认为 mp4
 
 ```html
-<e-player src="./001.mp4" type="mp4"></e-player>
+<e-player src="./001.mp4"></e-player>
 ```
 css，可选，用于穿透 shadow-dom 预留的默认样式，默认为蓝色
 ```css
@@ -42,6 +43,11 @@ if m3u8 need supported，please install `hls.js` first
 ```shell
 npm i hls.js -S
 ```
+and then
+```html
+<e-player src="./001.m3u8" type="hls"></e-player>
+```
+flv also is OK~
 
 #### development
 
