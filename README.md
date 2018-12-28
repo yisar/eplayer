@@ -1,7 +1,7 @@
 <p align="center"><img src="http://ww1.sinaimg.cn/large/0065Zy9egy1fvcjfzaa1lj30dw0dwwhe.jpg" alt="eplayer logo" width="200px"></p>
 
 
-# eplayer [![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer) [![NPM downloads](https://img.shields.io/npm/dm/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
+# eplayer   [![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer) [![NPM downloads](https://img.shields.io/npm/dm/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
 
 :dart: A simple and lovely html5 video player
 
@@ -62,4 +62,4 @@ yarn start
 
 #### Screenshot
 
-![free eplayer](http://wx3.sinaimg.cn/mw690/0060lm7Tly1fvbny9g6ycj30rr0fmtol.jpg)
+![free eplayer](https://ws1.sinaimg.cn/large/0065Zy9egy1fymn1nwo3ej30rq0fmtid.jpg)
