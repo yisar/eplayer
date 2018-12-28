@@ -37,7 +37,7 @@ e-player {
 }
 ```
 
-js，需要定义一个 `customElements`，并将 Ep 类传入
+js，只需要 new 一个 Ep 类
 
 ```javascript
 import Eplayer from 'eplayer'
