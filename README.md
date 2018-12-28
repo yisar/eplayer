@@ -62,4 +62,4 @@ yarn start
 
 #### Screenshot
 
-![free eplayer](https://ws1.sinaimg.cn/large/0065Zy9egy1fymn1nwo3ej30rq0fmtid.jpg)
+![free eplayer](https://ws1.sinaimg.cn/mw690/0065Zy9egy1fymn1nwo3ej30rq0fmtid.jpg)
