@@ -3,7 +3,7 @@
 
 # eplayer   [![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer) [![NPM downloads](https://img.shields.io/npm/dm/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
 
-:dart: A simple and lovely html5 video player
+:dart: A perfect web-components html5 video player
 
 #### who use eplayer？
 
