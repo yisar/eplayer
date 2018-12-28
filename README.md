@@ -1,10 +1,9 @@
 <p align="center"><img src="http://ww1.sinaimg.cn/large/0065Zy9egy1fvcjfzaa1lj30dw0dwwhe.jpg" alt="eplayer logo" width="200px"></p>
 
-[![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
-
-[![NPM downloads](https://img.shields.io/npm/dm/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
 
 # eplayer
+[![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
+[![NPM downloads](https://img.shields.io/npm/dm/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
 
 :dart: A simple and lovely html5 video player
 
@@ -32,9 +31,9 @@ e-player {
   /* 进度条偏移颜色 */
   --buffer:#f2e;
   /* 按钮颜色 */
-  --button:#f2e;
+  --dot:#f2e;
   /* 图标颜色 */
-  --icon:#fff
+  --icons:#fff
 }
 ```
 
@@ -43,7 +42,7 @@ js，需要定义一个 `customElements`，并将 Ep 类传入
 ```javascript
 import Eplayer from 'eplayer'
 
-customElements.define('e-player',new Eplayer({
+new Eplayer({
   src: '001.mp4',
   type:'mp4'
 })
