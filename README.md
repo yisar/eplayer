@@ -17,14 +17,19 @@ yarn add eplayer -S
 ```
 
 ### Use
+1. 导入进来 js 文件，可以从 lib 目录获取，建议上传到自己的 cdn
+```html
+<script src="./eplayer.js"></script>
+```
 
-dom，这是一个 web-components 组件，只需要将平时用的 `video` 换成 `e-player` 即可
+2.插入 `e-player` 标签，没错，只需要将平时用的 `video` 换成 `e-player` 即可
+
 type 属性可选，默认为 mp4
 
 ```html
 <e-player src="./001.mp4"></e-player>
 ```
-css，可选，用于穿透 shadow-dom 预留的默认样式，默认为蓝色
+3. 可选设置css，用于穿透 shadow-dom 预留的默认样式，默认为粉色
 ```css
 e-player {
   /* 进度条底色 */
@@ -38,16 +43,17 @@ e-player {
 }
 ```
 
-if m3u8 need supported，please install `hls.js` first
+如果，需要支持 `m3u8` 和 `flv`，需要先引入 `hls.js` 和 `flv.js`
 
-```shell
-npm i hls.js -S
+这两个文件太大，建议手动 gzip
+```html
+<script src="./hlv.min.js"></script>
+<script src="./flv.min.js"></script>
 ```
-and then
+然后，type 属性 对应 `hls` 或 `flv`
 ```html
 <e-player src="./001.m3u8" type="hls"></e-player>
 ```
-flv also is OK~
 
 #### development
 
@@ -57,4 +63,4 @@ yarn start
 
 #### Screenshot
 
-![free eplayer](https://ws1.sinaimg.cn/mw690/0065Zy9egy1fymn1nwo3ej30rq0fmtid.jpg)
+![](https://ws1.sinaimg.cn/mw690/0065Zy9egy1fymn1nwo3ej30rq0fmtid.jpg)
