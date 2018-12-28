@@ -35,12 +35,11 @@
       <a href="http://demo.ynxiu.cn/?url=https://v1.165zy.com/20180405/sU1RBo4D/index.m3u8">演示地址</a>（有可能会失效，请自己上传到服务器测试）
     </div>
     <p></p>
-    <div id="player"></div>
+    <e-player></e-player>
     <script>
-      var el = document.getElementById('player')
-      new Eplayer(el, {
+      new Eplayer({
         src: "<?php echo $_GET['url'];?>",
-        themeColor: "linear-gradient(90deg,#ff9900,#f5f7fa)"
+        type:'mp4'
       });
     </script>
   </div>

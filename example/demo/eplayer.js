@@ -1,5 +1,343 @@
-const OFFSETDOT = 18
-copyright()
+const FONTCDN = 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css'
+class Eplayer {
+  constructor(data) {
+    customElements.define(
+      'e-player',
+      class extends HTMLElement {
+        constructor() {
+          super()
+          this.data = data
+          this.init()
+        }
+        waiting() {
+          this.$('.loading').style.display = 'block'
+        }
+        canplay() {
+          this.$('.loading').style.display = 'none'
+          this.$('.ep-video').style.display = 'block'
+          this.$('.total').innerHTML = getTimeStr(this.video.duration)
+        }
+        play() {
+          if (this.video.paused) {
+            this.video.play()
+            this.$('.ep-video').style.display = 'none'
+            this.$('.is-play').classList.remove('ep-play')
+            this.$('.is-play').classList.add('ep-pause')
+          } else {
+            this.video.pause()
+            this.$('.ep-video').style.display = 'block'
+            this.$('.is-play').classList.remove('ep-pause')
+            this.$('.is-play').classList.add('ep-play')
+          }
+          return false
+        }
+        volume() {
+          if (this.video.muted) {
+            this.video.muted = false
+            this.$('.is-volume').classList.remove('ep-volume-off')
+            this.$('.is-volume').classList.add('ep-volume')
+          } else {
+            this.video.muted = true
+            this.$('.is-volume').classList.remove('ep-volume')
+            this.$('.is-volume').classList.add('ep-volume-off')
+          }
+          return false
+        }
+        update() {
+          let cTime = getTimeStr(this.video.currentTime)
+          if (this.video.buffered.length) {
+            let bufferEnd = this.video.buffered.end(
+              this.video.buffered.length - 1
+            )
+            this.$('.buffer').style.width =
+              (bufferEnd / this.video.duration) *
+                this.$('.progress').clientWidth +
+              'px'
+          }
+          let offset =
+            (this.video.currentTime / this.video.duration) *
+            this.$('.bg').clientWidth
+          this.$('.now').innerHTML = cTime
+          this.$('.current').style.width = offset + 'px'
+          this.$('.dot').style.left = offset + 4 + 'px'
+        }
+        progress(e) {
+          let offset = e.offsetX / this.$('.progress').offsetWidth
+          this.video.currentTime = this.video.duration * offset
+          return false
+        }
+        down(e) {
+          this.disX = e.clientX - this.$('.dot').offsetLeft
+          document.onmousemove = e => this.move(e)
+          document.onmouseup = () => {
+            document.onmousemove = null
+            document.onmouseup = null
+          }
+        }
+        move(e) {
+          let offset = e.clientX - this.disX
+          if (offset < 4) offset = 4
+          if (offset > this.$('.progress').clientWidth + 4)
+            offset = this.$('.progress').clientWidth + 4
+          this.$('.current').style.width = offset - 4 + 'px'
+          this.$('.dot').style.left = offset + 'px'
+          this.video.currentTime =
+            (offset / (this.$('.progress').clientWidth + 4)) *
+            this.video.duration
+        }
+        alow() {
+          clearTimeout(this.timer)
+          this.$('.controls').style.bottom = 0
+          this.$('.dot').style.bottom = 39 + 'px'
+          this.$('.ep-video').style.bottom = 70 + 'px'
+          this.timer = setTimeout(() => {
+            this.$('.controls').style.bottom = -43 + 'px'
+            this.$('.dot').style.bottom = -43 + 'px'
+            this.$('.ep-video').style.bottom = 25 + 'px'
+          }, 5000)
+        }
+        full() {
+          if (isFullScreen()) {
+            if (document.exitFullscreen) {
+              document.exitFullscreen()
+            } else if (document.mozCancelFullScreen) {
+              document.mozCancelFullScreen()
+            } else if (document.webkitCancelFullScreen) {
+              document.webkitCancelFullScreen()
+            } else if (document.msExitFullscreen) {
+              document.msExitFullscreen()
+            }
+          } else {
+            let rfs =
+              this.requestFullScreen ||
+              this.webkitRequestFullScreen ||
+              this.mozRequestFullScreen ||
+              this.msRequestFullscreen
+
+            return rfs.call(this)
+          }
+        }
+        init() {
+          let link = document.createElement('link')
+          link.setAttribute('href', FONTCDN)
+          link.setAttribute('rel', 'stylesheet')
+          document.head.appendChild(link)
+          let html = `
+            <style>
+              @import "${FONTCDN}";
+              *{
+                padding:0;
+                margin:0;
+              }
+              .eplayer,video{
+                height:100%;
+                width:100%;
+                color:var(--icon,rgba(255,255,255,0.6));
+                font-size:12px;
+              }
+              .eplayer{
+                user-select:none;
+                position: relative;
+                overflow: hidden;
+              }
+              .controls{
+                position:absolute;
+                left:0;
+                right:0;
+                bottom:0;
+                padding:10px;
+                background:linear-gradient(transparent,rgba(0,0,0,.4));
+                cursor: pointer; 
+                transition: .3s ease-out;      
+              }
+              .progress{
+                position:relative;
+                bottom:15px;
+                left:0;
+                right:0;
+              }
+              .options{
+                display:flex;
+                align-items:center;
+              }
+              .epicon{
+                color:var(--icon,rgba(255,255,255,0.6));
+                padding:0 10px;
+              }
+              .epicon{
+                font-size:18px;
+                transition: .3s;
+              }
+              .epicon:hover{
+                color:#fff;
+              }
+              .time{
+                position:relative;
+                top:-2px;
+              }
+              .time b{
+                font-weight:normal;
+              }
+              .line{
+                padding:0 1px;
+                margin-bottom: -2px
+              }
+              .line i{
+                width:4px;
+                border-radius:4px;
+                display: inline-block;
+                background: var(--icon,rgba(255,255,255,0.6));
+                height: 12px;
+                transform:scaleX(0.7);
+                transition: .3s;
+              }
+              .line:hover i{
+                height:14px;
+                background:var(--corlor,#f13e7b);
+              }
+              .active i{
+                background:var(--corlor,#f13e7b);
+              }
+              .left{
+                flex:1;
+              }
+              .right{
+                flex:1;
+                display:flex;
+                align-items:center;
+                justify-content: flex-end;
+              }
+              .bg,.current,.buffer{
+                left:0;
+                height:4px;
+                transform:scaleY(0.7);
+                position:absolute;
+                top:0;
+              }
+              .bg{
+                right:0;
+                background:rgba(255,255,255,.2);
+              }
+              .current{
+                background:var(--corlor,#f13e7b);
+              }
+              .buffer{
+                background:rgba(255,255,255,.4);
+              }
+              .dot{
+                position:absolute;
+                left:10px;
+                bottom:39px;
+                border-radius: 50%;
+                display: block;
+                background:var(--corlor,#f13e7b);
+                padding: 4px;
+                cursor:pointer;
+                transition: .1s ease-out;
+              }
+              @keyframes loading{
+                0%{
+                  transform: rotate(0deg);
+                }
+                100%{
+                  transform: rotate(360deg);
+                }  
+              }
+              .loading {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin:-20px 0 0 -20px;
+                width: 40px;
+                height: 40px;
+                box-shadow: 0px 2px rgba(255,255,255,.8);
+                border-radius: 50%;
+                animation: loading 1s linear infinite;
+              }
+              .ep-video {
+                position: absolute;
+                bottom: 25px;
+                right: 20px;
+                font-size:40px;
+                color:rgba(255,255,255,.6);
+                cursor: pointer; 
+              }
+            </style>
+            <div class="eplayer">
+              <video id="video" src="${this.data.url}">
+                <source src="${this.data.url}" type="video/${
+            this.data.type ? this.data.type : 'mp4'
+          }">
+              </video>
+              <div class="controls" style="bottom:-45px">
+                <div class="progress">
+                  <b class="bg"></b>
+                  <b class="buffer"></b>
+                  <b class="current" style="width:0"></b>
+                </div>
+                <div class="options">
+                  <div class="left">
+                    <i class="epicon ep-play is-play"></i>
+                    <span class="time">
+                      <b class="now">00:00</b> / <b class="total">00:00</b>
+                    </span>
+                  </div>
+                  <div class="right">
+                    <i class="epicon ep-volume is-volume"></i>
+                    <span class="line"><i></i></span>
+                    <span class="line"><i></i></span>
+                    <span class="line"><i></i></span>
+                    <span class="line"><i></i></span>
+                    <span class="line"><i></i></span>
+                    <span class="line"><i></i></span>
+                    <span class="line"><i></i></span>
+                    <span class="line"><i></i></span>
+                    <span class="line"><i></i></span>
+                    <span class="line"><i></i></span>
+                    <i class="epicon ep-full"></i>
+                  </div>
+                </div>
+              </div>
+              <i class="dot" style="left:4px;bottom:-45px"></i>
+              <div class="loading"></div>
+              <div class="epicon ep-video"></div>
+            </div>
+          `
+          let template = document.createElement('template')
+          template.innerHTML = html
+          this.attachShadow({
+            mode: 'open'
+          }).appendChild(template.content.cloneNode(true))
+          this.video = this.$('video')
+          this.video.volume = 0.5
+          setVolume(this.video.volume * 10, this.$('.line'))
+
+          this.$('.is-volume').onclick = () => this.volume()
+          this.$('.line').forEach((item, index) => {
+            item.onclick = () => {
+              this.video.volume = index / 10
+              setVolume(index + 1, this.$('.line'))
+            }
+          })
+          this.$('.dot').onmousedown = e => this.down(e)
+          this.$('.progress').onclick = e => this.progress(e)
+          this.video.onwaiting = () => this.waiting()
+          this.video.oncanplay = () => this.canplay()
+          this.video.ontimeupdate = () => this.update()
+
+          this.$('.eplayer').onmousemove = () => this.alow()
+          this.$('.ep-full').onclick = () => this.full()
+          this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
+        }
+
+        $(node) {
+          let dom = this.shadowRoot.querySelectorAll(node)
+          return dom.length > 1 ? dom : dom[0]
+        }
+      }
+    )
+  }
+}
 
 function getTimeStr(time) {
   var h = Math.floor(time / 3600)
@@ -11,508 +349,19 @@ function getTimeStr(time) {
   return h === '00' ? m + ':' + s : h + ':' + m + ':' + s
 }
 
+function setVolume(index, node) {
+  for (let j = index; j < node.length; j++) {
+    node[j].classList.remove('active')
+  }
+  for (let i = 0; i < index; i++) {
+    node[i].classList.add('active')
+  }
+}
+
 function isFullScreen() {
   return (
     document.isFullScreen ||
     document.mozIsFullScreen ||
     document.webkitIsFullScreen
   )
-}
-
-function copyright() {
-  console.log(
-    '\n %c EPlayer 0.2.8 %c eplayer.js.org \n',
-    'color: #fff; background: linear-gradient(to right,#57a1fc ,#6beaf7); padding:5px;',
-    'color: #7192c3; background: #ecfaff; padding:5px 0;'
-  )
-}
-
-function isSafari(){
-  return /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
-}
-
-class Init {
-  constructor(el, data) {
-    let html = `
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_836948_g9ctpaubgfq.css">
-    <style>
-      .player {
-        background:#000;
-        width: 100%;
-        height: 100%;
-        position: relative;
-      }
-      .player video {
-        width: 100%;
-        height: 100%;
-      }
-      .player .panel {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-      }
-      .player .wrap {
-        height: 100%;
-        width: 100%;
-      }
-      .player:hover .controls {
-        opacity: 1
-      }
-      .player .panels .epicon {
-        font-size: 80px
-      }
-      .player .controls {
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        padding: 0 15px;
-        box-sizing: border-box;
-        opacity: 0;
-        transition: .5s ease-out;
-      }
-      .player .option {
-        position: relative;
-        display:flex;
-        align-items: center;
-        padding: 10px 0;
-      }
-      .player .option-left{
-        display: flex;
-        flex: 1;
-        align-items: center;
-      }
-      .player .option-right{
-        display: flex;
-        flex: 1;
-        align-items: center;
-        justify-content: flex-end
-      }
-      .player .progress-bar {
-        width: 100%;
-        position: relative;
-        cursor: pointer;
-      }
-      .player .volume-progress-bar {
-        width: 100px;
-        position: relative;
-        cursor: pointer;
-      }
-      .player .volume-progress {
-        border-radius:2px;
-        height: 4px;
-        background-color: rgba(255, 255, 255, 0.8);
-      }
-      .player .progress {
-        border-radius:2px;
-        height: 4px;
-        background-color: rgba(255, 255, 255, 0.8);
-      }
-      .player .dot {
-        padding: 20px;
-        position: absolute;
-        top: -18px;
-        left: -18px;
-        transition: 0.01s
-      }
-      .player .dot i {
-        height: 13px;
-        width: 13px;
-        background: ${data.themeColor};
-        position: absolute;
-        border-radius: 50%;
-        top: 50%;
-        left:50%;
-        transform:translate(-50%,-50%)
-      }
-      .player .volume {
-        display: flex;
-        align-items: center;
-        padding-right: 15px;
-      }
-      .player .current-progress {
-        width: 0%;
-        height: 100%;
-        background: ${data.themeColor};
-        position: absolute;
-        border-radius:2px;
-        top: 0;
-        transition: .1s
-      }
-      .player .buffer {
-        width: 0%;
-        height: 100%;
-        background: ${data.themeColor};
-        opacity:.4;
-        position: absolute;
-        border-radius:2px;
-        top: 0;
-        transition: .3s;
-      }
-      .player .time {
-        text-align: center;
-        font-size: 12px;
-        color: #fff;
-        padding-left: 15px;
-      }
-      .player .epicon:hover {
-        color: #fff;
-      }
-      .player .epicon {
-        color: rgba(255, 255, 255, 0.8);
-        cursor: pointer;
-        transition: 0.3s;
-        font-size: 20px;
-      }
-      .player .ep-volume-down,.ep-volume-up,.ep-volume-off {
-        padding-right: 15px
-      }
-      .player .loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin:-20px 0 0 -20px;
-        width: 40px;
-        height: 40px;
-        border: 4px solid;
-        border-color: rgba(255, 255, 255, 0.8) rgba(255, 255, 255, 0.8) transparent;
-        border-radius: 50%;
-        box-sizing: border-box;
-        animation: loading 1s linear infinite;
-      }
-      @keyframes loading{
-        0%{
-          transform: rotate(0deg);
-        }
-        100%{
-          transform: rotate(360deg);
-        }  
-      }
-      @keyframes display{
-        0%{
-          opacity: 1;
-        }
-        100%{
-          opacity: 0;
-        }
-      }
-    </style>
-    <div class="player">
-      <video src="${
-        data.src
-      }" webkit-playsinline playsinline x5-playsinline x-webkit-airplay="allow"></video>
-        <div class="panels">
-          <div class="loading"></div>
-          <i class="epicon ep-play panel" style="display:none;"></i>
-        </div>
-        <div class="controls">
-          <div class="progress-bar">
-            <div class="current-progress"></div>
-            <div class="buffer"></div>
-            <div class="dot">
-              <i></i>
-            </div>
-            <div class="progress"></div>
-          </div>
-          <div class="option">
-            <div class="option-left">
-              <div class="control">
-                <i class="epicon ep-play switch"></i>
-              </div>
-              <div class="time">
-                <span class="current">00:00</span>
-                /
-                <span class="total">00:00</span>
-              </div>
-            </div>
-            <div class="option-right"> 
-              <div class="volume">
-                <i class="epicon ep-volume-up volume-button"></i>
-                <div class="volume-progress-bar">
-                  <div class="volume-progress"></div>
-                  <div class="current-progress"></div>
-                  <div class="dot">
-                    <i></i>
-                  </div>
-                </div>
-              </div> 
-              <div class="control">
-                <i class="epicon ep-full full"></i>
-              </div>  
-            </div>
-          </div>
-        </div>
-    </div>
-    `
-    el.innerHTML = html
-  }
-}
-
- class M3U8 {
-  constructor(el, data) {
-    this.src = data.src
-    this.el = el
-
-    if (Hls.isSupported()) {
-      let hls = new Hls()
-      hls.loadSource(this.src)
-      hls.attachMedia(this.el)
-    }
-  }
-}
-
-class Eplayer {
-  constructor(el, data) {
-    this.el = el
-    this.data = data
-    this.h = el.clientHeight
-    this.w = el.clientWidth
-
-    new Init(this.el, this.data)
-
-    this.video = document.querySelector('.player video')
-    this.loading = document.querySelector('.player .loading')
-    this.isPlay = document.querySelector('.player .switch')
-    this.panel = document.querySelector('.player .panel')
-    this.totalTime = document.querySelector('.player .total')
-    this.currentTime = document.querySelector('.player .current')
-    this.dot = document.querySelector('.player .progress-bar .dot')
-    this.vdot = document.querySelector('.player .volume .dot')
-    this.full = document.querySelector('.player .full')
-    this.progress = document.querySelector('.player .progress')
-    this.currentProgress = document.querySelector('.player .current-progress')
-    this.currentVolumeProgress = document.querySelector(
-      '.player .volume .current-progress'
-    )
-    this.volumeBtn = document.querySelector('.player .volume-button')
-    this.controls = document.querySelector('.player .controls')
-    this.buffer = document.querySelector('.player .buffer')
-    this.volumeProgress = document.querySelector('.player .volume-progress')
-
-    if (data.src.indexOf('m3u8') !== -1) {
-      new M3U8(this.video, this.data)
-    }
-
-    if (isSafari()) {
-      this.loading.style.display = 'none'
-      this.panel.style.display = 'block'
-    }
-
-    this.tTime = 0
-    this.x = 0
-    this.l = 0
-    this.nl = 0
-    this.nx = 0
-    this.vx = 0
-    this.vl = 0
-    this.vnl = 0
-    this.vnx = 0
-    this.bufferEnd = 0
-    this.isDown = false
-
-    this.video.onwaiting = () => this.waiting()
-    this.video.oncanplay = () => this.canplay()
-    this.isPlay.onclick = () => this.play()
-    this.panel.onclick = () => this.play()
-    this.video.ontimeupdate = () => this.timeupdate()
-    this.progress.onclick = this.currentProgress.onclick = this.buffer.onclick = e =>
-      this.progressClick(e)
-    this.volumeProgress.onclick = this.currentVolumeProgress.onclick = e =>
-      this.volumeClick(e)
-    this.video.onended = () => this.ended()
-    this.full.onclick = () => this.fullScreen()
-    this.dot.onmousedown = e => this.Dotonmousedown(e)
-    this.dot.onmousemove = e => this.Dotonmousemove(e)
-    this.dot.onmouseup = e => this.Dotonmouseup(e)
-    this.vdot.onmousedown = e => this.Volumeonmousedown(e)
-    this.vdot.onmousemove = e => this.Volumeonmousemove(e)
-    this.vdot.onmouseup = e => this.Volumeonmouseup(e)
-    this.volumeBtn.onclick = () => this.isVolume()
-    window.onresize = e => this.windowResize(e)
-  }
-
-  waiting() {
-    this.loading.style.display = 'block'
-  }
-
-  canplay() {
-    this.tTime = this.video.duration
-    this.loading.style.display = 'none'
-    this.panel.style.display = 'block'
-    let tTimeStr = getTimeStr(this.tTime)
-    this.totalTime.innerHTML = tTimeStr
-    let vWidth = this.volumeProgress.clientWidth
-    this.video.volume = 0.7
-    this.currentVolumeProgress.style.width = this.video.volume * vWidth + 'px'
-    this.vdot.style.left = this.video.volume * vWidth - OFFSETDOT + 'px'
-    this.vl = this.video.volume * vWidth
-  }
-
-  play() {
-    if (this.video.paused) {
-      this.video.play()
-      this.isPlay.classList.remove('ep-play')
-      this.isPlay.classList.add('ep-pause')
-      this.panel.classList.remove('ep-play')
-      this.panel.classList.add('wrap')
-    } else {
-      this.video.pause()
-      this.isPlay.classList.remove('ep-pause')
-      this.isPlay.classList.add('ep-play')
-      this.panel.classList.remove('wrap')
-      this.panel.classList.add('ep-play')
-    }
-  }
-
-  isVolume() {
-    if (this.video.muted) {
-      this.video.muted = false
-      this.volumeBtn.classList.remove('ep-volume-off')
-      this.volumeBtn.classList.add('ep-volume-up')
-    } else {
-      this.video.muted = true
-      this.volumeBtn.classList.remove('ep-volume-up')
-      this.volumeBtn.classList.add('ep-volume-off')
-    }
-  }
-
-  timeupdate() {
-    let cTime = this.video.currentTime
-    if (this.video.buffered.length) {
-      this.bufferEnd = this.video.buffered.end(this.video.buffered.length - 1)
-      this.buffer.style.width =
-        (this.bufferEnd / this.video.duration) * this.progress.clientWidth +
-        'px'
-    }
-
-    let cTimeStr = getTimeStr(cTime)
-    this.currentTime.innerHTML = cTimeStr
-    let offsetCom = cTime / this.tTime
-    if (!this.isDown) {
-      this.currentProgress.style.width =
-        offsetCom * this.progress.clientWidth + 'px'
-      this.dot.style.left =
-        offsetCom * this.progress.clientWidth - OFFSETDOT + 'px'
-      this.l = offsetCom * this.progress.clientWidth
-    }
-  }
-
-  progressClick(e) {
-    let event = e || window.event
-    if (!this.isDown) {
-      this.video.currentTime =
-        (event.offsetX / this.progress.offsetWidth) * this.video.duration
-    }
-  }
-
-  volumeClick(e) {
-    let event = e || window.event
-    if (!this.isDown) {
-      this.vdot.style.left = event.offsetX - OFFSETDOT + 'px'
-      this.currentVolumeProgress.style.width = event.offsetX + 'px'
-      this.video.volume = event.offsetX / this.volumeProgress.offsetWidth
-    }
-  }
-
-  Dotonmousedown(e) {
-    let event = e || window.event
-    this.x = event.clientX
-    this.l = this.l ? this.l : event.offsetX
-    this.isDown = true
-  }
-
-  Dotonmousemove(e) {
-    if (this.isDown) {
-      let event = e || window.event
-
-      this.nx = event.clientX
-      this.nl = this.nx - (this.x - this.l)
-      if (this.nl <= 0) this.nl = 0
-      if (this.nl >= this.progress.clientWidth)
-        this.nl = this.progress.clientWidth
-      this.dot.style.left = this.nl - OFFSETDOT + 'px'
-      this.currentProgress.style.width = this.nl + 'px'
-      this.x = this.nx
-      this.l = this.nl
-    }
-  }
-
-  Dotonmouseup(e) {
-    let event = e || window.event
-    this.video.currentTime =
-      (this.nl / this.progress.offsetWidth) * this.video.duration
-    this.isDown = false
-  }
-
-  Volumeonmousedown(e) {
-    let event = e || window.event
-    this.vx = event.clientX
-    this.vl = this.vl !== 0 ? this.vl : event.offsetX
-    this.isDown = true
-  }
-
-  Volumeonmousemove(e) {
-    if (this.isDown) {
-      let event = e || window.event
-
-      this.vnx = event.clientX
-      this.vnl = this.vnx - (this.vx - this.vl)
-      if (this.vnl <= 0) this.vnl = 0
-      if (this.vnl >= this.volumeProgress.clientWidth)
-        this.vnl = this.volumeProgress.clientWidth
-      this.vdot.style.left = this.vnl - OFFSETDOT + 'px'
-      this.currentVolumeProgress.style.width = this.vnl + 'px'
-      this.vx = this.vnx
-      this.vl = this.vnl
-    }
-  }
-
-  Volumeonmouseup(e) {
-    let event = e || window.event
-    this.isDown = false
-    this.video.volume = this.vnl / this.volumeProgress.clientWidth
-  }
-
-  ended() {
-    this.isPlay.classList.remove('ep-pause')
-    this.isPlay.classList.add('ep-play')
-    this.currentProgress.style.width = 0
-    this.dot.style.left = 0
-    this.currentTime.innerHTML = getTimeStr()
-    this.video.currentTime = 0
-    this.x = this.l = this.nx = this.nl = 0
-    this.isDown = false
-  }
-
-  fullScreen() {
-    if (isFullScreen()) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen()
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen()
-      } else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen()
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen()
-      }
-    } else {
-      let rfs =
-        this.el.requestFullScreen ||
-        this.el.webkitRequestFullScreen ||
-        this.el.mozRequestFullScreen ||
-        this.el.msRequestFullscreen
-
-      return rfs.call(this.el)
-    }
-  }
-
-  windowResize(e) {
-    if (isFullScreen()) {
-      this.el.style.height = '100%'
-      this.el.style.width = '100%'
-    } else {
-      this.el.style.height = this.h + 'px'
-      this.el.style.width = this.w + 'px'
-    }
-  }
 }
