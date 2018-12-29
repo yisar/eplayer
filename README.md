@@ -3,7 +3,7 @@
 
 # eplayer   [![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer) [![NPM downloads](https://img.shields.io/npm/dm/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
 
-:dart: A perfect web-components html5 video player
+:dart: A web-components html5 video player facing future.
 
 #### who use eplayer？
 
@@ -17,12 +17,13 @@ yarn add eplayer -S
 ```
 
 ### Use
-1. 导入进来 js 文件，可以从 lib 目录获取，建议上传到自己的 cdn
+1. 导入进来 js 文件，可以从 lib 目录获取，如果需要支持国产奇葩浏览器，需要同时引入 polyfill
 ```html
+<script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js">
 <script src="./eplayer.js"></script>
 ```
 
-2.插入 `e-player` 标签，没错，只需要将平时用的 `video` 换成 `e-player` 即可
+2. 插入 `e-player` 标签，没错，只需要将平时用的 `video` 换成 `e-player` 即可
 
 type 属性可选，默认为 mp4
 

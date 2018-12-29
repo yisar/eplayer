@@ -1,4 +1,5 @@
 const FONTCDN = 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css'
+const R = 4
 
 class Eplayer extends HTMLElement {
   constructor() {
@@ -52,7 +53,7 @@ class Eplayer extends HTMLElement {
       (this.video.currentTime / this.video.duration) * this.$('.bg').clientWidth
     this.$('.now').innerHTML = cTime
     this.$('.current').style.width = offset + 'px'
-    this.$('.dot').style.left = offset + 4 + 'px'
+    this.$('.dot').style.left = offset + R + 'px'
   }
   progress(e) {
     let offset = e.offsetX / this.$('.progress').offsetWidth
@@ -69,13 +70,13 @@ class Eplayer extends HTMLElement {
   }
   move(e) {
     let offset = e.clientX - this.disX
-    if (offset < 4) offset = 4
-    if (offset > this.$('.progress').clientWidth + 4)
-      offset = this.$('.progress').clientWidth + 4
-    this.$('.current').style.width = offset - 4 + 'px'
+    if (offset < R) offset = R
+    if (offset > this.$('.progress').clientWidth + R)
+      offset = this.$('.progress').clientWidth + R
+    this.$('.current').style.width = offset - R + 'px'
     this.$('.dot').style.left = offset + 'px'
     this.video.currentTime =
-      (offset / (this.$('.progress').clientWidth + 4)) * this.video.duration
+      (offset / (this.$('.progress').clientWidth + R)) * this.video.duration
   }
   alow() {
     clearTimeout(this.timer)
@@ -83,8 +84,8 @@ class Eplayer extends HTMLElement {
     this.$('.dot').style.bottom = 39 + 'px'
     this.$('.ep-video').style.bottom = 70 + 'px'
     this.timer = setTimeout(() => {
-      this.$('.controls').style.bottom = -43 + 'px'
-      this.$('.dot').style.bottom = -43 + 'px'
+      this.$('.controls').style.bottom = -42 + 'px'
+      this.$('.dot').style.bottom = -42 + 'px'
       this.$('.ep-video').style.bottom = 25 + 'px'
     }, 5000)
   }
@@ -142,7 +143,7 @@ class Eplayer extends HTMLElement {
           right:0;
           bottom:0;
           padding:10px;
-          background:linear-gradient(transparent,rgba(0,0,0,.4));
+          background:linear-gradient(transparent,rgba(0,0,0,.5));
           cursor: pointer; 
           transition: .3s ease-out;      
         }
@@ -212,13 +213,13 @@ class Eplayer extends HTMLElement {
         }
         .bg{
           right:0;
-          background:rgba(255,255,255,.2);
+          background:rgba(255,255,255,.3);
         }
         .current{
           background:var(--corlor,#f13e7b);
         }
         .buffer{
-          background:rgba(255,255,255,.4);
+          background:rgba(255,255,255,.5);
         }
         .dot{
           position:absolute;
@@ -246,7 +247,7 @@ class Eplayer extends HTMLElement {
           margin:-20px 0 0 -20px;
           width: 40px;
           height: 40px;
-          box-shadow: 0px 2px rgba(255,255,255,.8);
+          box-shadow: 2px 0px rgba(255,255,255,.6);
           border-radius: 50%;
           animation: loading 1s linear infinite;
         }
