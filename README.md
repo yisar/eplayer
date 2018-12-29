@@ -18,6 +18,7 @@ yarn add eplayer -S
 
 ### Use
 1. 导入进来 js 文件，可以从 lib 目录获取
+
 目前 web-components 原生支持度是在太差，尤其是国内各种奇葩浏览器（搜狗、QQ等），需要引入 polyfill
 ```html
 <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js"></script>
@@ -56,6 +57,9 @@ e-player {
 ```html
 <e-player src="./001.m3u8" type="hls"></e-player>
 ```
+另外，关于移动端，国产的手机浏览器太奇葩，不打算做兼容啦
+
+建议使用默认播放器，然后通过修改 video 的样式……有时间我会出一个移动端兼容方案……
 
 #### development
 

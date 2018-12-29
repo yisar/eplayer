@@ -89,7 +89,7 @@ class Eplayer extends HTMLElement {
       this.$('.ep-video').style.bottom = 25 + 'px'
     }, 5000)
   }
-  end() {
+  ended() {
     this.$('.is-play').classList.remove('ep-pause')
     this.$('.is-play').classList.add('ep-play')
   }
