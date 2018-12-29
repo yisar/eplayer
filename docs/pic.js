@@ -102,6 +102,6 @@ var random_images_array = ["1363382418078.png",
 path = 'https://catbox.moe/pictures/qts/';
 var num = Math.floor( Math.random() * random_images_array.length );
 var img = random_images_array[ num ];
-var imgStr = '<img src="' + path + img + '" alt="cute grill">';
+var imgStr = '<img src="' + path + img + '" style="position: absolute;bottom: 0;right: 0;">';
 
 document.write(imgStr); document.close();
