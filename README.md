@@ -17,7 +17,8 @@ yarn add eplayer -S
 ```
 
 ### Use
-1. 导入进来 js 文件，可以从 lib 目录获取，如果需要支持国产奇葩浏览器，需要同时引入 polyfill
+1. 导入进来 js 文件，可以从 lib 目录获取
+目前 web-components 原生支持度是在太差，尤其是国内各种奇葩浏览器（搜狗、QQ等），需要引入 polyfill
 ```html
 <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js"></script>
 <script src="./eplayer.js"></script>
