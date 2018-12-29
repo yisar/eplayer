@@ -6,18 +6,10 @@ class Eplayer extends HTMLElement {
     super()
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
-    if (this.type === 'hls') this.hls()
     this.init()
   }
   waiting() {
     this.$('.loading').style.display = 'block'
-  }
-  hls() {
-    if (Hls.isSupported()) {
-      let hls = new Hls()
-      hls.loadSource(this.src)
-      hls.attachMedia(this)
-    }
   }
   canplay() {
     this.$('.loading').style.display = 'none'
@@ -270,9 +262,7 @@ class Eplayer extends HTMLElement {
       </style>
       <div class="eplayer">
         <video id="video">
-          <source src="${this.src}" type="video/${
-      this.type ? this.type : 'mp4'
-    }">
+          <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
         </video>
         <div class="controls" style="bottom:-45px">
           <div class="progress">
