@@ -8,7 +8,7 @@
   </head>
   <body>
     <style>
-      body{
+      body {
         background: url(https://catbox.moe/bgs/texture3.png);
       }
       .wrapper {
@@ -16,9 +16,37 @@
         margin: 100px auto;
         height: 450px;
       }
+      a {
+        padding: 5px;
+        display: block;
+        width: 100%;
+        text-decoration: none;
+        color: #fff;
+        text-align: center;
+        margin-top: 5px;
+        box-sizing: border-box;
+      }
+      .wrapper a:nth-child(3) {
+        background: #000;
+      }
+      .wrapper a:nth-child(2) {
+        margin-top: 30px;
+        background: #1ea6e9;
+      }
+      .wrapper a:nth-child(4) {
+        background: #00db08;
+      }
     </style>
     <div class="wrapper">
-      <e-player src="https://api.dogecloud.com/player/get.m3u8?vcode=6b001ac5f0560207&userId=1&vtype=10&ext=.m3u8" type="hls"></e-player>
+      <e-player
+        src="https://api.dogecloud.com/player/get.m3u8?vcode=6b001ac5f0560207&userId=1&vtype=10&ext=.m3u8"
+        type="hls"
+      ></e-player>
+      <a href="https://github.com/132yse/eplayer">github</a>
+      <a href="https://github.com/132yse/eplayer/blob/master/README.md"
+        >README</a
+      >
+      <a href="https://www.clicli.top">clicli.us</a>
     </div>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
