@@ -40,10 +40,12 @@ class Eplayer extends HTMLElement {
   volume() {
     if (this.video.muted) {
       this.video.muted = false
+      setVolume(this.video.volume * 10, this.$('.line'))
       this.$('.is-volume').classList.remove('ep-volume-off')
       this.$('.is-volume').classList.add('ep-volume')
     } else {
       this.video.muted = true
+      setVolume(0, this.$('.line'))
       this.$('.is-volume').classList.remove('ep-volume')
       this.$('.is-volume').classList.add('ep-volume-off')
     }
@@ -78,13 +80,13 @@ class Eplayer extends HTMLElement {
   }
   move(e) {
     let offset = e.clientX - this.disX
-    if (offset < R) offset = R
+    if (offset < 0) offset = 0
     if (offset > this.$('.progress').clientWidth + R)
       offset = this.$('.progress').clientWidth + R
-    this.$('.current').style.width = offset - R + 'px'
-    this.$('.dot').style.left = offset + 'px'
+    this.$('.current').style.width = offset + 'px'
+    this.$('.dot').style.left = offset + R + 'px'
     this.video.currentTime =
-      (offset / (this.$('.progress').clientWidth + R)) * this.video.duration
+      (offset / this.$('.progress').clientWidth) * this.video.duration
   }
   alow() {
     clearTimeout(this.timer)
