@@ -46,7 +46,7 @@ e-player {
 }
 ```
 
-如果，需要支持 `m3u8` 和 `flv`，需要先引入 `hls.js` 和 `flv.js`
+4. 原生支持 `mp4` 和 `mkv` ,如果需要支持 `m3u8` 和 `flv`，需要先引入 `hls.js` 和 `flv.js`
 
 这两个文件太大，建议手动 gzip
 ```html
