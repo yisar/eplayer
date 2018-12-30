@@ -7,16 +7,27 @@ class Eplayer extends HTMLElement {
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
     this.init()
-    if (this.type === 'hls') this.hls()
+    this.stream()
   }
   waiting() {
     this.$('.loading').style.display = 'block'
   }
-  hls() {
-    if (Hls.isSupported()) {
-      let hls = new Hls()
-      hls.loadSource(this.src)
-      hls.attachMedia(this.video)
+  stream() {
+    switch (this.type) {
+      case 'hls':
+        if (Hls.isSupported()) {
+          let hls = new Hls()
+          hls.loadSource(this.src)
+          hls.attachMedia(this.video)
+        }
+        break
+      case 'flv':
+        if (flvjs.isSupported()) {
+          let flvPlayer = flvjs.createPlayer({ type: 'flv', url: this.src })
+          flvPlayer.attachMediaElement(this.video)
+          flvPlayer.load()
+        }
+        break
     }
   }
   canplay() {
