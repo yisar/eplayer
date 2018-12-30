@@ -83,7 +83,7 @@ class Eplayer extends HTMLElement {
   }
   down(e) {
     this.disX = e.clientX - this.$('.dot').offsetLeft
-    document.onmousemove = e => this.move(e)
+    setTimeout((document.onmousemove = e => this.move(e)), 30)
     document.onmouseup = () => {
       document.onmousemove = null
       document.onmouseup = null
