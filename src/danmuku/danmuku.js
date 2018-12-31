@@ -73,16 +73,19 @@ class Danmuku {
   }
 }
 
-function Danmu(danmu, vm) {
-  this.danmu = danmu
-  this.value = danmu.value
-  this.time = danmu.time
-  this.vm = vm
-  this.init = () => {
-    this.opcity = this.danmu.opcity || vm.opcity
-    this.color = this.danmu.color || vm.color
-    this.fontSize = this.danmu.fontSize || vm.fontSize
-    this.speed = this.danmu.speed || vm.speed
+class Danmu {
+  constructor(danmu, vm) {
+    this.danmu = danmu
+    this.value = danmu.value
+    this.time = danmu.time
+    this.vm = vm
+  }
+
+  init() {
+    this.opcity = this.danmu.opcity || this.vm.opcity
+    this.color = this.danmu.color || this.vm.color
+    this.fontSize = this.danmu.fontSize || this.vm.fontSize
+    this.speed = this.danmu.speed || this.vm.speed
 
     let span = document.createElement('span')
     span.innerText = this.value
@@ -101,7 +104,7 @@ function Danmu(danmu, vm) {
       this.y = this.vm.canvas.height - this.fontSize
   }
 
-  this.render = () => {
+  render() {
     this.vm.context.font = this.fontSize + 'px "微软雅黑"'
     this.vm.context.fillStyle = this.color
     this.vm.context.fillText(this.value, this.x, this.y)
