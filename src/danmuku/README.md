@@ -1,10 +1,17 @@
 ## danmuku.js
 
+### Install
+```
+yarn add danmu
+```
+
 ### Use
 
 ```javascript
+import Danmu from 'danmu'
+
 let data = [{ value: '爱死这破站啦::>_<::', time: 0, color: '#fff' }]
-let dm = new Danmuku(canvas, video, data)
+let dm = new Danmu(canvas, video, data)
 // 开飞
 dm.play()
 // 暂停

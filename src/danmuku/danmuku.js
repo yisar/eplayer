@@ -9,7 +9,6 @@ class Danmuku {
       color: '#fff',
       fontSize: 20,
       speed: 2,
-      opcity: 0.3,
       data: []
     }
     Object.assign(this, defaultOpts, { data })
@@ -82,7 +81,6 @@ class Danmu {
   }
 
   init() {
-    this.opcity = this.danmu.opcity || this.vm.opcity
     this.color = this.danmu.color || this.vm.color
     this.fontSize = this.danmu.fontSize || this.vm.fontSize
     this.speed = this.danmu.speed || this.vm.speed
@@ -110,3 +108,5 @@ class Danmu {
     this.vm.context.fillText(this.value, this.x, this.y)
   }
 }
+
+export default Danmuku
