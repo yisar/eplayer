@@ -16,7 +16,7 @@
       }
       video {
         width: 100%;
-        height: 100%
+        height: 100%;
       }
       canvas {
         position: absolute;
@@ -33,7 +33,7 @@
     <!-- <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="./src/eplayer.js"></script> -->
-    <script src="./src/danmu/danmu.js"></script>
+    <script src="./src/danmuku/danmuku.js"></script>
 
     <script>
       let canvas = document.getElementById('danmu')
@@ -43,7 +43,12 @@
         { value: '哈哈哈', time: 3 },
         { value: '嘿嘿嘿', time: 20 }
       ]
-      new Danmu(canvas, video, data)
+      let danmuku = new Danmuku(canvas, video, data)
+
+      video.addEventListener('play', function() {
+        danmuku.pause = true
+        danmuku.render()
+      })
     </script>
   </body>
 </html>

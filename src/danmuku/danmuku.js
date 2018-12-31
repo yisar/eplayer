@@ -15,7 +15,9 @@ class Danmuku {
     Object.assign(this, defaultOpts, { data })
 
     this.pause = true
-    this.danmuku = this.data.map(danmu => new Dnamu(danmu, this))
+    this.danmuku = this.data.map(danmu => new Danmu(danmu, this))
+
+    console.log(this.danmuku)
 
     this.render()
   }
@@ -32,10 +34,15 @@ class Danmuku {
     let once = true
     let cTime = this.video.currentTime
     this.danmuku.forEach(danmu => {
-      if (danmu.time >= cTime) {
+      if (danmu.flag && danmu.time >= cTime) {
         if (once) {
           danmu.init()
           once = false
+        }
+        danmu.x -= danmu.speed
+        danmu.render()
+        if (danmu.x <= danmu.width * -1) {
+          danmu.flag = true
         }
       }
     })
@@ -51,6 +58,7 @@ function Danmu(danmu, vm) {
     this.opcity = this.danmu.opcity || vm.opcity
     this.color = this.danmu.color || vm.color
     this.fontSize = this.danmu.fontSize || vm.fontSize
+    this.speed = this.danmu.speed || vm.speed
 
     let span = document.createElement('span')
     span.innerText = this.value
@@ -60,11 +68,18 @@ function Danmu(danmu, vm) {
     this.width = span.clientWidth
     document.body.removeChild(span)
 
-    this.x = this.ctx.canvas.width
-    this.y = this.ctx.canvas.height * Math.random()
+    this.x = this.vm.canvas.width
+    let r = this.vm.canvas.height * Math.random()
+    this.y = r - (r % this.fontSize)
 
     if (this.y < this.fontSize) this.y = this.fontSize
-    if (this.y > this.ctx.canvas.height - this.fontSize)
-      this.y = this.ctx.canvas.height - this.fontSize
+    if (this.y > this.vm.canvas.height - this.fontSize)
+      this.y = this.vm.canvas.height - this.fontSize
+  }
+
+  this.render = () => {
+    this.vm.context.font = this.fontSize + 'px "微软雅黑"'
+    this.vm.context.fillText = (this.value, this.x, this.y)
+
   }
 }
