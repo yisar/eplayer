@@ -87,13 +87,11 @@ class Eplayer extends HTMLElement {
   }
   down(e) {
     this.disX = e.clientX - this.$('.dot').offsetLeft
-    document.onmousemove = null
-    setTimeout((document.onmousemove = e => {
-      if(e) this.move(e)
-    }), 30)
-    document.onmouseup = () => {
-      document.onmousemove = null
-      document.onmouseup = null
+    this.onmousemove = null
+    this.onmousemove = e => this.move(e)
+    this.onmouseup = () => {
+      this.onmousemove = null
+      this.onmouseup = null
     }
   }
   move(e) {
@@ -105,6 +103,10 @@ class Eplayer extends HTMLElement {
     this.$('.dot').style.left = offset + R + 'px'
     this.video.currentTime =
       (offset / this.$('.progress').clientWidth) * this.video.duration
+    this.onmousemove = null
+    setTimeout(this.onmousemove = e => {
+      if(e) this.move(e)
+    }, 30)
   }
   alow() {
     clearTimeout(this.timer)
@@ -138,7 +140,6 @@ class Eplayer extends HTMLElement {
         this.webkitRequestFullScreen ||
         this.mozRequestFullScreen ||
         this.msRequestFullscreen
-
       return rfs.call(this)
     }
   }

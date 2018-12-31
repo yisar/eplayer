@@ -10,15 +10,39 @@
     <style>
       .wrapper {
         margin: 100px auto;
-        /* max-width: 800px;
-        max-height: 450px; */
-        width: 100%;
+        width: 800px;
+        height: 450px;
         background: #1f223f;
       }
+      video {
+        width: 100%;
+      }
+      canvas {
+        position: absolute;
+      }
     </style>
-    <div class="wrapper"><e-player src="./docs/001.mp4"></e-player></div>
-    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js"></script>
+    <div class="wrapper">
+      <canvas id="danmu"></canvas>
+      <video
+        src="https://gss3.baidu.com/6LZ0ej3k1Qd3ote6lo7D0j9wehsv/tieba-smallvideo/6_41c424f02d54e59cd51be66e80c17c86.mp4"
+        controls
+        id="video"
+      ></video>
+    </div>
+    <!-- <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script src="./src/eplayer.js"></script>
+    <script src="./src/eplayer.js"></script> -->
+    <script src="./src/danmu/danmu.js"></script>
+
+    <script>
+      let canvas = document.getElementById('danmu')
+      let video = document.getElementById('video')
+      let data = [
+        { value: '啦啦啦', speed: 2, color: '#fff', time: 0 },
+        { value: '哈哈哈', time: 3 },
+        { value: '嘿嘿嘿', time: 20 }
+      ]
+      new Danmu(canvas, video, data)
+    </script>
   </body>
 </html>
