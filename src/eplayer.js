@@ -87,7 +87,6 @@ class Eplayer extends HTMLElement {
   }
   down(e) {
     this.disX = e.clientX - this.$('.dot').offsetLeft
-    this.onmousemove = null
     this.onmousemove = e => this.move(e)
     this.onmouseup = () => {
       this.onmousemove = null
@@ -137,10 +136,10 @@ class Eplayer extends HTMLElement {
     } else {
       let rfs =
         this.requestFullScreen ||
-        this.webkitRequestFullScreen ||
         this.mozRequestFullScreen ||
+        this.webkitRequestFullScreen ||
         this.msRequestFullscreen
-      return rfs.call(this)
+      return rfs
     }
   }
   init() {

@@ -135,12 +135,13 @@ class Eplayer extends HTMLElement {
         document.msExitFullscreen()
       }
     } else {
+      let el = this.$('.eplayer')
       let rfs =
-        this.requestFullScreen ||
-        this.webkitRequestFullScreen ||
-        this.mozRequestFullScreen ||
-        this.msRequestFullscreen
-      return rfs.call(this)
+        el.requestFullScreen ||
+        el.webkitRequestFullScreen ||
+        el.mozRequestFullScreen ||
+        el.msRequestFullscreen
+      return rfs.call(el)
     }
   }
   init() {
