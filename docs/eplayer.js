@@ -359,13 +359,8 @@ class Eplayer extends HTMLElement {
 
   minit() {
     let html = `
-    <style>
-      video{
-        width:100%
-      }
-    </style>
     <div class="eplayer">
-      <video id="video" controls controlslist="nodownload">
+      <video id="video" controls controlslist="nodownload" style="width:100%">
         <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
       </video>
     </div>
