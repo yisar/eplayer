@@ -15,7 +15,7 @@ class Danmuku {
     Object.assign(this, defaultOpts, { data })
 
     this.pause = true
-    this.danmuku = this.data.map(danmu => new Dnamu(danmu))
+    this.danmuku = this.data.map(danmu => new Dnamu(danmu, this))
 
     this.render()
   }
@@ -42,8 +42,29 @@ class Danmuku {
   }
 }
 
-function Danmu(danmu) {
+function Danmu(danmu, vm) {
   this.danmu = danmu
   this.value = danmu.value
   this.time = danmu.time
+  this.vm = vm
+  this.init = () => {
+    this.opcity = this.danmu.opcity || vm.opcity
+    this.color = this.danmu.color || vm.color
+    this.fontSize = this.danmu.fontSize || vm.fontSize
+
+    let span = document.createElement('span')
+    span.innerText = this.value
+    span.style.font = this.fontSize + 'px "微软雅黑"'
+    span.style.position = 'absolute'
+    document.body.appendChild(span)
+    this.width = span.clientWidth
+    document.body.removeChild(span)
+
+    this.x = this.ctx.canvas.width
+    this.y = this.ctx.canvas.height * Math.random()
+
+    if (this.y < this.fontSize) this.y = this.fontSize
+    if (this.y > this.ctx.canvas.height - this.fontSize)
+      this.y = this.ctx.canvas.height - this.fontSize
+  }
 }
