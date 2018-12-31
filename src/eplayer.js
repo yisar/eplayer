@@ -6,7 +6,11 @@ class Eplayer extends HTMLElement {
     super()
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
-    this.init()
+    if (isMobile()) {
+      this.minit()
+    } else {
+      this.init()
+    }
     this.stream()
   }
   waiting() {
@@ -327,10 +331,13 @@ class Eplayer extends HTMLElement {
     this.attachShadow({
       mode: 'open'
     }).appendChild(template.content.cloneNode(true))
+    this.dom()
+  }
+
+  dom() {
     this.video = this.$('video')
     this.video.volume = 0.5
     setVolume(this.video.volume * 10, this.$('.line'))
-
     this.$('.is-volume').onclick = () => this.volume()
     this.$('.line').forEach((item, index) => {
       item.onclick = () => {
@@ -348,6 +355,59 @@ class Eplayer extends HTMLElement {
     this.$('.ep-full').onclick = () => this.full()
     this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
     this.video.onended = () => this.ended()
+  }
+
+  minit() {
+    let html = `
+    <style>
+      video{
+        width:100%
+      }
+      video::-webkit-media-controls{
+        overflow:hidden;
+        color:#fff!important;
+      }
+      video::-webkit-media-controls-mute-button{
+        display:none
+      }
+      video::-webkit-media-controls-time-remaining-display{
+        display:none;
+      }
+      video::-webkit-media-controls-timeline{
+        padding: 0 70px 20px 50px;
+        position: relative;
+        top: -25px;
+      }
+      video::-webkit-media-controls-overlay-play-button{
+        opacity:0;
+        position: relative;
+        right: 15px;
+        color:#fff;
+      }
+      video::-webkit-media-controls-current-time-display{
+        font-size:12px;
+        position: relative;
+        text-align:right;
+        width: 30px;
+        left:-6px;
+      }
+      video::-webkit-media-controls-panel {
+        margin-bottom: -30px;
+        margin-right:-30px
+      }
+      video::-webkit-media-controls-fullscreen-button{
+        position:relative;
+        left:20px;
+      }
+    </style>
+    <div class="eplayer">
+      <video id="video" controls controlslist="nodownload">
+        <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
+      </video>
+    </div>
+  `
+    this.parentNode.innerHTML = html
+    this.video = document.getElementsByTagName('video')[0]
   }
 
   $(node) {
@@ -383,4 +443,8 @@ function isFullScreen() {
     document.mozIsFullScreen ||
     document.webkitIsFullScreen
   )
+}
+
+function isMobile() {
+  return 'ontouchend' in document.body
 }
