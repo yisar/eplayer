@@ -155,7 +155,7 @@ class Eplayer extends HTMLElement {
         .eplayer,video{
           height:100%;
           width:100%;
-          color:var(--icon,rgba(255,255,255,0.6));
+          color:var(--icons,rgba(255,255,255,0.6));
           font-size:12px;
         }
         .eplayer{
@@ -184,7 +184,7 @@ class Eplayer extends HTMLElement {
           align-items:center;
         }
         .epicon{
-          color:var(--icon,rgba(255,255,255,0.6));
+          color:var(--icons,rgba(255,255,255,0.6));
           padding:0 10px;
         }
         .epicon{
@@ -209,17 +209,17 @@ class Eplayer extends HTMLElement {
           width:4px;
           border-radius:4px;
           display: inline-block;
-          background: var(--icon,rgba(255,255,255,0.6));
+          background: var(--icons,rgba(255,255,255,0.6));
           height: 12px;
           transform:scaleX(0.7);
           transition: .3s;
         }
         .line:hover i{
           height:14px;
-          background:var(--corlor,#f13e7b);
+          background:var(--corlor,#00a1d6);
         }
         .active i{
-          background:var(--corlor,#f13e7b);
+          background:var(--corlor,#00a1d6);
         }
         .left{
           flex:1;
@@ -242,7 +242,7 @@ class Eplayer extends HTMLElement {
           background:rgba(255,255,255,.3);
         }
         .current{
-          background:var(--corlor,#f13e7b);
+          background:var(--corlor,#00a1d6);
         }
         .buffer{
           background:rgba(255,255,255,.5);
@@ -253,7 +253,7 @@ class Eplayer extends HTMLElement {
           bottom:39px;
           border-radius: 50%;
           display: block;
-          background:var(--corlor,#f13e7b);
+          background:var(--corlor,#00a1d6);
           padding: 4px;
           cursor:pointer;
           transition: .1s ease-out;
@@ -359,47 +359,6 @@ class Eplayer extends HTMLElement {
 
   minit() {
     let html = `
-    <style>
-      video{
-        width:100%
-      }
-      video::-webkit-media-controls{
-        overflow:hidden;
-        color:#fff!important;
-      }
-      video::-webkit-media-controls-mute-button{
-        display:none
-      }
-      video::-webkit-media-controls-time-remaining-display{
-        display:none;
-      }
-      video::-webkit-media-controls-timeline{
-        padding: 0 70px 20px 50px;
-        position: relative;
-        top: -25px;
-      }
-      video::-webkit-media-controls-overlay-play-button{
-        opacity:0;
-        position: relative;
-        right: 15px;
-        color:#fff;
-      }
-      video::-webkit-media-controls-current-time-display{
-        font-size:12px;
-        position: relative;
-        text-align:right;
-        width: 30px;
-        left:-6px;
-      }
-      video::-webkit-media-controls-panel {
-        margin-bottom: -30px;
-        margin-right:-30px
-      }
-      video::-webkit-media-controls-fullscreen-button{
-        position:relative;
-        left:20px;
-      }
-    </style>
     <div class="eplayer">
       <video id="video" controls controlslist="nodownload">
         <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">

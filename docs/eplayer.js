@@ -88,7 +88,9 @@ class Eplayer extends HTMLElement {
   down(e) {
     this.disX = e.clientX - this.$('.dot').offsetLeft
     document.onmousemove = null
-    setTimeout((document.onmousemove = e => this.move(e)), 30)
+    setTimeout((document.onmousemove = e => {
+      if(e) this.move(e)
+    }), 30)
     document.onmouseup = () => {
       document.onmousemove = null
       document.onmouseup = null
@@ -155,7 +157,7 @@ class Eplayer extends HTMLElement {
         .eplayer,video{
           height:100%;
           width:100%;
-          color:var(--icon,rgba(255,255,255,0.6));
+          color:var(--icons,rgba(255,255,255,0.6));
           font-size:12px;
         }
         .eplayer{
@@ -184,7 +186,7 @@ class Eplayer extends HTMLElement {
           align-items:center;
         }
         .epicon{
-          color:var(--icon,rgba(255,255,255,0.6));
+          color:var(--icons,rgba(255,255,255,0.6));
           padding:0 10px;
         }
         .epicon{
@@ -209,17 +211,17 @@ class Eplayer extends HTMLElement {
           width:4px;
           border-radius:4px;
           display: inline-block;
-          background: var(--icon,rgba(255,255,255,0.6));
+          background: var(--icons,rgba(255,255,255,0.6));
           height: 12px;
           transform:scaleX(0.7);
           transition: .3s;
         }
         .line:hover i{
           height:14px;
-          background:var(--corlor,#f13e7b);
+          background:var(--theme,#00a1d6);
         }
         .active i{
-          background:var(--corlor,#f13e7b);
+          background:var(--theme,#00a1d6);
         }
         .left{
           flex:1;
@@ -239,13 +241,13 @@ class Eplayer extends HTMLElement {
         }
         .bg{
           right:0;
-          background:rgba(255,255,255,.3);
+          background:var(--progress,rgba(255,255,255,.3));
         }
         .current{
-          background:var(--corlor,#f13e7b);
+          background:var(--theme,#00a1d6);
         }
         .buffer{
-          background:rgba(255,255,255,.5);
+          background:var(--buffer,rgba(255,255,255,.5));
         }
         .dot{
           position:absolute;
@@ -253,7 +255,7 @@ class Eplayer extends HTMLElement {
           bottom:39px;
           border-radius: 50%;
           display: block;
-          background:var(--corlor,#f13e7b);
+          background:var(--theme,#00a1d6);
           padding: 4px;
           cursor:pointer;
           transition: .1s ease-out;
@@ -282,7 +284,7 @@ class Eplayer extends HTMLElement {
           bottom: 25px;
           right: 20px;
           font-size:40px;
-          color:rgba(255,255,255,.6);
+          color:var(--icons,rgba(255,255,255,.6));
           cursor: pointer; 
         }
       </style>
