@@ -87,11 +87,11 @@ class Eplayer extends HTMLElement {
   }
   down(e) {
     this.disX = e.clientX - this.$('.dot').offsetLeft
-    document.onmousemove = null
-    setTimeout((document.onmousemove = e => this.move(e)), 30)
-    document.onmouseup = () => {
-      document.onmousemove = null
-      document.onmouseup = null
+    this.onmousemove = null
+    this.onmousemove = e => this.move(e)
+    this.onmouseup = () => {
+      this.onmousemove = null
+      this.onmouseup = null
     }
   }
   move(e) {
@@ -103,6 +103,10 @@ class Eplayer extends HTMLElement {
     this.$('.dot').style.left = offset + R + 'px'
     this.video.currentTime =
       (offset / this.$('.progress').clientWidth) * this.video.duration
+    this.onmousemove = null
+    setTimeout(this.onmousemove = e => {
+      if(e) this.move(e)
+    }, 30)
   }
   alow() {
     clearTimeout(this.timer)
@@ -136,7 +140,6 @@ class Eplayer extends HTMLElement {
         this.webkitRequestFullScreen ||
         this.mozRequestFullScreen ||
         this.msRequestFullscreen
-
       return rfs.call(this)
     }
   }
@@ -216,10 +219,10 @@ class Eplayer extends HTMLElement {
         }
         .line:hover i{
           height:14px;
-          background:var(--corlor,#00a1d6);
+          background:var(--theme,#00a1d6);
         }
         .active i{
-          background:var(--corlor,#00a1d6);
+          background:var(--theme,#00a1d6);
         }
         .left{
           flex:1;
@@ -239,13 +242,13 @@ class Eplayer extends HTMLElement {
         }
         .bg{
           right:0;
-          background:rgba(255,255,255,.3);
+          background:var(--progress,rgba(255,255,255,.3));
         }
         .current{
-          background:var(--corlor,#00a1d6);
+          background:var(--theme,#00a1d6);
         }
         .buffer{
-          background:rgba(255,255,255,.5);
+          background:var(--buffer,rgba(255,255,255,.5));
         }
         .dot{
           position:absolute;
@@ -253,7 +256,7 @@ class Eplayer extends HTMLElement {
           bottom:39px;
           border-radius: 50%;
           display: block;
-          background:var(--corlor,#00a1d6);
+          background:var(--theme,#00a1d6);
           padding: 4px;
           cursor:pointer;
           transition: .1s ease-out;
@@ -282,7 +285,7 @@ class Eplayer extends HTMLElement {
           bottom: 25px;
           right: 20px;
           font-size:40px;
-          color:rgba(255,255,255,.6);
+          color:var(--icons,rgba(255,255,255,.6));
           cursor: pointer; 
         }
       </style>
@@ -360,7 +363,7 @@ class Eplayer extends HTMLElement {
   minit() {
     let html = `
     <div class="eplayer">
-      <video id="video" controls controlslist="nodownload">
+      <video id="video" controls controlslist="nodownload" style="width:100%">
         <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
       </video>
     </div>
