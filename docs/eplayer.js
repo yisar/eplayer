@@ -363,42 +363,6 @@ class Eplayer extends HTMLElement {
       video{
         width:100%
       }
-      video::-webkit-media-controls{
-        overflow:hidden;
-        color:#fff!important;
-      }
-      video::-webkit-media-controls-mute-button{
-        display:none
-      }
-      video::-webkit-media-controls-time-remaining-display{
-        display:none;
-      }
-      video::-webkit-media-controls-timeline{
-        padding: 0 70px 20px 50px;
-        position: relative;
-        top: -25px;
-      }
-      video::-webkit-media-controls-overlay-play-button{
-        opacity:0;
-        position: relative;
-        right: 15px;
-        color:#fff;
-      }
-      video::-webkit-media-controls-current-time-display{
-        font-size:12px;
-        position: relative;
-        text-align:right;
-        width: 30px;
-        left:-6px;
-      }
-      video::-webkit-media-controls-panel {
-        margin-bottom: -30px;
-        margin-right:-30px
-      }
-      video::-webkit-media-controls-fullscreen-button{
-        position:relative;
-        left:20px;
-      }
     </style>
     <div class="eplayer">
       <video id="video" controls controlslist="nodownload">
