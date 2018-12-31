@@ -17,8 +17,6 @@ class Danmuku {
     this.pause = true
     this.danmuku = this.data.map(danmu => new Danmu(danmu, this))
 
-    console.log(this.danmuku)
-
     this.render()
   }
 
@@ -31,13 +29,12 @@ class Danmuku {
   }
 
   draw() {
-    let once = true
     let cTime = this.video.currentTime
     this.danmuku.forEach(danmu => {
-      if (danmu.flag && danmu.time >= cTime) {
-        if (once) {
+      if (!danmu.flag && danmu.time <= cTime) {
+        if (!danmu.once) {
           danmu.init()
-          once = false
+          danmu.once = true
         }
         danmu.x -= danmu.speed
         danmu.render()
@@ -79,7 +76,7 @@ function Danmu(danmu, vm) {
 
   this.render = () => {
     this.vm.context.font = this.fontSize + 'px "微软雅黑"'
-    this.vm.context.fillText = (this.value, this.x, this.y)
-
+    this.vm.context.fillStyle = this.color
+    this.vm.context.fillText(this.value, this.x, this.y)
   }
 }
