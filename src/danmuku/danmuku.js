@@ -14,7 +14,7 @@ class Danmuku {
     }
     Object.assign(this, defaultOpts, { data })
 
-    this.pause = true
+    this.paused = true
     this.danmuku = this.data.map(danmu => new Danmu(danmu, this))
 
     this.render()
@@ -23,7 +23,7 @@ class Danmuku {
   render() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.draw()
-    if (!this.pause) {
+    if (!this.paused) {
       requestAnimationFrame(this.render.bind(this))
     }
   }
@@ -34,6 +34,7 @@ class Danmuku {
       if (!danmu.flag && danmu.time <= cTime) {
         if (!danmu.once) {
           danmu.init()
+          danmu.oy = danmu.y
           danmu.once = true
         }
         danmu.x -= danmu.speed
@@ -41,6 +42,32 @@ class Danmuku {
         if (danmu.x <= danmu.width * -1) {
           danmu.flag = true
         }
+      }
+    })
+  }
+
+  add(danmu) {
+    this.danmuku.push(new Danmu(danmu, this))
+  }
+
+  play() {
+    this.paused = false
+    this.render()
+  }
+
+  pause() {
+    this.paused = true
+  }
+
+  reset() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    let cTime = this.video.currentTime
+    this.danmuku.forEach(danmu => {
+      danmu.flag = false
+      if (cTime < danmu.time) {
+        danmu.paused = false
+      } else {
+        danmu.flag = true
       }
     })
   }
