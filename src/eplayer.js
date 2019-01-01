@@ -1,5 +1,3 @@
-const FONTCDN = 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css'
-
 class Eplayer extends HTMLElement {
   constructor() {
     super()
@@ -142,12 +140,12 @@ class Eplayer extends HTMLElement {
   }
   init() {
     let link = document.createElement('link')
-    link.setAttribute('href', FONTCDN)
+    link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css')
     link.setAttribute('rel', 'stylesheet')
     document.head.appendChild(link)
     let html = `
       <style>
-        @import "${FONTCDN}";
+        @import "https://at.alicdn.com/t/font_836948_6lbb2iu59.css";
         *{
           padding:0;
           margin:0;
