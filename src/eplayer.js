@@ -14,7 +14,8 @@ class Eplayer extends HTMLElement {
     this.stream()
   }
   waiting() {
-    this.$('.loading').style.display = 'block'
+    this.$('.mark').classList.remove('playing')
+    this.$('.mark').classList.add('loading')
   }
   stream() {
     switch (this.type) {
@@ -35,20 +36,20 @@ class Eplayer extends HTMLElement {
     }
   }
   canplay() {
-    this.$('.loading').style.display = 'none'
+    this.$('.mark').classList.remove('loading')
+    this.$('.mark').classList.add('playing')
+    this.$('.playing').onclick = () => this.play()
     this.$('.total').innerHTML = getTimeStr(this.video.duration)
   }
   play() {
     if (this.video.paused) {
       this.video.play()
       this.$('.ep-video').style.display = 'none'
-      this.$('.is-play').classList.remove('ep-play')
-      this.$('.is-play').classList.add('ep-pause')
+      this.$('.is-play').classList.replace('ep-play','ep-pause')
     } else {
       this.video.pause()
       this.$('.ep-video').style.display = 'block'
-      this.$('.is-play').classList.remove('ep-pause')
-      this.$('.is-play').classList.add('ep-play')
+      this.$('.is-play').classList.replace('ep-pause','ep-play')
     }
     return false
   }
@@ -56,13 +57,11 @@ class Eplayer extends HTMLElement {
     if (this.video.muted) {
       this.video.muted = false
       setVolume(this.video.volume * 10, this.$('.line'))
-      this.$('.is-volume').classList.remove('ep-volume-off')
-      this.$('.is-volume').classList.add('ep-volume')
+      this.$('.is-volume').classList.replace('ep-volume-off', 'ep-volume')
     } else {
       this.video.muted = true
       setVolume(0, this.$('.line'))
-      this.$('.is-volume').classList.remove('ep-volume')
-      this.$('.is-volume').classList.add('ep-volume-off')
+      this.$('.is-volume').classList.replace('ep-volume', 'ep-volume-off')
     }
     return false
   }
@@ -78,7 +77,7 @@ class Eplayer extends HTMLElement {
       (this.video.currentTime / this.video.duration) * this.$('.bg').clientWidth
     this.$('.now').innerHTML = cTime
     this.$('.current').style.width = offset + 'px'
-    this.$('.dot').style.left = offset + R + 'px'
+    this.$('.dot').style.left = offset + 'px'
   }
   progress(e) {
     let offset = e.offsetX / this.$('.progress').offsetWidth
@@ -87,6 +86,7 @@ class Eplayer extends HTMLElement {
   }
   down(e) {
     this.disX = e.clientX - this.$('.dot').offsetLeft
+    this.onmousemove = null
     this.onmousemove = e => this.move(e)
     this.onmouseup = () => {
       this.onmousemove = null
@@ -96,16 +96,16 @@ class Eplayer extends HTMLElement {
   move(e) {
     let offset = e.clientX - this.disX
     if (offset < 0) offset = 0
-    if (offset > this.$('.progress').clientWidth + R)
-      offset = this.$('.progress').clientWidth + R
+    if (offset > this.$('.progress').clientWidth)
+      offset = this.$('.progress').clientWidth
     this.$('.current').style.width = offset + 'px'
-    this.$('.dot').style.left = offset + R + 'px'
+    this.$('.dot').style.left = offset + 'px'
     this.video.currentTime =
       (offset / this.$('.progress').clientWidth) * this.video.duration
     this.onmousemove = null
-    setTimeout(this.onmousemove = e => {
-      if(e) this.move(e)
-    }, 30)
+    setTimeout( this.onmousemove = e => {
+        if (e) this.move(e)
+      }, 30)
   }
   alow() {
     clearTimeout(this.timer)
@@ -119,8 +119,7 @@ class Eplayer extends HTMLElement {
     }, 5000)
   }
   ended() {
-    this.$('.is-play').classList.remove('ep-pause')
-    this.$('.is-play').classList.add('ep-play')
+    this.$('.is-play').classList.replace('ep-pause','ep-play')
   }
   full() {
     if (isFullScreen()) {
@@ -134,12 +133,13 @@ class Eplayer extends HTMLElement {
         document.msExitFullscreen()
       }
     } else {
+      let el = this.$('.eplayer')
       let rfs =
-        this.requestFullScreen ||
-        this.mozRequestFullScreen ||
-        this.webkitRequestFullScreen ||
-        this.msRequestFullscreen
-      return rfs
+        el.requestFullScreen ||
+        el.webkitRequestFullScreen ||
+        el.mozRequestFullScreen ||
+        el.msRequestFullscreen
+      return rfs.call(el)
     }
   }
   init() {
@@ -251,13 +251,14 @@ class Eplayer extends HTMLElement {
         }
         .dot{
           position:absolute;
-          left:10px;
+          left:0;
           bottom:39px;
           border-radius: 50%;
           display: block;
           background:var(--theme,#00a1d6);
           padding: 4px;
           cursor:pointer;
+          transform:translateX(6px);
           transition: .1s ease-out;
         }
         @keyframes loading{
@@ -267,6 +268,13 @@ class Eplayer extends HTMLElement {
           100%{
             transform: rotate(360deg);
           }  
+        }
+        .playing{
+          position: absolute;
+          top:0;
+          left:0;
+          right:0;
+          bottom:0;
         }
         .loading {
           position: absolute;
@@ -294,6 +302,7 @@ class Eplayer extends HTMLElement {
       this.type ? this.type : 'mp4'
     }">
         </video>
+        <div class="mark loading"></div>
         <div class="controls" style="bottom:-45px">
           <div class="progress">
             <b class="bg"></b>
@@ -323,8 +332,7 @@ class Eplayer extends HTMLElement {
             </div>
           </div>
         </div>
-        <i class="dot" style="left:4px;bottom:-45px"></i>
-        <div class="loading"></div>
+        <i class="dot" style="bottom:-45px"></i>
         <div class="epicon ep-video"></div>
       </div>
     `
