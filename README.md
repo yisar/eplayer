@@ -70,9 +70,9 @@ render() {
   return <e-player></e-player>
 }
 ```
-需要注意的是，它不会被 JSX 认作 vnode tree 中的孩子，所以对它的操作需要直接操作 dom。
+需要注意的是，它不会被 JSX 认作 vnode tree 中的孩子，所以对它的操作需要直接操作 dom
 
-为了解决这个问题，可以封装成 react 组件来使用：
+为了方便的使用 ref，可以封装成 react 组件来使用：
 ```Javascript
 function Eplayer() {
   return <e-player></e-player>
