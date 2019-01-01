@@ -84,12 +84,6 @@ function Eplayer() {
 
 目前会自动检测，移动端会自动替换为默认播放器，然后浏览器会自动替换 UI
 
-#### development
-
-```shell
-yarn start
-```
-
 #### Screenshot
 
 ![](https://ws1.sinaimg.cn/mw690/0065Zy9egy1fymn1nwo3ej30rq0fmtid.jpg)
