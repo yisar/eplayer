@@ -296,9 +296,7 @@ class Eplayer extends HTMLElement {
       </style>
       <div class="eplayer">
         <video id="video">
-          <source src="${this.src}" type="video/${
-      this.type ? this.type : 'mp4'
-    }">
+          <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
         </video>
         <div class="mark loading"></div>
         <div class="controls" style="bottom:-45px">
@@ -367,13 +365,11 @@ class Eplayer extends HTMLElement {
 
   minit() {
     let html = `
-    <div class="eplayer">
-      <video id="video" controls controlslist="nodownload" style="width:100%">
-        <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
-      </video>
-    </div>
+    <video id="video" controls controlslist="nodownload" style="width:100%">
+      <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
+    </video>
   `
-    this.parentNode.innerHTML = html
+    this.innerHTML = html
     this.video = document.getElementsByTagName('video')[0]
   }
 

@@ -296,9 +296,7 @@ class Eplayer extends HTMLElement {
       </style>
       <div class="eplayer">
         <video id="video">
-          <source src="${this.src}" type="video/${
-      this.type ? this.type : 'mp4'
-    }">
+          <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
         </video>
         <div class="mark loading"></div>
         <div class="controls" style="bottom:-45px">
@@ -367,11 +365,9 @@ class Eplayer extends HTMLElement {
 
   minit() {
     let html = `
-    <div class="eplayer">
-      <video id="video" controls controlslist="nodownload" style="width:100%">
-        <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
-      </video>
-    </div>
+    <video id="video" controls controlslist="nodownload" style="width:100%">
+      <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
+    </video>
   `
     this.innerHTML = html
     this.video = document.getElementsByTagName('video')[0]
@@ -384,7 +380,6 @@ class Eplayer extends HTMLElement {
 }
 
 customElements.define('e-player', Eplayer)
-export default Eplayer
 
 function getTimeStr(time) {
   let h = Math.floor(time / 3600)

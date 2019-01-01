@@ -11,11 +11,6 @@
 
 [clicli.us - C 站](https://www.clicli.us/)
 
-### Install
-```shell
-yarn add eplayer -S
-```
-
 ### Use
 1. 导入进来 js 文件，可以从 lib 目录获取
 
@@ -45,8 +40,8 @@ e-player {
   --icons:rgba(255,255,255,.6)
 }
 ```
-
-4. 原生支持 `mp4` 和 `mkv` ,如果需要支持 `m3u8` 和 `flv`，需要先引入 `hls.js` 和 `flv.js`
+#### hls & flv
+原生支持 `mp4` 和 `mkv` ,如果需要支持 `m3u8` 和 `flv`，需要先引入 `hls.js` 和 `flv.js`
 
 这两个文件太大，建议手动 gzip
 ```html
@@ -57,7 +52,36 @@ e-player {
 ```html
 <e-player src="./001.m3u8" type="hls"></e-player>
 ```
-另外，关于移动端，国产的手机浏览器太奇葩，没有好的兼容方法
+
+#### Vue
+vue 默认是不支持 web-components 的，它无法主动判断含有`-`的是 vue 组件还是 web 组件
+
+所以需要手动配置，忽略掉`e-player`
+```JavaScript
+Vue.config.ignoredElements = [
+  'e-player'
+]
+```
+
+#### React 
+react 直接支持 web-components，直接在 render 函数中`e-player`标签
+```Javascript
+render() {
+    return <e-player></e-player>;
+  }
+```
+需要注意的是，它不会被 JSX 认作 vnode tree 中的孩子，所以对它的操作需要直接操作 dom。
+
+为了解决这个问题，可以封装成 react 组件来使用：
+```Javascript
+function Eplayer() {
+  return <e-player></e-player>
+}
+```
+#### 移动端
+
+关于移动端，国产的手机浏览器太奇葩，没有好的兼容方法
+
 目前会自动检测，移动端会自动替换为默认播放器，然后浏览器会自动替换 UI
 
 #### development
