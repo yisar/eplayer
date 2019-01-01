@@ -1,5 +1,4 @@
 const FONTCDN = 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css'
-const R = 4
 
 class Eplayer extends HTMLElement {
   constructor() {
@@ -86,11 +85,10 @@ class Eplayer extends HTMLElement {
   }
   down(e) {
     this.disX = e.clientX - this.$('.dot').offsetLeft
-    this.onmousemove = null
-    this.onmousemove = e => this.move(e)
-    this.onmouseup = () => {
-      this.onmousemove = null
-      this.onmouseup = null
+    document.onmousemove = e => this.move(e)
+    document.onmouseup = () => {
+      document.onmousemove = null
+      document.onmouseup = null
     }
   }
   move(e) {
@@ -102,8 +100,8 @@ class Eplayer extends HTMLElement {
     this.$('.dot').style.left = offset + 'px'
     this.video.currentTime =
       (offset / this.$('.progress').clientWidth) * this.video.duration
-    this.onmousemove = null
-    setTimeout( this.onmousemove = e => {
+    document.onmousemove = null
+    setTimeout( document.onmousemove = e => {
         if (e) this.move(e)
       }, 30)
   }
