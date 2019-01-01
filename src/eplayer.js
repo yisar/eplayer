@@ -373,7 +373,7 @@ class Eplayer extends HTMLElement {
       </video>
     </div>
   `
-    this.parentNode.innerHTML = html
+    this.innerHTML = html
     this.video = document.getElementsByTagName('video')[0]
   }
 
