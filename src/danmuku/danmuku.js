@@ -33,7 +33,6 @@ class Danmuku {
       if (!danmu.flag && danmu.time <= cTime) {
         if (!danmu.once) {
           danmu.init()
-          danmu.oy = danmu.y
           danmu.once = true
         }
         danmu.x -= danmu.speed
