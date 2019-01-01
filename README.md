@@ -87,4 +87,4 @@ function Eplayer() {
 
 #### Screenshot
 
-![](https://ws1.sinaimg.cn/large/0065Zy9egy1fyrexxl5xkj30rq0flk1i.jpg)
+![](https://ws1.sinaimg.cn/mw690/0065Zy9egy1fyrexxl5xkj30rq0flk1i.jpg)
