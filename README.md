@@ -62,6 +62,10 @@ Vue.config.ignoredElements = [
   'e-player'
 ]
 ```
+然后，同样需要引入上面的几个文件，然后 bind 一下 src 和 type
+```html
+<e-player :src="url" :type="type"></e-player>
+```
 可以封装成 vue 组件来使用：[vue-web-components-wrapper](https://github.com/vuejs/vue-web-component-wrapper)
 
 #### React 
@@ -72,7 +76,7 @@ react 直接支持 web-components，直接在 render 函数中`e-player`标签
 通常为了方便的使用 ref，会封装成 react 组件来使用：
 ```Javascript
 function Eplayer() {
-  return <e-player></e-player>
+  return <e-player src={this.state.src} type={this.state.type}></e-player>
 }
 ```
 #### 移动端

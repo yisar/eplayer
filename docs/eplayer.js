@@ -6,10 +6,22 @@ class Eplayer extends HTMLElement {
     isMobile() ? this.minit() : this.init()
     this.stream()
   }
+
+  static get observedAttributes() {
+    return ['src', 'type']
+  }
+
+  attributeChangedCallback(name, oldVal, newVal) {
+    if (name === 'src') this.$('.source').src = newVal
+    if (name === 'type') this.$('.source').type = `video/${newVal}`
+    this.video.load()
+  }
+
   waiting() {
     this.$('.mark').classList.remove('playing')
     this.$('.mark').classList.add('loading')
   }
+
   stream() {
     switch (this.type) {
       case 'hls':
@@ -21,13 +33,14 @@ class Eplayer extends HTMLElement {
         break
       case 'flv':
         if (flvjs.isSupported()) {
-          let flvPlayer = flvjs.createPlayer({ type: 'flv', url: this.src })
+          let flvPlayer = flvjs.createPlayer({type: 'flv', url: this.src})
           flvPlayer.attachMediaElement(this.video)
           flvPlayer.load()
         }
         break
     }
   }
+
   canplay() {
     this.$('.mark').classList.remove('loading')
     this.$('.mark').classList.add('playing')
@@ -39,6 +52,7 @@ class Eplayer extends HTMLElement {
     }
     this.$('.total').innerHTML = getTimeStr(this.video.duration)
   }
+
   play() {
     if (this.video.paused) {
       this.video.play()
@@ -51,6 +65,7 @@ class Eplayer extends HTMLElement {
     }
     return false
   }
+
   volume() {
     if (this.video.muted) {
       this.video.muted = false
@@ -63,6 +78,7 @@ class Eplayer extends HTMLElement {
     }
     return false
   }
+
   update() {
     let cTime = getTimeStr(this.video.currentTime)
     if (this.video.buffered.length) {
@@ -77,11 +93,13 @@ class Eplayer extends HTMLElement {
     this.$('.current').style.width = offset + 'px'
     this.$('.dot').style.left = offset + 'px'
   }
+
   progress(e) {
     let offset = e.offsetX / this.$('.progress').offsetWidth
     this.video.currentTime = this.video.duration * offset
     return false
   }
+
   down(e) {
     this.disX = e.clientX - this.$('.dot').offsetLeft
     document.onmousemove = e => this.move(e)
@@ -90,6 +108,7 @@ class Eplayer extends HTMLElement {
       document.onmouseup = null
     }
   }
+
   move(e) {
     let offset = e.clientX - this.disX
     if (offset < 0) offset = 0
@@ -102,8 +121,9 @@ class Eplayer extends HTMLElement {
     document.onmousemove = null
     setTimeout(document.onmousemove = e => {
       if (e) this.move(e)
-    },30)
+    }, 30)
   }
+
   alow() {
     clearTimeout(this.timer)
     this.$('.controls').style.bottom = 0
@@ -115,9 +135,11 @@ class Eplayer extends HTMLElement {
       this.$('.ep-video').style.bottom = 25 + 'px'
     }, 5000)
   }
+
   ended() {
     this.$('.is-play').classList.replace('ep-pause', 'ep-play')
   }
+
   full() {
     if (isFullScreen()) {
       if (document.exitFullscreen) {
@@ -139,9 +161,10 @@ class Eplayer extends HTMLElement {
       return rfs.call(el)
     }
   }
+
   init() {
     let link = document.createElement('link')
-    link.setAttribute('href','https://at.alicdn.com/t/font_836948_6lbb2iu59.css')
+    link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css')
     link.setAttribute('rel', 'stylesheet')
     document.head.appendChild(link)
     let html = `
@@ -270,6 +293,7 @@ class Eplayer extends HTMLElement {
         }
         .playing{
           position: absolute;
+          z-index: 1;
           top:0;
           left:0;
           right:0;
@@ -277,6 +301,7 @@ class Eplayer extends HTMLElement {
         }
         .loading {
           position: absolute;
+          z-index: 1;
           top: 50%;
           left: 50%;
           margin:-20px 0 0 -20px;
@@ -295,11 +320,12 @@ class Eplayer extends HTMLElement {
           color:var(--icons,rgba(255,255,255,.6));
           z-index:1;
           cursor: pointer; 
+          z-index: 1;
         }
       </style>
       <div class="eplayer">
         <video id="video">
-          <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}">
+          <source src="${this.src}" type="video/${this.type ? this.type : 'mp4'}" class="source">
         </video>
         <div class="mark loading"></div>
         <div class="controls" style="bottom:-45px">
@@ -364,7 +390,7 @@ class Eplayer extends HTMLElement {
     this.$('.ep-full').onclick = () => this.full()
     this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
     this.video.onended = () => this.ended()
-    this.$('.mark').ondblclick = () => { 
+    this.$('.mark').ondblclick = () => {
       clearTimeout(this.timer)
       this.full()
     }
