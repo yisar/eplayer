@@ -31,7 +31,12 @@ class Eplayer extends HTMLElement {
   canplay() {
     this.$('.mark').classList.remove('loading')
     this.$('.mark').classList.add('playing')
-    this.$('.playing').onclick = () => this.play()
+    this.$('.playing').onclick = () => {
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        this.play()
+      }, 200)
+    }
     this.$('.total').innerHTML = getTimeStr(this.video.duration)
   }
   play() {
@@ -356,9 +361,13 @@ class Eplayer extends HTMLElement {
     this.video.ontimeupdate = () => this.update()
 
     this.$('.eplayer').onmousemove = () => this.alow()
-    this.$('.ep-full').onclick = this.$('.mark').ondblclick = () => this.full()
+    this.$('.ep-full').onclick = () => this.full()
     this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
     this.video.onended = () => this.ended()
+    this.$('.mark').ondblclick = () => { 
+      clearTimeout(this.timer)
+      this.full()
+    }
   }
 
   minit() {
