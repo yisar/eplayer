@@ -66,14 +66,10 @@ Vue.config.ignoredElements = [
 
 #### React 
 react 直接支持 web-components，直接在 render 函数中`e-player`标签
-```Javascript
-render() {
-  return <e-player></e-player>
-}
-```
+
 同样的，JSX 并不把它当作 vnode tree 的孩子，需要手动操作 dom
 
-为了方便的使用 ref，可以封装成 react 组件来使用：
+通常为了方便的使用 ref，会封装成 react 组件来使用：
 ```Javascript
 function Eplayer() {
   return <e-player></e-player>
