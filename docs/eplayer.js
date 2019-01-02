@@ -3,11 +3,7 @@ class Eplayer extends HTMLElement {
     super()
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
-    if (isMobile()) {
-      this.minit()
-    } else {
-      this.init()
-    }
+    isMobile() ? this.minit() : this.init()
     this.stream()
   }
   waiting() {
@@ -42,11 +38,11 @@ class Eplayer extends HTMLElement {
     if (this.video.paused) {
       this.video.play()
       this.$('.ep-video').style.display = 'none'
-      this.$('.is-play').classList.replace('ep-play','ep-pause')
+      this.$('.is-play').classList.replace('ep-play', 'ep-pause')
     } else {
       this.video.pause()
       this.$('.ep-video').style.display = 'block'
-      this.$('.is-play').classList.replace('ep-pause','ep-play')
+      this.$('.is-play').classList.replace('ep-pause', 'ep-play')
     }
     return false
   }
@@ -99,9 +95,9 @@ class Eplayer extends HTMLElement {
     this.video.currentTime =
       (offset / this.$('.progress').clientWidth) * this.video.duration
     document.onmousemove = null
-    setTimeout( document.onmousemove = e => {
-        if (e) this.move(e)
-      }, 30)
+    setTimeout(document.onmousemove = e => {
+      if (e) this.move(e)
+    },30)
   }
   alow() {
     clearTimeout(this.timer)
@@ -115,7 +111,7 @@ class Eplayer extends HTMLElement {
     }, 5000)
   }
   ended() {
-    this.$('.is-play').classList.replace('ep-pause','ep-play')
+    this.$('.is-play').classList.replace('ep-pause', 'ep-play')
   }
   full() {
     if (isFullScreen()) {
@@ -140,7 +136,7 @@ class Eplayer extends HTMLElement {
   }
   init() {
     let link = document.createElement('link')
-    link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css')
+    link.setAttribute('href','https://at.alicdn.com/t/font_836948_6lbb2iu59.css')
     link.setAttribute('rel', 'stylesheet')
     document.head.appendChild(link)
     let html = `
@@ -169,7 +165,8 @@ class Eplayer extends HTMLElement {
           padding:10px;
           background:linear-gradient(transparent,rgba(0,0,0,.5));
           cursor: pointer; 
-          transition: .3s ease-out;      
+          transition: .3s ease-out;   
+          z-index:1;   
         }
         .progress{
           position:relative;
@@ -255,6 +252,7 @@ class Eplayer extends HTMLElement {
           padding: 4px;
           cursor:pointer;
           transform:translateX(6px);
+          z-index:1;
           transition: .1s ease-out;
         }
         @keyframes loading{
@@ -279,6 +277,7 @@ class Eplayer extends HTMLElement {
           margin:-20px 0 0 -20px;
           width: 40px;
           height: 40px;
+          z-index:1;
           box-shadow: 2px 0px rgba(255,255,255,.6);
           border-radius: 50%;
           animation: loading 1s linear infinite;
@@ -289,6 +288,7 @@ class Eplayer extends HTMLElement {
           right: 20px;
           font-size:40px;
           color:var(--icons,rgba(255,255,255,.6));
+          z-index:1;
           cursor: pointer; 
         }
       </style>
@@ -356,7 +356,7 @@ class Eplayer extends HTMLElement {
     this.video.ontimeupdate = () => this.update()
 
     this.$('.eplayer').onmousemove = () => this.alow()
-    this.$('.ep-full').onclick = () => this.full()
+    this.$('.ep-full').onclick = this.$('.mark').ondblclick = () => this.full()
     this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
     this.video.onended = () => this.ended()
   }
@@ -399,11 +399,7 @@ function setVolume(index, node) {
 }
 
 function isFullScreen() {
-  return (
-    document.isFullScreen ||
-    document.mozIsFullScreen ||
-    document.webkitIsFullScreen
-  )
+  return document.isFullScreen || document.webkitIsFullScreen || document.mozIsFullScreen
 }
 
 function isMobile() {
