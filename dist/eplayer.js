@@ -439,4 +439,3 @@ function isFullScreen() {
     document.mozIsFullScreen
   )
 }
-
