@@ -106,13 +106,14 @@ react 直接支持 web-components，直接在 render 函数中`e-player`标签
 通常为了方便的使用 ref，会封装成 react 组件来使用：
 
 ```Javascript
-function Eplayer() {
-  return <e-player src={this.state.src} type={this.state.type}></e-player>
+function Eplayer(props) {
+  return <e-player src={props.src} type={props.type}></e-player>
 }
 ```
 
 #### ssr
-通常 ssr 需要 exl
+ssr 服务端没有 web-components 的 API，通常 web-components 的 ssr 都会通过一些库去模拟这些 API
+eplayer 不推荐这么做，请直接和正常的 html 引入方式一样，引入 cdn
 
 #### 移动端
 
