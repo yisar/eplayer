@@ -120,8 +120,10 @@ class Eplayer extends HTMLElement {
       offset = this.$(".progress").clientWidth
     this.$(".current").style.width = offset + "px"
     this.$(".dot").style.left = offset + "px"
+    console.log(this.video.duration)
     this.video.currentTime =
       (offset / this.$(".progress").clientWidth) * this.video.duration
+      console.log(this.video.currentTime)
     document.onmousemove = null
     setTimeout(document.onmousemove = e => {
         if (e) this.move(e)
