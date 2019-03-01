@@ -46,9 +46,9 @@ e-player {
 }
 ```
 
-#### hls & flv
+#### hls
 
-原生支持 `mp4` 和 `mkv` ,如果需要支持 `m3u8` 和 `flv`，需要先引入 `hls.js`
+原生支持 `mp4` 和 `mkv` ,如果需要支持 `m3u8`，需要先引入 `hls.js`
 
 这两个文件太大，建议手动 gzip
 
@@ -58,18 +58,7 @@ e-player {
 已经放弃 `flv` 的支持，太古老的格式，兼容性极差
 
 ## Npm
-
-```
-npm i eplayer --save
-```
-
-注意，发布到 npm 的模块，只对外暴露了一个 Eplayer 类，需要自行 define customElements，并且是全局注册，只能注册一次
-
-```Javascript
-impport Eplayer from 'eplayer'
-
-customElements.define('e-player',Eplayer)
-```
+> 不推荐 npm install，请直接使用 cdn
 同样的，polyfill 和 hls.js 等仍然以 cdn 的方式加入
 
 这还没完，接着看：
