@@ -2,7 +2,6 @@ class Eplayer extends HTMLElement {
   constructor() {
     super()
     this.src = this.getAttribute('src')
-    this.type = this.src.includes('m3u8') ? 'mp4' : null
     this.init()
     this.stream()
   }
@@ -23,7 +22,8 @@ class Eplayer extends HTMLElement {
   }
 
   stream() {
-    switch (this.type) {
+    let type = this.src && this.src.includes('m3u8') ? 'm3u8' : null
+    switch (type) {
       case 'hls':
         if (Hls.isSupported()) {
           let hls = new Hls()
@@ -126,8 +126,8 @@ class Eplayer extends HTMLElement {
     this.$('.controls').style.bottom = 0
     this.$('.ep-video').style.bottom = 70 + 'px'
     this.timer = setTimeout(() => {
-      this.$(".controls").style.bottom = -50 + "px"
-      this.$(".ep-video").style.bottom = 25 + "px"
+      this.$('.controls').style.bottom = -50 + 'px'
+      this.$('.ep-video').style.bottom = 25 + 'px'
     }, 5000)
   }
 
@@ -407,7 +407,7 @@ class Eplayer extends HTMLElement {
     this.video.ontimeupdate = () => this.update()
     this.$('.cycle').onmousedown = e => this.down(e)
 
-    this.$(".eplayer").onmousemove = () => this.alow()
+    this.$('.eplayer').onmousemove = () => this.alow()
     this.$('.ep-full').onclick = () => this.full()
     this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
     this.video.onended = () => this.ended()
@@ -423,8 +423,7 @@ class Eplayer extends HTMLElement {
   }
 }
 
-// export default Eplayer
-customElements.define('e-player',Eplayer)
+customElements.define('e-player', Eplayer)
 
 function getTimeStr(time) {
   let h = Math.floor(time / 3600)
