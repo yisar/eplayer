@@ -2,6 +2,7 @@ class Eplayer extends HTMLElement {
   constructor() {
     super()
     this.src = this.getAttribute('src')
+    this.autoplay = this.getAttribute('autoplay')
     this.init()
     this.stream()
   }
@@ -56,7 +57,6 @@ class Eplayer extends HTMLElement {
       this.$('.ep-video').style.display = 'block'
       this.$('.is-play').classList.replace('ep-pause', 'ep-play')
     }
-    return false
   }
 
   volume() {
@@ -69,7 +69,6 @@ class Eplayer extends HTMLElement {
       setVolume(0, this.$('.line'))
       this.$('.is-volume').classList.replace('ep-volume', 'ep-volume-off')
     }
-    return false
   }
 
   update() {
@@ -89,7 +88,6 @@ class Eplayer extends HTMLElement {
   progress(e) {
     let offset = e.offsetX / this.$('.progress').offsetWidth
     this.video.currentTime = this.video.duration * offset
-    return false
   }
 
   down(e) {
@@ -131,14 +129,16 @@ class Eplayer extends HTMLElement {
     }, 5000)
   }
 
-  keyup(e) {
+  keydown(e) {
     if (e && e.keyCode == 37) this.video.currentTime -= 10
     if (e && e.keyCode == 39) this.video.currentTime += 10
-    if (e && e.keyCode == 38) this.video.volume += 0.05
-    if (e && e.keyCode == 40) this.video.volume -= 0.05
+    if (e && e.keyCode == 38) try{this.video.volume = parseInt(this.video.volume*100)/100 + 0.05}catch(e){}
+    if (e && e.keyCode == 40) try{this.video.volume = parseInt(this.video.volume*100)/100 - 0.05}catch(e){}
     if (e && e.keyCode == 32) this.play()
+    
     let index = Math.floor(this.video.volume * 10)
     setVolume(index, this.$('.line'))
+    return false
   }
 
   ended() {
@@ -235,7 +235,8 @@ class Eplayer extends HTMLElement {
         }
         .line{
           padding:0 1px;
-          margin-bottom: -2px
+          margin-bottom: -2px;
+          cursor:pointer
         }
         .line i{
           width:4px;
@@ -390,7 +391,6 @@ class Eplayer extends HTMLElement {
   }
 
   dom() {
-    window.onkeyup = e => this.keyup(e)
     this.video = this.$('video')
     this.video.volume = 0.5
     setVolume(this.video.volume * 10, this.$('.line'))
@@ -408,6 +408,7 @@ class Eplayer extends HTMLElement {
     this.$('.cycle').onmousedown = e => this.down(e)
 
     this.$('.eplayer').onmousemove = () => this.alow()
+    document.onkeydown = e => this.keydown(e)
     this.$('.ep-full').onclick = () => this.full()
     this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
     this.video.onended = () => this.ended()
