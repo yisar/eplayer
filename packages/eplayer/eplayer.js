@@ -128,7 +128,7 @@ class Eplayer extends HTMLElement {
     }, 5000)
   }
 
-  keyup(e) {
+  keydown(e) {
     if (e && e.keyCode == 37) this.video.currentTime -= 10
     if (e && e.keyCode == 39) this.video.currentTime += 10
     if (e && e.keyCode == 38) this.video.volume = parseInt(this.video.volume*100)/100 + 0.05
@@ -137,6 +137,7 @@ class Eplayer extends HTMLElement {
     
     let index = Math.floor(this.video.volume * 10)
     setVolume(index, this.$('.line'))
+    return false
   }
 
   ended() {
@@ -406,7 +407,7 @@ class Eplayer extends HTMLElement {
     this.$('.cycle').onmousedown = e => this.down(e)
 
     this.$('.eplayer').onmousemove = () => this.alow()
-    document.onkeyup = e => this.keyup(e)
+    document.onkeydown = e => this.keydown(e)
     this.$('.ep-full').onclick = () => this.full()
     this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
     this.video.onended = () => this.ended()
