@@ -187,6 +187,7 @@ class Eplayer extends HTMLElement {
           width:100%;
           color:var(--icons,rgba(255,255,255,0.6));
           font-size:12px;
+          background:#000
         }
         .eplayer{
           user-select:none;
