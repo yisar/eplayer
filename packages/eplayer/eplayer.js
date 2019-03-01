@@ -2,6 +2,7 @@ class Eplayer extends HTMLElement {
   constructor() {
     super()
     this.src = this.getAttribute('src')
+    this.autoplay = this.getAttribute('autoplay')
     this.init()
     this.stream()
   }
@@ -131,8 +132,8 @@ class Eplayer extends HTMLElement {
   keydown(e) {
     if (e && e.keyCode == 37) this.video.currentTime -= 10
     if (e && e.keyCode == 39) this.video.currentTime += 10
-    if (e && e.keyCode == 38) this.video.volume = parseInt(this.video.volume*100)/100 + 0.05
-    if (e && e.keyCode == 40) this.video.volume = parseInt(this.video.volume*100)/100 - 0.05
+    if (e && e.keyCode == 38) try{this.video.volume = parseInt(this.video.volume*100)/100 + 0.05}catch(e){}
+    if (e && e.keyCode == 40) try{this.video.volume = parseInt(this.video.volume*100)/100 - 0.05}catch(e){}
     if (e && e.keyCode == 32) this.play()
     
     let index = Math.floor(this.video.volume * 10)
