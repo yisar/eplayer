@@ -419,7 +419,7 @@ class Eplayer extends HTMLElement {
   }
 }
 
-export default Eplayer
+customElements.define('e-player',Eplayer)
 
 function getTimeStr(time) {
   let h = Math.floor(time / 3600)

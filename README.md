@@ -12,13 +12,15 @@
 
 ### Use
 
-1. 导入进来 js 文件，可以从 lib 目录获取
+1. 导入进来 js 文件，可以从 dist 目录获取
 
 目前 web-components 原生支持度是在太差，尤其是国内各种奇葩浏览器（搜狗、QQ 等），需要引入 polyfill
 
+值得一提，dist 目录下，`.b` 后缀为浏览器文件，作为 cdn 使用
+
 ```html
 <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js"></script>
-<script src="./eplayer.js"></script>
+<script src="./eplayer.b.js"></script>
 ```
 
 2. 插入 `e-player` 标签，没错，只需要将平时用的 `video` 换成 `e-player` 即可
@@ -46,20 +48,14 @@ e-player {
 
 #### hls & flv
 
-原生支持 `mp4` 和 `mkv` ,如果需要支持 `m3u8` 和 `flv`，需要先引入 `hls.js` 和 `flv.js`
+原生支持 `mp4` 和 `mkv` ,如果需要支持 `m3u8` 和 `flv`，需要先引入 `hls.js`
 
 这两个文件太大，建议手动 gzip
 
 ```html
 <script src="./hlv.min.js"></script>
-<script src="./flv.min.js"></script>
 ```
-
-然后，type 属性 对应 `hls` 或 `flv`
-
-```html
-<e-player src="./001.m3u8" type="hls"></e-player>
-```
+已经放弃 `flv` 的支持，太古老的格式，兼容性极差
 
 ## Npm
 
@@ -67,7 +63,7 @@ e-player {
 npm i eplayer --save
 ```
 
-注意，发布到 npm 的模块，只对外暴露了一个 Eplayer 类，需要自行 define customElements，并且是全局注册，只能一次
+注意，发布到 npm 的模块，只对外暴露了一个 Eplayer 类，需要自行 define customElements，并且是全局注册，只能注册一次
 
 ```Javascript
 impport Eplayer from 'eplayer'
