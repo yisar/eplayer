@@ -119,4 +119,4 @@ eplayer 不推荐这么做，请直接和正常的 html 引入方式一样，引
 
 #### Screenshot
 
-![](https://ws1.sinaimg.cn/mw690/0065Zy9egy1fyrexxl5xkj30rq0flk1i.jpg)
+![](https://ws1.sinaimg.cn/mw690/0065Zy9egy1g0n3cjgufmj31jj0v74qp.jpg)
