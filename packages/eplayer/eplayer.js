@@ -136,7 +136,7 @@ class Eplayer extends HTMLElement {
     if (e && e.keyCode == 40) try{this.video.volume = parseInt(this.video.volume*100)/100 - 0.05}catch(e){}
     if (e && e.keyCode == 32) this.play()
     
-    let index = Math.floor(this.video.volume * 10)
+    let index = this.video.volume.toFixed(1) * 10
     setVolume(index, this.$('.line'))
     return false
   }
