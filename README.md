@@ -20,7 +20,7 @@
 
 ```html
 <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js"></script>
-<script src="./eplayer.b.js"></script>
+<script src="https://eplayer.js.org/eplayer.b.js"></script>
 ```
 
 2. 插入 `e-player` 标签，没错，只需要将平时用的 `video` 换成 `e-player` 即可
