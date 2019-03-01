@@ -8,7 +8,7 @@ class Eplayer extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['src']
+    return ['src','type']
   }
 
   attributeChangedCallback(name, _, newVal) {
