@@ -98,14 +98,15 @@ function Eplayer(props) {
 
 #### ssr
 ssr 服务端没有 web-components 的 API，通常 web-components 的 ssr 都会通过一些库去模拟这些 API
+
 eplayer 不推荐这么做，请直接和正常的 html 引入方式一样，引入 cdn
 
 #### 移动端
 
-关于移动端，国产的手机浏览器太奇葩，没有好的兼容方法
+关于移动端，国产的手机浏览器和 safari 太奇葩
 
-目前会自动检测，移动端会自动替换为默认播放器，然后浏览器会自动替换 UI
+暂时会自动检测，移动端会自动替换为默认播放器，然后浏览器会自动替换 UI
 
 #### Screenshot
 
-![](https://ws1.sinaimg.cn/mw690/0065Zy9egy1g0n3cjgufmj31jj0v74qp.jpg)
+![](https://ws1.sinaimg.cn/mw690/0065Zy9egy1g0no6fv3kkj31ji0v8u0x.jpg)
