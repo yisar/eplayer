@@ -235,7 +235,8 @@ class Eplayer extends HTMLElement {
         }
         .line{
           padding:0 1px;
-          margin-bottom: -2px
+          margin-bottom: -2px;
+          cursor:pointer
         }
         .line i{
           width:4px;
