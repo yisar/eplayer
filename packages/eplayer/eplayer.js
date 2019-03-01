@@ -93,15 +93,18 @@ class Eplayer extends HTMLElement {
   }
 
   down(e) {
+    e.stopPropagation()
     this.disX = e.clientX - this.$('.cycle').offsetLeft
     document.onmousemove = e => this.move(e)
     document.onmouseup = () => {
+      e.stopPropagation()
       document.onmousemove = null
       document.onmouseup = null
     }
   }
 
   move(e) {
+    e.stopPropagation()
     let offset = e.clientX - this.disX + 7
     if (offset < 0) offset = 0
     if (offset > this.$('.progress').clientWidth)
@@ -123,7 +126,7 @@ class Eplayer extends HTMLElement {
     this.$('.controls').style.bottom = 0
     this.$('.ep-video').style.bottom = 70 + 'px'
     this.timer = setTimeout(() => {
-      this.$(".controls").style.bottom = -42 + "px"
+      this.$(".controls").style.bottom = -50 + "px"
       this.$(".ep-video").style.bottom = 25 + "px"
     }, 5000)
   }
@@ -205,6 +208,7 @@ class Eplayer extends HTMLElement {
           bottom:15px;
           left:0;
           right:0;
+          cursor:pointer;
         }
         .options{
           display:flex;
@@ -342,7 +346,7 @@ class Eplayer extends HTMLElement {
       <div class="eplayer">
         <video id="video" class="video" src="${this.src}"></video>
         <div class="mark loading"></div>
-        <div class="controls" style="bottom:-45px">
+        <div class="controls" style="bottom:-50px">
           <div class="progress">
             <b class="bg"></b>
             <b class="buffer"></b>
@@ -397,7 +401,7 @@ class Eplayer extends HTMLElement {
         setVolume(index + 1, this.$('.line'))
       }
     })
-    this.$('.progress').onclick = e => this.progress(e)
+    this.$('.progress').onmousedown = e => this.progress(e)
     this.video.onwaiting = () => this.waiting()
     this.video.oncanplay = () => this.canplay()
     this.video.ontimeupdate = () => this.update()
@@ -419,7 +423,8 @@ class Eplayer extends HTMLElement {
   }
 }
 
-export default Eplayer
+// export default Eplayer
+customElements.define('e-player',Eplayer)
 
 function getTimeStr(time) {
   let h = Math.floor(time / 3600)
