@@ -2,7 +2,7 @@ class Eplayer extends HTMLElement {
   constructor() {
     super()
     this.src = this.getAttribute('src')
-    this.autoplay = this.getAttribute('autoplay')
+    this.type = this.getAttribute('type')
     this.init()
     this.stream()
   }
@@ -13,6 +13,7 @@ class Eplayer extends HTMLElement {
 
   attributeChangedCallback(name, _, newVal) {
     if (name === 'src') this.src = this.$('.video').src = newVal
+    if (name === 'type') this.type = newVal
     this.stream()
     this.video.load()
   }
@@ -23,8 +24,7 @@ class Eplayer extends HTMLElement {
   }
 
   stream() {
-    let type = this.src && this.src.includes('m3u8') ? 'm3u8' : null
-    switch (type) {
+    switch (this.type) {
       case 'hls':
         if (Hls.isSupported()) {
           let hls = new Hls()
