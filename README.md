@@ -6,12 +6,12 @@
 
 #### who use eplayer？
 
-[epayer.js.org - 官网（demo）](https://eplayer.js.org/)
+[epayer.js.org - demo](https://eplayer.js.org/)
 
 [clicli.us - C 站](https://www.clicli.us/)
 
 ### Use
-0. 由于 ep 是 web-component，为了兼容，事先引入 polyfill
+0. ep 基于 web-component，为了兼容，需要事先引入 polyfill
 
 ```html
 <script src="https://unpkg.com/@webcomponents/webcomponentsjs"></script>
@@ -19,12 +19,11 @@
 
 1. 插入 `e-player` 标签，没错，只需要将平时用的 `video` 换成 `e-player` 即可
 
-type 属性可选，默认为 mp4
-
 ```html
 <e-player src="./001.mp4"></e-player>
 ```
-2. 注册 `customElement`,注意 `type=module`，可以试用 es6 的 import
+type 属性可选，默认为 mp4，支持 hls 和 flv
+2. 注册 `customElement`，注意 `type=module`，使用 es6 的 import
 ```html
 <script type="module">
   import { Eplayer } from 'https://unpkg.com/eplayer'
@@ -32,7 +31,7 @@ type 属性可选，默认为 mp4
   customElements.define('e-player', Eplayer)
 </script>
 ```
-3. 可选设置 css，用于穿透 shadow-dom 预留的默认样式
+3. 可选定制 css，用于穿透 shadow-dom 预留的默认样式
 
 ```css
 e-player {
@@ -52,14 +51,14 @@ e-player {
 原生支持 `mp4` 和 `mkv` ,如果需要支持 `m3u8`，需要先引入 `hls.js`
 
 ```html
-<script src="./hlv.min.js"></script>
+<script src="https://unpkg.com/hls.js"></script>
 ```
 
 ## Npm
 ```shell
 yarn add eplayer -S
 ```
-同样的注册 customElement，注意，customElement 只能注册一次，没完，往下看：
+同样的注册 customElement，但是注意，customElement 只能注册一次，然后还没完，往下看：
 
 #### Vue
 
@@ -103,9 +102,7 @@ eplayer 不推荐这么做，请直接和正常的 html 引入方式一样，引
 
 #### 移动端
 
-关于移动端，国产的手机浏览器和 safari 太奇葩
-
-暂时会自动检测，移动端会自动替换为默认播放器，然后浏览器会自动替换 UI
+暂时不支持移动端，急需 pr 嘿嘿
 
 #### Screenshot
 
