@@ -95,7 +95,9 @@
       }
     </style>
     <div class="wrapper">
-      <e-player src="http://down.158pan.cn/Uploads/7/20190306/86931d6f69fd0a6c7fc3736931c80368.mkv"></e-player>
+      <e-player
+        src="http://down.158pan.cn/Uploads/7/20190306/86931d6f69fd0a6c7fc3736931c80368.mkv"
+      ></e-player>
       <a href="https://github.com/132yse/eplayer">github</a>
       <a href="https://github.com/132yse/eplayer/blob/master/README.md"
         >README</a
@@ -104,7 +106,10 @@
     </div>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script src="./eplayer.b.js"></script>
+    <script type="module">
+      import { Eplayer } from './eplayer.js'
+      customElements.define('e-player', Eplayer)
+    </script>
     <script src="./pic.js"></script>
   </body>
 </html>
