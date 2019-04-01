@@ -139,15 +139,13 @@ export class Eplayer extends HTMLElement {
         try {
           this.video.volume = parseInt(this.video.volume * 100) / 100 + 0.05
         } catch (e) {}
-        let index = this.video.volume.toFixed(1) * 10
-        setVolume(index, $('.line'))
+        setVolume(this.video.volume.toFixed(1) * 10, $('.line'))
         break
       case 40:
         try {
           this.video.volume = parseInt(this.video.volume * 100) / 100 - 0.05
         } catch (e) {}
-        let index = this.video.volume.toFixed(1) * 10
-        setVolume(index, $('.line'))
+        setVolume(this.video.volume.toFixed(1) * 10, $('.line'))
         break
       case 32:
         this.play()
