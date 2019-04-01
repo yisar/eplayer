@@ -11,6 +11,7 @@
 [clicli.us - C 站](https://www.clicli.us/)
 
 ### Use
+
 0. ep 基于 web-component，为了兼容，需要事先引入 polyfill
 
 ```html
@@ -22,9 +23,11 @@
 ```html
 <e-player src="./001.mp4"></e-player>
 ```
+
 type 属性可选，默认为 mp4，支持 hls 和 flv
 
 2. 注册 `customElement`，注意 `type=module`，使用 es6 的 import
+
 ```html
 <script type="module">
   import { Eplayer } from 'https://unpkg.com/eplayer'
@@ -32,6 +35,7 @@ type 属性可选，默认为 mp4，支持 hls 和 flv
   customElements.define('e-player', Eplayer)
 </script>
 ```
+
 3. 可选定制 css，用于穿透 shadow-dom 预留的默认样式
 
 ```css
@@ -56,9 +60,11 @@ e-player {
 ```
 
 ## Npm
+
 ```shell
 yarn add eplayer -S
 ```
+
 同样的注册 customElement，但是注意，customElement 只能注册一次，然后还没完，往下看：
 
 #### Vue
@@ -81,18 +87,16 @@ Vue.config.ignoredElements = [
 
 可以封装成 vue 组件来使用：[vue-web-components-wrapper](https://github.com/vuejs/vue-web-component-wrapper)
 
-#### React
+#### React / Fre
 
 react 直接支持 web-components，直接在 render 函数中`e-player`标签
 
 同样的，JSX 并不把它当作 vnode tree 的孩子，需要手动操作 dom
 
-通常为了方便的使用 ref，会封装成 react 组件来使用：
+通常为了方便的使用 ref，会封装成组件来使用：
 
 ```Javascript
-function Eplayer(props) {
-  return <e-player src={props.src} type={props.type}></e-player>
-}
+const Eplayer = ({src,type}) => <e-player src={src} type={type}></e-player>
 ```
 
 #### ssr
