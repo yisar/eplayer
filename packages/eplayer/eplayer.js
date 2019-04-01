@@ -1,5 +1,5 @@
 export class Eplayer extends HTMLElement {
-  constructor() {
+  constructor () {
     super()
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
@@ -7,23 +7,23 @@ export class Eplayer extends HTMLElement {
     this.stream()
   }
 
-  static get observedAttributes() {
-    return ['src','type']
+  static get observedAttributes () {
+    return ['src', 'type']
   }
 
-  attributeChangedCallback(name, _, newVal) {
+  attributeChangedCallback (name, _, newVal) {
     if (name === 'src') this.src = $('.video').src = newVal
     if (name === 'type') this.type = newVal
     this.stream()
     this.video.load()
   }
 
-  waiting() {
+  waiting () {
     $('.mark').classList.remove('playing')
     $('.mark').classList.add('loading')
   }
 
-  stream() {
+  stream () {
     switch (this.type) {
       case 'hls':
         if (Hls.isSupported()) {
@@ -35,7 +35,7 @@ export class Eplayer extends HTMLElement {
     }
   }
 
-  canplay() {
+  canplay () {
     $('.mark').classList.remove('loading')
     $('.mark').classList.add('playing')
     $('.playing').onclick = () => {
@@ -47,7 +47,7 @@ export class Eplayer extends HTMLElement {
     $('.total').innerHTML = getTimeStr(this.video.duration)
   }
 
-  play() {
+  play () {
     if (this.video.paused) {
       this.video.play()
       $('.ep-video').style.display = 'none'
@@ -59,7 +59,7 @@ export class Eplayer extends HTMLElement {
     }
   }
 
-  volume() {
+  volume () {
     if (this.video.muted) {
       this.video.muted = false
       setVolume(this.video.volume * 10, $('.line'))
@@ -71,13 +71,12 @@ export class Eplayer extends HTMLElement {
     }
   }
 
-  update() {
+  update () {
     let cTime = getTimeStr(this.video.currentTime)
     if (this.video.buffered.length) {
       let bufferEnd = this.video.buffered.end(this.video.buffered.length - 1)
       $('.buffer').style.width =
-        (bufferEnd / this.video.duration) * $('.progress').clientWidth +
-        'px'
+        (bufferEnd / this.video.duration) * $('.progress').clientWidth + 'px'
     }
     let offset =
       (this.video.currentTime / this.video.duration) * $('.bg').clientWidth
@@ -85,12 +84,12 @@ export class Eplayer extends HTMLElement {
     $('.current').style.width = offset + 'px'
   }
 
-  progress(e) {
+  progress (e) {
     let offset = e.offsetX / $('.progress').offsetWidth
     this.video.currentTime = this.video.duration * offset
   }
 
-  down(e) {
+  down (e) {
     e.stopPropagation()
     this.disX = e.clientX - $('.cycle').offsetLeft
     document.onmousemove = e => this.move(e)
@@ -101,12 +100,11 @@ export class Eplayer extends HTMLElement {
     }
   }
 
-  move(e) {
+  move (e) {
     e.stopPropagation()
     let offset = e.clientX - this.disX + 7
     if (offset < 0) offset = 0
-    if (offset > $('.progress').clientWidth)
-      offset = $('.progress').clientWidth
+    if (offset > $('.progress').clientWidth) offset = $('.progress').clientWidth
     $('.current').style.width = offset + 'px'
     this.video.currentTime =
       (offset / $('.progress').clientWidth) * this.video.duration
@@ -119,7 +117,7 @@ export class Eplayer extends HTMLElement {
     )
   }
 
-  alow() {
+  alow () {
     clearTimeout(this.timer)
     $('.controls').style.bottom = 0
     $('.ep-video').style.bottom = 70 + 'px'
@@ -129,23 +127,40 @@ export class Eplayer extends HTMLElement {
     }, 5000)
   }
 
-  keydown(e) {
-    if (e && e.keyCode == 37) this.video.currentTime -= 10
-    if (e && e.keyCode == 39) this.video.currentTime += 10
-    if (e && e.keyCode == 38) try{this.video.volume = parseInt(this.video.volume*100)/100 + 0.05}catch(e){}
-    if (e && e.keyCode == 40) try{this.video.volume = parseInt(this.video.volume*100)/100 - 0.05}catch(e){}
-    if (e && e.keyCode == 32) this.play()
-    
-    let index = this.video.volume.toFixed(1) * 10
-    setVolume(index, $('.line'))
-    return false
+  keydown (e) {
+    switch (e.keyCode) {
+      case 37:
+        this.video.currentTime -= 10
+        break
+      case 39:
+        this.video.currentTime += 10
+        break
+      case 38:
+        try {
+          this.video.volume = parseInt(this.video.volume * 100) / 100 + 0.05
+        } catch (e) {}
+        let index = this.video.volume.toFixed(1) * 10
+        setVolume(index, $('.line'))
+        break
+      case 40:
+        try {
+          this.video.volume = parseInt(this.video.volume * 100) / 100 - 0.05
+        } catch (e) {}
+        let index = this.video.volume.toFixed(1) * 10
+        setVolume(index, $('.line'))
+        break
+      case 32:
+        this.play()
+        break
+      default:
+    }
   }
 
-  ended() {
+  ended () {
     $('.is-play').classList.replace('ep-pause', 'ep-play')
   }
 
-  full() {
+  full () {
     if (isFullScreen()) {
       if (document.exitFullscreen) {
         document.exitFullscreen()
@@ -167,7 +182,7 @@ export class Eplayer extends HTMLElement {
     }
   }
 
-  init() {
+  init () {
     let link = document.createElement('link')
     link.setAttribute(
       'href',
@@ -391,14 +406,14 @@ export class Eplayer extends HTMLElement {
     this.dom()
   }
 
-  dom() {
+  dom () {
     this.video = $('video')
     this.video.volume = 0.5
     setVolume(this.video.volume * 10, $('.line'))
     $('.is-volume').onclick = () => this.volume()
     $('.line').forEach((item, index) => {
       item.onclick = () => {
-        this.video.volume = index / 10
+        this.video.volume = (index + 1) / 10
         setVolume(index + 1, $('.line'))
       }
     })
@@ -418,10 +433,9 @@ export class Eplayer extends HTMLElement {
       this.full()
     }
   }
-
 }
 
-function getTimeStr(time) {
+function getTimeStr (time) {
   let h = Math.floor(time / 3600)
   let m = Math.floor((time % 3600) / 60)
   let s = Math.floor(time % 60)
@@ -431,7 +445,7 @@ function getTimeStr(time) {
   return h === '00' ? m + ':' + s : h + ':' + m + ':' + s
 }
 
-function setVolume(index, node) {
+function setVolume (index, node) {
   for (let j = index; j < node.length; j++) {
     node[j].classList.remove('active')
   }
@@ -440,7 +454,7 @@ function setVolume(index, node) {
   }
 }
 
-function isFullScreen() {
+function isFullScreen () {
   return (
     document.isFullScreen ||
     document.webkitIsFullScreen ||
@@ -448,7 +462,7 @@ function isFullScreen() {
   )
 }
 
-function $(node) {
+function $ (node) {
   let dom = document.querySelector('e-player').shadowRoot.querySelectorAll(node)
   return dom.length > 1 ? dom : dom[0]
 }
