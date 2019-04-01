@@ -11,26 +11,27 @@
 [clicli.us - C 站](https://www.clicli.us/)
 
 ### Use
-
-1. 导入进来 js 文件，可以从 dist 目录获取
-
-目前 web-components 原生支持度是在太差，尤其是国内各种奇葩浏览器（搜狗、QQ 等），需要引入 polyfill
-
-值得一提，dist 目录下，`.b` 后缀为浏览器文件，作为 cdn 使用
+0. 由于 ep 是 web-component，为了兼容，事先引入 polyfill
 
 ```html
-<script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.1/webcomponents-bundle.js"></script>
-<script src="https://eplayer.js.org/eplayer.b.js"></script>
+<script src="https://unpkg.com/@webcomponents/webcomponentsjs"></script>
 ```
 
-2. 插入 `e-player` 标签，没错，只需要将平时用的 `video` 换成 `e-player` 即可
+1. 插入 `e-player` 标签，没错，只需要将平时用的 `video` 换成 `e-player` 即可
 
 type 属性可选，默认为 mp4
 
 ```html
 <e-player src="./001.mp4"></e-player>
 ```
-
+2. 注册 `customElement`,注意 `type=module`，可以试用 es6 的 import
+```html
+<script type="module">
+  import { Eplayer } from 'https://unpkg.com/eplayer'
+  //注册 customElement
+  customElements.define('e-player', Eplayer)
+</script>
+```
 3. 可选设置 css，用于穿透 shadow-dom 预留的默认样式
 
 ```css
@@ -55,13 +56,13 @@ e-player {
 ```html
 <script src="./hlv.min.js"></script>
 ```
-已经放弃 `flv` 的支持，太古老的格式，兼容性极差
 
 ## Npm
-> 不推荐 npm install，请直接使用 cdn
-同样的，polyfill 和 hls.js 等仍然以 cdn 的方式加入
+```shell
+yarn add eplayer -S
+```
+同样的注册 customElement，注意，customElement 只能注册一次，没完，往下看：
 
-这还没完，接着看：
 #### Vue
 
 vue 默认是不支持 web-components 的，它无法主动判断含有`-`的是 vue 组件还是 web 组件
@@ -97,6 +98,7 @@ function Eplayer(props) {
 ```
 
 #### ssr
+
 ssr 服务端没有 web-components 的 API，通常 web-components 的 ssr 都会通过一些库去模拟这些 API
 
 eplayer 不推荐这么做，请直接和正常的 html 引入方式一样，引入 cdn
