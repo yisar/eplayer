@@ -23,6 +23,7 @@
 <e-player src="./001.mp4"></e-player>
 ```
 type 属性可选，默认为 mp4，支持 hls 和 flv
+
 2. 注册 `customElement`，注意 `type=module`，使用 es6 的 import
 ```html
 <script type="module">
@@ -40,7 +41,7 @@ e-player {
   /* 进度条底色 一般不用设置 */
   --progress: rgba(255, 255, 255, 0.3);
   /* 进度条偏移颜色 一般不用设置 */
-  --buffer: rgba(255, 255, 255, 0.3);
+  --buffer: rgba(255, 255, 255, 0.6);
   /* 图标颜色 一般不用设置 */
   --icons: rgba(255, 255, 255, 0.6);
 }
