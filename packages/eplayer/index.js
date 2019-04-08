@@ -1,4 +1,4 @@
-class Eplayer extends HTMLElement {
+export class Eplayer extends HTMLElement {
   constructor () {
     super()
     this.src = this.getAttribute('src')
@@ -432,8 +432,6 @@ class Eplayer extends HTMLElement {
     }
   }
 }
-
-customElements.define('e-player', Eplayer)
 
 function getTimeStr (time) {
   let h = Math.floor(time / 3600)
