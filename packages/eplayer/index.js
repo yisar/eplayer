@@ -12,15 +12,20 @@ export class Eplayer extends HTMLElement {
   }
 
   attributeChangedCallback (name, _, newVal) {
-    if (name === 'src') this.src = $('.video').src = newVal
+    if (name === 'src') this.src = this.$('.video').src = newVal
     if (name === 'type') this.type = newVal
     this.stream()
     this.video.load()
   }
 
+  $ (node) {
+    let dom = this.shadowRoot.querySelectorAll(node)
+    return dom.length > 1 ? dom : dom[0]
+  }
+
   waiting () {
-    $('.mark').classList.remove('playing')
-    $('.mark').classList.add('loading')
+    this.$('.mark').classList.remove('playing')
+    this.$('.mark').classList.add('loading')
   }
 
   stream () {
@@ -36,38 +41,38 @@ export class Eplayer extends HTMLElement {
   }
 
   canplay () {
-    $('.mark').classList.remove('loading')
-    $('.mark').classList.add('playing')
-    $('.playing').onclick = () => {
+    this.$('.mark').classList.remove('loading')
+    this.$('.mark').classList.add('playing')
+    this.$('.playing').onclick = () => {
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {
         this.play()
       }, 200)
     }
-    $('.total').innerHTML = getTimeStr(this.video.duration)
+    this.$('.total').innerHTML = getTimeStr(this.video.duration)
   }
 
   play () {
     if (this.video.paused) {
       this.video.play()
-      $('.ep-video').style.display = 'none'
-      $('.is-play').classList.replace('ep-play', 'ep-pause')
+      this.$('.ep-video').style.display = 'none'
+      this.$('.is-play').classList.replace('ep-play', 'ep-pause')
     } else {
       this.video.pause()
-      $('.ep-video').style.display = 'block'
-      $('.is-play').classList.replace('ep-pause', 'ep-play')
+      this.$('.ep-video').style.display = 'block'
+      this.$('.is-play').classList.replace('ep-pause', 'ep-play')
     }
   }
 
   volume () {
     if (this.video.muted) {
       this.video.muted = false
-      setVolume(this.video.volume * 10, $('.line'))
-      $('.is-volume').classList.replace('ep-volume-off', 'ep-volume')
+      setVolume(this.video.volume * 10, this.$('.line'))
+      this.$('.is-volume').classList.replace('ep-volume-off', 'ep-volume')
     } else {
       this.video.muted = true
-      setVolume(0, $('.line'))
-      $('.is-volume').classList.replace('ep-volume', 'ep-volume-off')
+      setVolume(0, this.$('.line'))
+      this.$('.is-volume').classList.replace('ep-volume', 'ep-volume-off')
     }
   }
 
@@ -75,23 +80,24 @@ export class Eplayer extends HTMLElement {
     let cTime = getTimeStr(this.video.currentTime)
     if (this.video.buffered.length) {
       let bufferEnd = this.video.buffered.end(this.video.buffered.length - 1)
-      $('.buffer').style.width =
-        (bufferEnd / this.video.duration) * $('.progress').clientWidth + 'px'
+      this.$('.buffer').style.width =
+        (bufferEnd / this.video.duration) * this.$('.progress').clientWidth +
+        'px'
     }
     let offset =
-      (this.video.currentTime / this.video.duration) * $('.bg').clientWidth
-    $('.now').innerHTML = cTime
-    $('.current').style.width = offset + 'px'
+      (this.video.currentTime / this.video.duration) * this.$('.bg').clientWidth
+    this.$('.now').innerHTML = cTime
+    this.$('.current').style.width = offset + 'px'
   }
 
   progress (e) {
-    let offset = e.offsetX / $('.progress').offsetWidth
+    let offset = e.offsetX / this.$('.progress').offsetWidth
     this.video.currentTime = this.video.duration * offset
   }
 
   down (e) {
     e.stopPropagation()
-    this.disX = e.clientX - $('.cycle').offsetLeft
+    this.disX = e.clientX - this.$('.cycle').offsetLeft
     document.onmousemove = e => this.move(e)
     document.onmouseup = () => {
       e.stopPropagation()
@@ -104,10 +110,10 @@ export class Eplayer extends HTMLElement {
     e.stopPropagation()
     let offset = e.clientX - this.disX + 7
     if (offset < 0) offset = 0
-    if (offset > $('.progress').clientWidth) offset = $('.progress').clientWidth
-    $('.current').style.width = offset + 'px'
+    if (offset > this.$('.progress').clientWidth) { offset = this.$('.progress').clientWidth }
+    this.$('.current').style.width = offset + 'px'
     this.video.currentTime =
-      (offset / $('.progress').clientWidth) * this.video.duration
+      (offset / this.$('.progress').clientWidth) * this.video.duration
     document.onmousemove = null
     setTimeout(
       (document.onmousemove = e => {
@@ -119,11 +125,11 @@ export class Eplayer extends HTMLElement {
 
   alow () {
     clearTimeout(this.timer)
-    $('.controls').style.bottom = 0
-    $('.ep-video').style.bottom = 70 + 'px'
+    this.$('.controls').style.bottom = 0
+    this.$('.ep-video').style.bottom = 70 + 'px'
     this.timer = setTimeout(() => {
-      $('.controls').style.bottom = -50 + 'px'
-      $('.ep-video').style.bottom = 25 + 'px'
+      this.$('.controls').style.bottom = -50 + 'px'
+      this.$('.ep-video').style.bottom = 25 + 'px'
     }, 5000)
   }
 
@@ -139,13 +145,13 @@ export class Eplayer extends HTMLElement {
         try {
           this.video.volume = parseInt(this.video.volume * 100) / 100 + 0.05
         } catch (e) {}
-        setVolume(this.video.volume.toFixed(1) * 10, $('.line'))
+        setVolume(this.video.volume.toFixed(1) * 10, this.$('.line'))
         break
       case 40:
         try {
           this.video.volume = parseInt(this.video.volume * 100) / 100 - 0.05
         } catch (e) {}
-        setVolume(this.video.volume.toFixed(1) * 10, $('.line'))
+        setVolume(this.video.volume.toFixed(1) * 10, this.$('.line'))
         break
       case 32:
         this.play()
@@ -155,7 +161,7 @@ export class Eplayer extends HTMLElement {
   }
 
   ended () {
-    $('.is-play').classList.replace('ep-pause', 'ep-play')
+    this.$('.is-play').classList.replace('ep-pause', 'ep-play')
   }
 
   full () {
@@ -170,7 +176,7 @@ export class Eplayer extends HTMLElement {
         document.msExitFullscreen()
       }
     } else {
-      let el = $('.eplayer')
+      let el = this.$('.eplayer')
       let rfs =
         el.requestFullScreen ||
         el.webkitRequestFullScreen ||
@@ -181,13 +187,6 @@ export class Eplayer extends HTMLElement {
   }
 
   init () {
-    let link = document.createElement('link')
-    link.setAttribute(
-      'href',
-      'https://at.alicdn.com/t/font_836948_6lbb2iu59.css'
-    )
-    link.setAttribute('rel', 'stylesheet')
-    document.head.appendChild(link)
     let html = `
       <style>
         @import "https://at.alicdn.com/t/font_836948_6lbb2iu59.css";
@@ -263,10 +262,10 @@ export class Eplayer extends HTMLElement {
         }
         .line:hover i{
           height:14px;
-          background:var(--theme,#00a1d6);
+          background:var(--theme,#00fff6);
         }
         .active i{
-          background:var(--theme,#00a1d6);
+          background:var(--theme,#00fff6);
         }
         .left{
           flex:1;
@@ -288,7 +287,7 @@ export class Eplayer extends HTMLElement {
           background:var(--progress,rgba(255,255,255,.3));
         }
         .current{
-          background:var(--theme,#00a1d6);
+          background:var(--theme,#00fff6);
         }
         .buffer{
           background:var(--buffer,rgba(255,255,255,.5));
@@ -297,7 +296,7 @@ export class Eplayer extends HTMLElement {
           position:absolute;
           border-radius: 50%;
           display: block;
-          background:var(--theme,#00a1d6);
+          background:var(--theme,#00fff6);
           height: 9px;
           width:9px;
           right:-5px;
@@ -309,7 +308,7 @@ export class Eplayer extends HTMLElement {
           position:absolute;
           border-radius: 50%;
           display: block;
-          background:var(--theme,#00a1d6);
+          background:var(--theme,#00fff6);
           opacity:0.3;
           height: 15px;
           width:15px;
@@ -359,7 +358,7 @@ export class Eplayer extends HTMLElement {
         }
       </style>
       <div class="eplayer">
-        <video id="video" class="video" src="${this.src}"></video>
+        <video id="video" class="video" src="this.${this.src}"></video>
         <div class="mark loading"></div>
         <div class="controls" style="bottom:-50px">
           <div class="progress">
@@ -405,28 +404,28 @@ export class Eplayer extends HTMLElement {
   }
 
   dom () {
-    this.video = $('video')
+    this.video = this.$('video')
     this.video.volume = 0.5
-    setVolume(this.video.volume * 10, $('.line'))
-    $('.is-volume').onclick = () => this.volume()
-    $('.line').forEach((item, index) => {
+    setVolume(this.video.volume * 10, this.$('.line'))
+    this.$('.is-volume').onclick = () => this.volume()
+    this.$('.line').forEach((item, index) => {
       item.onclick = () => {
         this.video.volume = (index + 1) / 10
-        setVolume(index + 1, $('.line'))
+        setVolume(index + 1, this.$('.line'))
       }
     })
-    $('.progress').onmousedown = e => this.progress(e)
+    this.$('.progress').onmousedown = e => this.progress(e)
     this.video.onwaiting = () => this.waiting()
     this.video.oncanplay = () => this.canplay()
     this.video.ontimeupdate = () => this.update()
-    $('.cycle').onmousedown = e => this.down(e)
+    this.$('.cycle').onmousedown = e => this.down(e)
 
-    $('.eplayer').onmousemove = () => this.alow()
+    this.$('.eplayer').onmousemove = () => this.alow()
     document.onkeydown = e => this.keydown(e)
-    $('.ep-full').onclick = () => this.full()
-    $('.ep-video').onclick = $('.is-play').onclick = () => this.play()
+    this.$('.ep-full').onclick = () => this.full()
+    this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
     this.video.onended = () => this.ended()
-    $('.mark').ondblclick = () => {
+    this.$('.mark').ondblclick = () => {
       clearTimeout(this.timer)
       this.full()
     }
@@ -460,7 +459,9 @@ function isFullScreen () {
   )
 }
 
-function $ (node) {
-  let dom = document.querySelector('e-player').shadowRoot.querySelectorAll(node)
-  return dom.length > 1 ? dom : dom[0]
-}
+(function () {
+  let link = document.createElement('link')
+  link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css')
+  link.setAttribute('rel', 'stylesheet')
+  document.head.appendChild(link)
+})()
