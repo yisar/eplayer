@@ -91,14 +91,18 @@ Vue.config.ignoredElements = [
 
 #### React / Fre
 
-react 直接支持 web-components，直接在 render 函数中`e-player`标签
+react 直接支持 customElement，直接在 render 函数中`e-player`标签
 
-同样的，JSX 并不把它当作 vnode tree 的孩子，需要手动操作 dom
-
-通常为了方便的使用 ref，会封装成组件来使用：
+同样的，JSX 并不把它当作 vnode tree 的孩子，需要手动操作 dom，通常使用 ref
 
 ```Javascript
-const Eplayer = ({src,type}) => <e-player src={src} type={type}></e-player>
+export function Eplayer(...props){
+  const $ep = useRef(null)
+  useEffect(()=>{
+    ep.shadowRoot.video.load() //重载
+  },[type,srcf])
+  return <e-player ref={$ep} src={src} type={type}></e-player>
+}
 ```
 
 #### ssr
