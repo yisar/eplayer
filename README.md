@@ -10,7 +10,7 @@
 
 [clicli.us - C 站](https://www.clicli.us/)
 
-[www.ayypd.cn - 爱看动漫网](https://www.ayypd.cn/)
+[www.ayypd.cn - 爱看动漫网](http://www.ayypd.cn/)
 
 ### Use
 
