@@ -100,7 +100,7 @@ export function Eplayer(...props){
   const $ep = useRef(null)
   useEffect(()=>{
     ep.shadowRoot.video.load() //重载
-  },[type,srcf])
+  },[src,type])
   return <e-player ref={$ep} src={src} type={type}></e-player>
 }
 ```
