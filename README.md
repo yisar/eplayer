@@ -6,7 +6,7 @@
 
 #### who use eplayer？
 
-[epayer.js.org - demo](https://eplayer.js.org/)
+[eplayer.js.org - demo](https://eplayer.js.org/)
 
 [clicli.us - C 站](https://www.clicli.us/)
 
