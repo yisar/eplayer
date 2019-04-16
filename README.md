@@ -10,6 +10,8 @@
 
 [clicli.us - C 站](https://www.clicli.us/)
 
+[www.ayypd.cn - 爱看动漫网](https://www.ayypd.cn/)
+
 ### Use
 
 0. ep 基于 web-component，为了兼容，需要事先引入 polyfill
@@ -30,7 +32,7 @@ type 属性可选，默认为 mp4，支持 hls 和 flv
 
 ```html
 <script type="module">
-  import { Eplayer } from 'https://unpkg.com/eplayer?module'
+  import { Eplayer } from 'https://unpkg.com/eplayer'
   //注册 customElement
   customElements.define('e-player', Eplayer)
 </script>
