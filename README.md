@@ -99,7 +99,7 @@ react 直接支持 customElement，直接在 render 函数中`e-player`标签
 export function Eplayer(...props){
   const $ep = useRef(null)
   useEffect(()=>{
-    ep.shadowRoot.video.load() //重载
+    $ep.shadowRoot.video.load() //重载
   },[src,type])
   return <e-player ref={$ep} src={src} type={type}></e-player>
 }
