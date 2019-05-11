@@ -61,7 +61,7 @@ e-player {
 <script src="https://unpkg.com/hls.js"></script>
 ```
 
-## Npm
+### Npm
 
 ```shell
 yarn add eplayer -S
