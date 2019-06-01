@@ -93,17 +93,23 @@ Vue.config.ignoredElements = [
 
 react 直接支持 customElement，直接在 render 函数中`e-player`标签
 
-同样的，JSX 并不把它当作 vnode tree 的孩子，需要手动操作 dom，通常使用 ref
+比如，下面这个 fre 的粒子
 
-```Javascript
-export function Eplayer(...props){
-  const $ep = useRef(null)
-  useEffect(()=>{
-    $ep.shadowRoot.video.load() //重载
-  },[src,type])
-  return <e-player ref={$ep} src={src} type={type}></e-player>
+```js
+function EPlayer ({ src, type }) {
+  const [url, setUrl] = useState(0)
+  useEffect(() => {
+    fetch(`https://jx.clicli.us/jx?url=${src}@dogecloud`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setUrl(data.url)
+      })
+  }, [])
+  return <e-player src={url} type={type} />
 }
 ```
+完整代码在这里：[fre-eplayer](https://github.com/cliclitv/fre-eplayer)
 
 #### ssr
 
