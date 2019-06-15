@@ -102,7 +102,6 @@ function EPlayer ({ src, type }) {
     fetch(`https://jx.clicli.us/jx?url=${src}@dogecloud`)
       .then(res => res.json())
       .then(data => {
-        console.log(data)
         setUrl(data.url)
       })
   }, [])
