@@ -69,6 +69,12 @@ yarn add eplayer -S
 
 同样的注册 customElement，但是注意，customElement 只能注册一次，然后还没完，往下看：
 
+#### omim
+
+omim 是腾讯前端框架 [omi](https://github.com/Tencent/omi) 的组件库分支，eplayer 已经集成进去
+
+[戳我戳我](https://github.com/Tencent/omi/tree/master/packages/omim/demos/player)
+
 #### Vue
 
 vue 默认是不支持 web-components 的，它无法主动判断含有`-`的是 vue 组件还是 web 组件
