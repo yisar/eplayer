@@ -20,7 +20,7 @@ export class Eplayer extends HTMLElement {
 
   $ (node) {
     let dom = this.shadowRoot.querySelectorAll(node)
-    return dom.length > 1 ? dom : dom[0]
+    return dom.length > 1 ? [...dom] : dom[0]
   }
 
   waiting () {
