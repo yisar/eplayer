@@ -4,6 +4,7 @@ class Eplayer extends HTMLElement {
     this.doms = {}
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
+    this.middlewares = []
 
     this.init()
     this.stream()
@@ -11,6 +12,17 @@ class Eplayer extends HTMLElement {
 
   static get observedAttributes () {
     return ['src', 'type']
+  }
+
+  static use (name, cb) {
+    // let node = document.createElement('li')
+    // node.innerText = name
+    // const host = document.querySelector('.video')
+    // console.log(host)
+    // const parent = host.shadowRoot.querySelector('.panel')
+    // host.appendChild(node)
+    console.log(name)
+    cb(this)
   }
 
   attributeChangedCallback (name, _, newVal) {
@@ -191,6 +203,18 @@ class Eplayer extends HTMLElement {
     }
   }
 
+  panel (e) {
+    let panel = this.$('.panel')
+    if (e.button !== 2) {
+      panel.style.display = 'none'
+    } else {
+      panel.style.display = 'block'
+      panel.style.height = panel.childElementCount * 24 + 'px'
+      panel.style.top = e.offsetY + 'px'
+      panel.style.left = e.offsetX + 'px'
+    }
+  }
+
   init () {
     let html = `
       <style>
@@ -198,6 +222,9 @@ class Eplayer extends HTMLElement {
         *{
           padding:0;
           margin:0;
+        }
+        li{
+          list-style:none;
         }
         .eplayer,video{
           height:100%;
@@ -359,7 +386,25 @@ class Eplayer extends HTMLElement {
           color:var(--icons,rgba(255,255,255,.6));
           z-index:1;
           cursor: pointer; 
+        }
+        .panel {
+          position: absolute;
+          padding: 10px 0;
+          bottom: 200px;
+          right: 300px;
+          background:rgba(0,0,0,.8);
+          border-radius:4px;
+          cursor: pointer; 
           z-index: 1;
+          display:none;
+          width:150px;
+        }
+        .panel li{
+          line-height:24px;
+          text-align:center;
+        }
+        .panel li:hover{
+          background:rgba(0,0,0,.8)
         }
       </style>
       <div class="eplayer">
@@ -398,6 +443,13 @@ class Eplayer extends HTMLElement {
           </div>
         </div>
         <div class="epicon ep-video"></div>
+        <div class="panel">
+          <li>源码</li>
+          <li>画中画</li>
+          <li>播放速度</li>
+          <li>网页全屏</li>
+          <li>视频信息</li>
+        </div>
       </div>
     `
     let template = document.createElement('template')
@@ -428,13 +480,15 @@ class Eplayer extends HTMLElement {
       '.ep-volume',
       '.bg',
       '.eplayer',
-      '.ep-full'
+      '.ep-full',
+      '.panel'
     ]
 
     for (const key of doms) {
       let dom = this.shadowRoot.querySelectorAll(key)
       this.doms[key] = dom.length > 1 ? [...dom] : dom[0]
     }
+    this.middlewares.forEach(item => item(this))
     this.mount()
   }
 
@@ -464,6 +518,8 @@ class Eplayer extends HTMLElement {
       clearTimeout(this.timer)
       this.full()
     }
+    this.$('.mark').oncontextmenu = e => e.preventDefault()
+    this.$('.eplayer').onmousedown = e => this.panel(e)
   }
 }
 
@@ -502,3 +558,7 @@ function isFullScreen () {
 })()
 
 customElements.define('e-player', Eplayer)
+
+Eplayer.use('github源码',ep => {
+  console.log(ep)
+})
