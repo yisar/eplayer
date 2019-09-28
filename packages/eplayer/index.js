@@ -127,9 +127,11 @@ export class Eplayer extends HTMLElement {
     clearTimeout(this.timer)
     this.$('.controls').style.bottom = 0
     this.$('.ep-video').style.bottom = 70 + 'px'
+    this.$('.mark').style.cursor = 'default'
     this.timer = setTimeout(() => {
       this.$('.controls').style.bottom = -50 + 'px'
       this.$('.ep-video').style.bottom = 25 + 'px'
+      this.$('.mark').style.cursor = 'none'
     }, 5000)
   }
 
