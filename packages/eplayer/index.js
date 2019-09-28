@@ -1,8 +1,10 @@
-export class Eplayer extends HTMLElement {
+class Eplayer extends HTMLElement {
   constructor () {
     super()
+    this.doms = {}
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
+
     this.init()
     this.stream()
   }
@@ -18,9 +20,8 @@ export class Eplayer extends HTMLElement {
     this.video.load()
   }
 
-  $ (node) {
-    let dom = this.shadowRoot.querySelectorAll(node)
-    return dom.length > 1 ? [...dom] : dom[0]
+  $ (key) {
+    return this.doms[key]
   }
 
   waiting () {
@@ -43,7 +44,7 @@ export class Eplayer extends HTMLElement {
   canplay () {
     this.$('.mark').classList.remove('loading')
     this.$('.mark').classList.add('playing')
-    this.$('.playing').onclick = () => {
+    this.$('.mark').onclick = () => {
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {
         this.play()
@@ -110,7 +111,9 @@ export class Eplayer extends HTMLElement {
     e.stopPropagation()
     let offset = e.clientX - this.disX + 7
     if (offset < 0) offset = 0
-    if (offset > this.$('.progress').clientWidth) { offset = this.$('.progress').clientWidth }
+    if (offset > this.$('.progress').clientWidth) {
+      offset = this.$('.progress').clientWidth
+    }
     this.$('.current').style.width = offset + 'px'
     this.video.currentTime =
       (offset / this.$('.progress').clientWidth) * this.video.duration
@@ -402,11 +405,41 @@ export class Eplayer extends HTMLElement {
     this.attachShadow({
       mode: 'open'
     }).appendChild(template.content.cloneNode(true))
-    this.dom()
+
+    const doms = [
+      '.video',
+      '.mark',
+      '.playing',
+      '.loading',
+      '.total',
+      '.now',
+      '.current',
+      '.buffer',
+      '.is-play',
+      '.ep-video',
+      '.is-volume',
+      '.cycle',
+      '.progress',
+      '.controls',
+      '.line',
+      '.ep-pause',
+      '.ep-play',
+      '.ep-volume-off',
+      '.ep-volume',
+      '.bg',
+      '.eplayer',
+      '.ep-full'
+    ]
+
+    for (const key of doms) {
+      let dom = this.shadowRoot.querySelectorAll(key)
+      this.doms[key] = dom.length > 1 ? [...dom] : dom[0]
+    }
+    this.mount()
   }
 
-  dom () {
-    this.video = this.$('video')
+  mount () {
+    this.video = this.$('.video')
     this.video.volume = 0.5
     setVolume(this.video.volume * 10, this.$('.line'))
     this.$('.is-volume').onclick = () => this.volume()
@@ -461,9 +494,11 @@ function isFullScreen () {
   )
 }
 
-(function () {
+;(function () {
   let link = document.createElement('link')
   link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css')
   link.setAttribute('rel', 'stylesheet')
   document.head.appendChild(link)
 })()
+
+customElements.define('e-player', Eplayer)
