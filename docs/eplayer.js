@@ -1,4 +1,4 @@
-export class Eplayer extends HTMLElement {
+class Eplayer extends HTMLElement {
   constructor () {
     super()
     this.doms = {}
@@ -398,6 +398,7 @@ export class Eplayer extends HTMLElement {
           text-align:center;
         }
         .panel li:hover{
+          border-radius:4px;
           background:rgba(0,0,0,.8)
         }
       </style>
@@ -553,9 +554,9 @@ function isFullScreen () {
   document.head.appendChild(link)
 })()
 
-// Eplayer.use(
-//   'github源码',
-//   ep => (window.location.href = 'https://github.com/132yse/eplayer')
-// )
+Eplayer.use(
+  'github源码',
+  ep => (window.location.href = 'https://github.com/132yse/eplayer')
+)
 
-// customElements.define('e-player', Eplayer)
+customElements.define('e-player', Eplayer)

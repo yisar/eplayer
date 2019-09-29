@@ -53,6 +53,15 @@ e-player {
 }
 ```
 
+4. 可选定制中间件，会在右击菜单中出现一个选项，触发点击事件
+
+```js
+Eplayer.use('github源码', ep => {
+  // ep 为 shdow-root 元素
+  window.location.href = 'https://github.com/132yse/eplayer'
+})
+```
+
 #### hls
 
 原生支持 `mp4` 和 `mkv` ,如果需要支持 `m3u8`，需要先引入 `hls.js`
@@ -102,7 +111,7 @@ react 直接支持 customElement，直接在 render 函数中`e-player`标签
 比如，下面这个 fre 的粒子
 
 ```js
-function EPlayer ({ src, type }) {
+function EPlayer({ src, type }) {
   const [url, setUrl] = useState(0)
   useEffect(() => {
     fetch(`https://jx.clicli.us/jx?url=${src}@dogecloud`)
@@ -114,6 +123,7 @@ function EPlayer ({ src, type }) {
   return <e-player src={url} type={type} />
 }
 ```
+
 完整代码在这里：[fre-eplayer](https://github.com/cliclitv/fre-eplayer)
 
 #### ssr
