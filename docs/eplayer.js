@@ -515,7 +515,7 @@ class Eplayer extends HTMLElement {
       clearTimeout(this.timer)
       this.full()
     }
-    this.$('.mark').oncontextmenu = e => e.preventDefault()
+    this.$('.mark').oncontextmenu = e => () => e.preventDefault()
     this.$('.mark').onmousedown = e => this.panel(e)
   }
 }
