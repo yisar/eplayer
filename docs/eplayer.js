@@ -13,10 +13,10 @@ class Eplayer extends HTMLElement {
     return ['src', 'type']
   }
 
-  static middlewares = {}
+  static plugins = {}
 
   static use (name, cb) {
-    this.middlewares[name] = cb
+    this.plugins[name] = cb
   }
 
   attributeChangedCallback (name, _, newVal) {
@@ -479,8 +479,8 @@ class Eplayer extends HTMLElement {
     }
     this.mount()
 
-    for (const name in Eplayer.middlewares) {
-      const cb = Eplayer.middlewares[name]
+    for (const name in Eplayer.plugins) {
+      const cb = Eplayer.plugins[name]
       let node = document.createElement('li')
       node.innerText = name
       let panel = this.$('.panel')
@@ -556,7 +556,10 @@ function isFullScreen () {
 
 Eplayer.use(
   'github源码',
-  ep => (window.location.href = 'https://github.com/132yse/eplayer')
+  ep => {
+    console.log(ep)
+    // window.location.href = 'https://github.com/132yse/eplayer'
+  }
 )
 
 customElements.define('e-player', Eplayer)
