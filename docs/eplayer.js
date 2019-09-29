@@ -198,9 +198,9 @@ class Eplayer extends HTMLElement {
   }
 
   panel (e) {
+    e.preventDefault()
     let panel = this.$('.panel')
     if (e.button !== 2) {
-      console.log(e.button)
       panel.style.display = 'none'
     } else {
       panel.style.display = 'block'
@@ -515,7 +515,7 @@ class Eplayer extends HTMLElement {
       clearTimeout(this.timer)
       this.full()
     }
-    this.$('.mark').oncontextmenu = e => () => e.preventDefault()
+    this.$('.eplayer').oncontextmenu = e => false
     this.$('.mark').onmousedown = e => this.panel(e)
   }
 }
