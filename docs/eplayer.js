@@ -557,8 +557,7 @@ function isFullScreen () {
 Eplayer.use(
   'github源码',
   ep => {
-    console.log(ep)
-    // window.location.href = 'https://github.com/132yse/eplayer'
+    window.location.href = 'https://github.com/132yse/eplayer'
   }
 )
 
