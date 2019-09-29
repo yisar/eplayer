@@ -1,4 +1,4 @@
-export class Eplayer extends HTMLElement {
+export default class Eplayer extends HTMLElement {
   constructor () {
     super()
     this.doms = {}

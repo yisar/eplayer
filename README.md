@@ -32,7 +32,7 @@ type 属性可选，默认为 mp4，支持 hls 和 flv
 
 ```html
 <script type="module">
-  import { Eplayer } from 'https://unpkg.com/eplayer'
+  import Eplayer from 'https://unpkg.com/eplayer'
   //注册 customElement
   customElements.define('e-player', Eplayer)
 </script>

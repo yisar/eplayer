@@ -485,7 +485,7 @@ class Eplayer extends HTMLElement {
       node.innerText = name
       let panel = this.$('.panel')
       panel.appendChild(node)
-      node.addEventListener('click', () => cb(this.$('.eplayer')))
+      node.addEventListener('click', () => cb(this.shadowRoot))
     }
   }
 
