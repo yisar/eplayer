@@ -13,10 +13,10 @@ export default class Eplayer extends HTMLElement {
     return ['src', 'type']
   }
 
-  static middlewares = {}
+  static plugins = {}
 
   static use (name, cb) {
-    this.middlewares[name] = cb
+    this.plugins[name] = cb
   }
 
   attributeChangedCallback (name, _, newVal) {
@@ -198,9 +198,9 @@ export default class Eplayer extends HTMLElement {
   }
 
   panel (e) {
+    e.preventDefault()
     let panel = this.$('.panel')
     if (e.button !== 2) {
-      console.log(e.button)
       panel.style.display = 'none'
     } else {
       panel.style.display = 'block'
@@ -398,6 +398,7 @@ export default class Eplayer extends HTMLElement {
           text-align:center;
         }
         .panel li:hover{
+          border-radius:4px;
           background:rgba(0,0,0,.8)
         }
       </style>
@@ -478,13 +479,13 @@ export default class Eplayer extends HTMLElement {
     }
     this.mount()
 
-    for (const name in Eplayer.middlewares) {
-      const cb = Eplayer.middlewares[name]
+    for (const name in Eplayer.plugins) {
+      const cb = Eplayer.plugins[name]
       let node = document.createElement('li')
       node.innerText = name
       let panel = this.$('.panel')
       panel.appendChild(node)
-      node.addEventListener('click', () => cb(this.$('.eplayer')))
+      node.addEventListener('click', () => cb(this.shadowRoot))
     }
   }
 
@@ -514,7 +515,7 @@ export default class Eplayer extends HTMLElement {
       clearTimeout(this.timer)
       this.full()
     }
-    this.$('.mark').oncontextmenu = e => e.preventDefault()
+    this.$('.eplayer').oncontextmenu = e => false
     this.$('.mark').onmousedown = e => this.panel(e)
   }
 }
@@ -552,10 +553,3 @@ function isFullScreen () {
   link.setAttribute('rel', 'stylesheet')
   document.head.appendChild(link)
 })()
-
-// Eplayer.use(
-//   'github源码',
-//   ep => (window.location.href = 'https://github.com/132yse/eplayer')
-// )
-
-// customElements.define('e-player', Eplayer)
