@@ -13,12 +13,6 @@ class Eplayer extends HTMLElement {
     return ['src', 'type']
   }
 
-  static plugins = {}
-
-  static use (name, cb) {
-    this.plugins[name] = cb
-  }
-
   attributeChangedCallback (name, _, newVal) {
     if (name === 'src') this.src = this.$('.video').src = newVal
     if (name === 'type') this.type = newVal
@@ -519,6 +513,13 @@ class Eplayer extends HTMLElement {
     this.$('.mark').onmousedown = e => this.panel(e)
   }
 }
+
+Eplayer.plugins = {}
+
+Eplayer.use = function (name, cb) {
+  this.plugins[name] = cb
+}
+
 
 function getTimeStr (time) {
   let h = Math.floor(time / 3600)
