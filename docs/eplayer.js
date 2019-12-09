@@ -283,10 +283,10 @@ class Eplayer extends HTMLElement {
         }
         .line:hover i{
           height:14px;
-          background:var(--theme,#00fff6);
+          background:var(--theme,#c136e4);
         }
         .active i{
-          background:var(--theme,#00fff6);
+          background:var(--theme,#c136e4);
         }
         .left{
           flex:1;
@@ -308,7 +308,7 @@ class Eplayer extends HTMLElement {
           background:var(--progress,rgba(255,255,255,.3));
         }
         .current{
-          background:var(--theme,#00fff6);
+          background:var(--theme,#c136e4);
         }
         .buffer{
           background:var(--buffer,rgba(255,255,255,.5));
@@ -317,7 +317,7 @@ class Eplayer extends HTMLElement {
           position:absolute;
           border-radius: 50%;
           display: block;
-          background:var(--theme,#00fff6);
+          background:var(--theme,#c136e4);
           height: 9px;
           width:9px;
           right:-5px;
@@ -329,7 +329,7 @@ class Eplayer extends HTMLElement {
           position:absolute;
           border-radius: 50%;
           display: block;
-          background:var(--theme,#00fff6);
+          background:var(--theme,#c136e4);
           opacity:0.3;
           height: 15px;
           width:15px;
@@ -397,7 +397,7 @@ class Eplayer extends HTMLElement {
         }
       </style>
       <div class="eplayer">
-        <video id="video" class="video" src="this.${this.src}"></video>
+        <video id="video" class="video" src="${this.src || ''}"></video>
         <div class="mark loading"></div>
         <div class="controls" style="bottom:-50px">
           <div class="progress">
