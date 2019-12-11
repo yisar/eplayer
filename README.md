@@ -138,4 +138,4 @@ eplayer 不推荐这么做，请直接和正常的 html 引入方式一样，引
 
 #### Screenshot
 
-![](https://user-gold-cdn.xitu.io/2019/12/10/16ef04459f33fc97?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![](https://ww1.sinaimg.cn/mw690/0065Zy9ely1g9srnm3ezpj31jg0v3kjl.jpg)
