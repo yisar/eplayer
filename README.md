@@ -1,6 +1,6 @@
 <p align="center"><img src="http://ww1.sinaimg.cn/large/0065Zy9egy1fvcjfzaa1lj30dw0dwwhe.jpg" alt="eplayer logo" width="200px"></p>
 
-# eplayer [![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer) [![NPM downloads](https://img.shields.io/npm/dt/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
+# eplayer [![Financial Contributors on Open Collective](https://opencollective.com/eplayer/all/badge.svg?label=financial+contributors)](https://opencollective.com/eplayer) [![NPM version](https://img.shields.io/npm/v/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer) [![NPM downloads](https://img.shields.io/npm/dt/eplayer.svg?style=flat-square)](https://npmjs.com/package/eplayer)
 
 :dart: A web-components html5 video player facing future.
 
@@ -139,3 +139,33 @@ eplayer 不推荐这么做，请直接和正常的 html 引入方式一样，引
 #### Screenshot
 
 ![](https://ww1.sinaimg.cn/mw690/0065Zy9ely1g9srnm3ezpj31jg0v3kjl.jpg)
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/yisar/eplayer/graphs/contributors"><img src="https://opencollective.com/eplayer/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/eplayer/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/eplayer"><img src="https://opencollective.com/eplayer/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/eplayer/contribute)]
+
+<a href="https://opencollective.com/eplayer/organization/0/website"><img src="https://opencollective.com/eplayer/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/eplayer/organization/1/website"><img src="https://opencollective.com/eplayer/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/eplayer/organization/2/website"><img src="https://opencollective.com/eplayer/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/eplayer/organization/3/website"><img src="https://opencollective.com/eplayer/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/eplayer/organization/4/website"><img src="https://opencollective.com/eplayer/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/eplayer/organization/5/website"><img src="https://opencollective.com/eplayer/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/eplayer/organization/6/website"><img src="https://opencollective.com/eplayer/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/eplayer/organization/7/website"><img src="https://opencollective.com/eplayer/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/eplayer/organization/8/website"><img src="https://opencollective.com/eplayer/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/eplayer/organization/9/website"><img src="https://opencollective.com/eplayer/organization/9/avatar.svg"></a>
