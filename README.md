@@ -126,6 +126,60 @@ function EPlayer({ src, type }) {
 
 完整代码在这里：[fre-eplayer](https://github.com/cliclitv/fre-eplayer)
 
+#### Angular
+
+在 `angular.json` 中添加 `webcomponentsjs` 和 `hls.js`
+
+```json
+...
+"scripts": [
+  "node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js",
+  "node_modules/hls.js/dist/hls.min.js"
+]
+...
+```
+
+在 `app.component.ts` 中引入 `eplayer`
+
+```ts
+import { Component, OnInit } from "@angular/core";
+import Eplayer from "eplayer";
+
+@Component({
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
+})
+export class AppComponent implements OnInit {
+  ngOnInit(): void {
+    customElements.define("e-player", Eplayer);
+  }
+}
+```
+
+在需要使用 `eplayer` 的模块中启用自定义元素的支持
+
+```ts
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { VideoComponent } from "./video.component";
+
+@NgModule({
+  declarations: [VideoComponent],
+  imports: [CommonModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class VideoModule {}
+```
+
+在相应的 `html` 文件中对 `src` 和 `type` 绑定
+
+```html
+<e-player [attr.src]="src" [attr.type]="type"></e-player>
+```
+
+完整项目示例: [@cliclitv/pwa](https://github.com/cliclitv/pwa)
+
 #### ssr
 
 ssr 服务端没有 web-components 的 API，通常 web-components 的 ssr 都会通过一些库去模拟这些 API
