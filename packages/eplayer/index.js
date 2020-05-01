@@ -511,6 +511,11 @@ export default class Eplayer extends HTMLElement {
     }
     this.$('.eplayer').oncontextmenu = e => false
     this.$('.mark').onmousedown = e => this.panel(e)
+    const handleFullscreenchange = () => this.update()
+    this.$('.eplayer').addEventListener('fullscreenchange', handleFullscreenchange)
+    this.$('.eplayer').addEventListener('webkitfullscreenchange', handleFullscreenchange)
+    this.$('.eplayer').addEventListener('mozfullscreenchange', handleFullscreenchange)
+    this.$('.eplayer').addEventListener('MSFullscreenChange', handleFullscreenchange)
   }
 }
 
