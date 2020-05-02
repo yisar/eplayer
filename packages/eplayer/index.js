@@ -82,11 +82,10 @@ export default class Eplayer extends HTMLElement {
     if (this.video.buffered.length) {
       let bufferEnd = this.video.buffered.end(this.video.buffered.length - 1)
       this.$('.buffer').style.width =
-        (bufferEnd / this.video.duration) * this.$('.progress').clientWidth +
-        'px'
+        (bufferEnd / this.video.duration) * 100 + '%'
     }
     let offset =
-      (this.video.currentTime / this.video.duration) * this.$('.bg').clientWidth
+      (this.video.currentTime / this.video.duration) * 100
     this.$('.now').innerHTML = cTime
     this.$('.current').style.width = offset + 'px'
   }
@@ -511,11 +510,6 @@ export default class Eplayer extends HTMLElement {
     }
     this.$('.eplayer').oncontextmenu = e => false
     this.$('.mark').onmousedown = e => this.panel(e)
-    const handleFullscreenchange = () => this.update()
-    this.$('.eplayer').addEventListener('fullscreenchange', handleFullscreenchange)
-    this.$('.eplayer').addEventListener('webkitfullscreenchange', handleFullscreenchange)
-    this.$('.eplayer').addEventListener('mozfullscreenchange', handleFullscreenchange)
-    this.$('.eplayer').addEventListener('MSFullscreenChange', handleFullscreenchange)
   }
 }
 
