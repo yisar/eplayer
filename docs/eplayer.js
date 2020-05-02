@@ -82,13 +82,12 @@ class Eplayer extends HTMLElement {
     if (this.video.buffered.length) {
       let bufferEnd = this.video.buffered.end(this.video.buffered.length - 1)
       this.$('.buffer').style.width =
-        (bufferEnd / this.video.duration) * this.$('.progress').clientWidth +
-        'px'
+        (bufferEnd / this.video.duration) * 100 + '%'
     }
     let offset =
-      (this.video.currentTime / this.video.duration) * this.$('.bg').clientWidth
+      (this.video.currentTime / this.video.duration) * 100
     this.$('.now').innerHTML = cTime
-    this.$('.current').style.width = offset + 'px'
+    this.$('.current').style.width = offset + '%'
   }
 
   progress (e) {
@@ -193,14 +192,29 @@ class Eplayer extends HTMLElement {
 
   panel (e) {
     e.preventDefault()
-    let panel = this.$('.panel')
+    const panel = this.$('.panel')
+    const eplayer = this.$('.eplayer')
     if (e.button !== 2) {
       panel.style.display = 'none'
     } else {
       panel.style.display = 'block'
       panel.style.height = panel.childElementCount * 24 + 'px'
-      panel.style.top = e.offsetY + 'px'
-      panel.style.left = e.offsetX + 'px'
+      // 40 是 controls 的高度
+      if(panel.offsetHeight + e.offsetY + 40 > eplayer.offsetHeight) {
+        panel.style.top = ''
+        panel.style.bottom = (eplayer.offsetHeight - e.offsetY) / eplayer.offsetHeight * 100 + '%'
+      } else {
+        panel.style.bottom = ''
+        panel.style.top = e.offsetY / eplayer.offsetHeight * 100 + '%'
+      }
+      // 10 是随便写的 margin，贴边不好看
+      if (panel.offsetWidth + e.offsetX + 10 > eplayer.offsetWidth) {
+        panel.style.left = ''
+        panel.style.right = (eplayer.offsetWidth - e.offsetX) / eplayer.offsetWidth * 100 + '%'
+      } else {
+        panel.style.right = ''
+        panel.style.left = e.offsetX / eplayer.offsetWidth * 100 + '%'
+      }
     }
   }
 
@@ -511,11 +525,6 @@ class Eplayer extends HTMLElement {
     }
     this.$('.eplayer').oncontextmenu = e => false
     this.$('.mark').onmousedown = e => this.panel(e)
-    const handleFullscreenchange = () => this.update()
-    this.$('.eplayer').addEventListener('fullscreenchange', handleFullscreenchange)
-    this.$('.eplayer').addEventListener('webkitfullscreenchange', handleFullscreenchange)
-    this.$('.eplayer').addEventListener('mozfullscreenchange', handleFullscreenchange)
-    this.$('.eplayer').addEventListener('MSFullscreenChange', handleFullscreenchange)
   }
 }
 
