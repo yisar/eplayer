@@ -202,18 +202,18 @@ export default class Eplayer extends HTMLElement {
       // 40 是 controls 的高度
       if(panel.offsetHeight + e.offsetY + 40 > eplayer.offsetHeight) {
         panel.style.top = ''
-        panel.style.bottom = eplayer.offsetHeight - e.offsetY + 'px'
+        panel.style.bottom = (eplayer.offsetHeight - e.offsetY) / eplayer.offsetHeight * 100 + '%'
       } else {
         panel.style.bottom = ''
-        panel.style.top = e.offsetY + 'px'
+        panel.style.top = e.offsetY / eplayer.offsetHeight * 100 + '%'
       }
       // 10 是随便写的 margin，贴边不好看
       if (panel.offsetWidth + e.offsetX + 10 > eplayer.offsetWidth) {
         panel.style.left = ''
-        panel.style.right = eplayer.offsetWidth - e.offsetX + 'px'
+        panel.style.right = (eplayer.offsetWidth - e.offsetX) / eplayer.offsetWidth * 100 + '%'
       } else {
         panel.style.right = ''
-        panel.style.left = e.offsetX + 'px'
+        panel.style.left = e.offsetX / eplayer.offsetWidth * 100 + '%'
       }
     }
   }
