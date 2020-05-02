@@ -192,14 +192,29 @@ class Eplayer extends HTMLElement {
 
   panel (e) {
     e.preventDefault()
-    let panel = this.$('.panel')
+    const panel = this.$('.panel')
+    const eplayer = this.$('.eplayer')
     if (e.button !== 2) {
       panel.style.display = 'none'
     } else {
       panel.style.display = 'block'
       panel.style.height = panel.childElementCount * 24 + 'px'
-      panel.style.top = e.offsetY + 'px'
-      panel.style.left = e.offsetX + 'px'
+      // 40 是 controls 的高度
+      if(panel.offsetHeight + e.offsetY + 40 > eplayer.offsetHeight) {
+        panel.style.top = ''
+        panel.style.bottom = eplayer.offsetHeight - e.offsetY + 'px'
+      } else {
+        panel.style.bottom = ''
+        panel.style.top = e.offsetY + 'px'
+      }
+      // 10 是随便写的 margin，贴边不好看
+      if (panel.offsetWidth + e.offsetX + 10 > eplayer.offsetWidth) {
+        panel.style.left = ''
+        panel.style.right = eplayer.offsetWidth - e.offsetX + 'px'
+      } else {
+        panel.style.right = ''
+        panel.style.left = e.offsetX + 'px'
+      }
     }
   }
 
