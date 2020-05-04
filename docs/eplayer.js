@@ -48,7 +48,6 @@ class Eplayer extends HTMLElement {
   }
 
   canplay() {
-    console.log(111)
     this.$('.mark').classList.remove('loading')
     this.$('.mark').classList.add('playing')
     this.$('.mark').addEventListener('click', this.mark.bind(this))
