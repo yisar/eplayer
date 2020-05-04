@@ -297,10 +297,10 @@ export default class Eplayer extends HTMLElement {
         }
         .line:hover i{
           height:14px;
-          background:var(--theme,#c136e4);
+          background:var(--theme,#946ce6);
         }
         .active i{
-          background:var(--theme,#c136e4);
+          background:var(--theme,#946ce6);
         }
         .left{
           flex:1;
@@ -322,7 +322,7 @@ export default class Eplayer extends HTMLElement {
           background:var(--progress,rgba(255,255,255,.3));
         }
         .current{
-          background:var(--theme,#c136e4);
+          background:var(--theme,#946ce6);
         }
         .buffer{
           background:var(--buffer,rgba(255,255,255,.5));
@@ -331,7 +331,7 @@ export default class Eplayer extends HTMLElement {
           position:absolute;
           border-radius: 50%;
           display: block;
-          background:var(--theme,#c136e4);
+          background:var(--theme,#946ce6);
           height: 9px;
           width:9px;
           right:-5px;
@@ -343,7 +343,7 @@ export default class Eplayer extends HTMLElement {
           position:absolute;
           border-radius: 50%;
           display: block;
-          background:var(--theme,#c136e4);
+          background:var(--theme,#946ce6);
           opacity:0.3;
           height: 15px;
           width:15px;
