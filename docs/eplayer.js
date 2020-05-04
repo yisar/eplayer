@@ -1,5 +1,5 @@
 class Eplayer extends HTMLElement {
-  constructor () {
+  constructor() {
     super()
     this.doms = {}
     this.src = this.getAttribute('src')
@@ -9,27 +9,28 @@ class Eplayer extends HTMLElement {
     this.stream()
   }
 
-  static get observedAttributes () {
+  static get observedAttributes() {
     return ['src', 'type']
   }
 
-  attributeChangedCallback (name, _, newVal) {
+  attributeChangedCallback(name, _, newVal) {
     if (name === 'src') this.src = this.$('.video').src = newVal
     if (name === 'type') this.type = newVal
     this.stream()
     this.video.load()
   }
 
-  $ (key) {
+  $(key) {
     return this.doms[key]
   }
 
-  waiting () {
+  waiting() {
+    this.$('.mark').removeEventListener('click', this.mark.bind(this))
     this.$('.mark').classList.remove('playing')
     this.$('.mark').classList.add('loading')
   }
 
-  stream () {
+  stream() {
     switch (this.type) {
       case 'hls':
         if (Hls.isSupported()) {
@@ -41,19 +42,20 @@ class Eplayer extends HTMLElement {
     }
   }
 
-  canplay () {
+  mark() {
+    clearTimeout(this.timer)
+    this.timer = setTimeout(() => this.play(), 200)
+  }
+
+  canplay() {
+    console.log(111)
     this.$('.mark').classList.remove('loading')
     this.$('.mark').classList.add('playing')
-    this.$('.mark').onclick = () => {
-      clearTimeout(this.timer)
-      this.timer = setTimeout(() => {
-        this.play()
-      }, 200)
-    }
+    this.$('.mark').addEventListener('click', this.mark.bind(this))
     this.$('.total').innerHTML = getTimeStr(this.video.duration)
   }
 
-  play () {
+  play() {
     if (this.video.paused) {
       this.video.play()
       this.$('.ep-video').style.display = 'none'
@@ -65,7 +67,7 @@ class Eplayer extends HTMLElement {
     }
   }
 
-  volume () {
+  volume() {
     if (this.video.muted) {
       this.video.muted = false
       setVolume(this.video.volume * 10, this.$('.line'))
@@ -77,28 +79,26 @@ class Eplayer extends HTMLElement {
     }
   }
 
-  update () {
+  update() {
     let cTime = getTimeStr(this.video.currentTime)
     if (this.video.buffered.length) {
       let bufferEnd = this.video.buffered.end(this.video.buffered.length - 1)
-      this.$('.buffer').style.width =
-        (bufferEnd / this.video.duration) * 100 + '%'
+      this.$('.buffer').style.width = (bufferEnd / this.video.duration) * 100 + '%'
     }
-    let offset =
-      (this.video.currentTime / this.video.duration) * 100
+    let offset = (this.video.currentTime / this.video.duration) * 100
     this.$('.now').innerHTML = cTime
     this.$('.current').style.width = offset + '%'
   }
 
-  progress (e) {
+  progress(e) {
     let offset = e.offsetX / this.$('.progress').offsetWidth
     this.video.currentTime = this.video.duration * offset
   }
 
-  down (e) {
+  down(e) {
     e.stopPropagation()
     this.disX = e.clientX - this.$('.cycle').offsetLeft
-    document.onmousemove = e => this.move(e)
+    document.onmousemove = (e) => this.move(e)
     document.onmouseup = () => {
       e.stopPropagation()
       document.onmousemove = null
@@ -106,7 +106,7 @@ class Eplayer extends HTMLElement {
     }
   }
 
-  move (e) {
+  move(e) {
     e.stopPropagation()
     let offset = e.clientX - this.disX + 7
     if (offset < 0) offset = 0
@@ -114,18 +114,17 @@ class Eplayer extends HTMLElement {
       offset = this.$('.progress').clientWidth
     }
     this.$('.current').style.width = offset + 'px'
-    this.video.currentTime =
-      (offset / this.$('.progress').clientWidth) * this.video.duration
+    this.video.currentTime = (offset / this.$('.progress').clientWidth) * this.video.duration
     document.onmousemove = null
     setTimeout(
-      (document.onmousemove = e => {
+      (document.onmousemove = (e) => {
         if (e) this.move(e)
       }),
       30
     )
   }
 
-  alow () {
+  alow() {
     clearTimeout(this.timer)
     this.$('.controls').style.bottom = 0
     this.$('.ep-video').style.bottom = 70 + 'px'
@@ -137,7 +136,7 @@ class Eplayer extends HTMLElement {
     }, 5000)
   }
 
-  keydown (e) {
+  keydown(e) {
     switch (e.keyCode) {
       case 37:
         this.video.currentTime -= 10
@@ -164,11 +163,11 @@ class Eplayer extends HTMLElement {
     }
   }
 
-  ended () {
+  ended() {
     this.$('.is-play').classList.replace('ep-pause', 'ep-play')
   }
 
-  full () {
+  full() {
     if (isFullScreen()) {
       if (document.exitFullscreen) {
         document.exitFullscreen()
@@ -181,16 +180,12 @@ class Eplayer extends HTMLElement {
       }
     } else {
       let el = this.$('.eplayer')
-      let rfs =
-        el.requestFullScreen ||
-        el.webkitRequestFullScreen ||
-        el.mozRequestFullScreen ||
-        el.msRequestFullscreen
+      let rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen
       return rfs.call(el)
     }
   }
 
-  panel (e) {
+  panel(e) {
     e.preventDefault()
     const panel = this.$('.panel')
     const eplayer = this.$('.eplayer')
@@ -200,25 +195,25 @@ class Eplayer extends HTMLElement {
       panel.style.display = 'block'
       panel.style.height = panel.childElementCount * 24 + 'px'
       // 40 是 controls 的高度
-      if(panel.offsetHeight + e.offsetY + 40 > eplayer.offsetHeight) {
+      if (panel.offsetHeight + e.offsetY + 40 > eplayer.offsetHeight) {
         panel.style.top = ''
-        panel.style.bottom = (eplayer.offsetHeight - e.offsetY) / eplayer.offsetHeight * 100 + '%'
+        panel.style.bottom = ((eplayer.offsetHeight - e.offsetY) / eplayer.offsetHeight) * 100 + '%'
       } else {
         panel.style.bottom = ''
-        panel.style.top = e.offsetY / eplayer.offsetHeight * 100 + '%'
+        panel.style.top = (e.offsetY / eplayer.offsetHeight) * 100 + '%'
       }
       // 10 是随便写的 margin，贴边不好看
       if (panel.offsetWidth + e.offsetX + 10 > eplayer.offsetWidth) {
         panel.style.left = ''
-        panel.style.right = (eplayer.offsetWidth - e.offsetX) / eplayer.offsetWidth * 100 + '%'
+        panel.style.right = ((eplayer.offsetWidth - e.offsetX) / eplayer.offsetWidth) * 100 + '%'
       } else {
         panel.style.right = ''
-        panel.style.left = e.offsetX / eplayer.offsetWidth * 100 + '%'
+        panel.style.left = (e.offsetX / eplayer.offsetWidth) * 100 + '%'
       }
     }
   }
 
-  init () {
+  init() {
     let html = `
       <style>
         @import "https://at.alicdn.com/t/font_836948_6lbb2iu59.css";
@@ -452,7 +447,7 @@ class Eplayer extends HTMLElement {
     let template = document.createElement('template')
     template.innerHTML = html
     this.attachShadow({
-      mode: 'open'
+      mode: 'open',
     }).appendChild(template.content.cloneNode(true))
 
     const doms = [
@@ -478,7 +473,7 @@ class Eplayer extends HTMLElement {
       '.bg',
       '.eplayer',
       '.ep-full',
-      '.panel'
+      '.panel',
     ]
 
     for (const key of doms) {
@@ -497,7 +492,7 @@ class Eplayer extends HTMLElement {
     }
   }
 
-  mount () {
+  mount() {
     this.video = this.$('.video')
     this.video.volume = 0.5
     setVolume(this.video.volume * 10, this.$('.line'))
@@ -508,14 +503,14 @@ class Eplayer extends HTMLElement {
         setVolume(index + 1, this.$('.line'))
       }
     })
-    this.$('.progress').onmousedown = e => this.progress(e)
+    this.$('.progress').onmousedown = (e) => this.progress(e)
     this.video.onwaiting = () => this.waiting()
     this.video.oncanplay = () => this.canplay()
     this.video.ontimeupdate = () => this.update()
-    this.$('.cycle').onmousedown = e => this.down(e)
+    this.$('.cycle').onmousedown = (e) => this.down(e)
 
     this.$('.eplayer').onmousemove = () => this.alow()
-    document.onkeydown = e => this.keydown(e)
+    document.onkeydown = (e) => this.keydown(e)
     this.$('.ep-full').onclick = () => this.full()
     this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
     this.video.onended = () => this.ended()
@@ -523,8 +518,8 @@ class Eplayer extends HTMLElement {
       clearTimeout(this.timer)
       this.full()
     }
-    this.$('.eplayer').oncontextmenu = e => false
-    this.$('.mark').onmousedown = e => this.panel(e)
+    this.$('.eplayer').oncontextmenu = (e) => false
+    this.$('.mark').onmousedown = (e) => this.panel(e)
   }
 }
 
@@ -534,8 +529,7 @@ Eplayer.use = function (name, cb) {
   this.plugins[name] = cb
 }
 
-
-function getTimeStr (time) {
+function getTimeStr(time) {
   let h = Math.floor(time / 3600)
   let m = Math.floor((time % 3600) / 60)
   let s = Math.floor(time % 60)
@@ -545,7 +539,7 @@ function getTimeStr (time) {
   return h === '00' ? m + ':' + s : h + ':' + m + ':' + s
 }
 
-function setVolume (index, node) {
+function setVolume(index, node) {
   for (let j = index; j < node.length; j++) {
     node[j].classList.remove('active')
   }
@@ -554,12 +548,8 @@ function setVolume (index, node) {
   }
 }
 
-function isFullScreen () {
-  return (
-    document.isFullScreen ||
-    document.webkitIsFullScreen ||
-    document.mozIsFullScreen
-  )
+function isFullScreen() {
+  return document.isFullScreen || document.webkitIsFullScreen || document.mozIsFullScreen
 }
 
 ;(function () {
@@ -569,11 +559,8 @@ function isFullScreen () {
   document.head.appendChild(link)
 })()
 
-Eplayer.use(
-  'github源码',
-  ep => {
-    window.location.href = 'https://github.com/132yse/eplayer'
-  }
-)
+Eplayer.use('github源码', (ep) => {
+  window.location.href = 'https://github.com/132yse/eplayer'
+})
 
 customElements.define('e-player', Eplayer)
