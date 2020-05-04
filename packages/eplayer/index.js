@@ -87,7 +87,7 @@ export default class Eplayer extends HTMLElement {
     let offset =
       (this.video.currentTime / this.video.duration) * 100
     this.$('.now').innerHTML = cTime
-    this.$('.current').style.width = offset + 'px'
+    this.$('.current').style.width = offset + '%'
   }
 
   progress (e) {
@@ -297,10 +297,10 @@ export default class Eplayer extends HTMLElement {
         }
         .line:hover i{
           height:14px;
-          background:var(--theme,#9936e4);
+          background:var(--theme,#c136e4);
         }
         .active i{
-          background:var(--theme,#9936e4);
+          background:var(--theme,#c136e4);
         }
         .left{
           flex:1;
@@ -322,7 +322,7 @@ export default class Eplayer extends HTMLElement {
           background:var(--progress,rgba(255,255,255,.3));
         }
         .current{
-          background:var(--theme,#9936e4);
+          background:var(--theme,#c136e4);
         }
         .buffer{
           background:var(--buffer,rgba(255,255,255,.5));
@@ -331,7 +331,7 @@ export default class Eplayer extends HTMLElement {
           position:absolute;
           border-radius: 50%;
           display: block;
-          background:var(--theme,#9936e4);
+          background:var(--theme,#c136e4);
           height: 9px;
           width:9px;
           right:-5px;
@@ -343,7 +343,7 @@ export default class Eplayer extends HTMLElement {
           position:absolute;
           border-radius: 50%;
           display: block;
-          background:var(--theme,#9936e4);
+          background:var(--theme,#c136e4);
           opacity:0.3;
           height: 15px;
           width:15px;
