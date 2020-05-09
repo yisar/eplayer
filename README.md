@@ -8,9 +8,13 @@
 
 [eplayer.js.org - demo](https://eplayer.js.org/)
 
-[clicli.us - C 站](https://www.clicli.us/)
+[clicli - C 站](https://www.clicli.me/)
 
-[ayypd.cn - 爱看动漫网](http://sp.ayypd.cn/)
+#### Contributors
+
+感谢大家的 pr，阿里嘎多！
+
+<a href="https://github.com/yisar/eplayer/graphs/contributors"><img src="https://opencollective.com/eplayer/contributors.svg?width=890&button=false" /></a>
 
 ### Use
 
@@ -186,17 +190,11 @@ ssr 服务端没有 web-components 的 API，通常 web-components 的 ssr 都�
 
 eplayer 不推荐这么做，请直接和正常的 html 引入方式一样，引入 cdn
 
-#### 移动端
+#### WAP
 
-暂时不支持移动端，等我
+WAP 端建议使用原生播放器，国产浏览器太乱了，没得兼容，同时建议往 APP 上引流
 
 #### Screenshot
 
 ![](https://ww1.sinaimg.cn/mw690/0065Zy9ely1g9srnm3ezpj31jg0v3kjl.jpg)
-
-## Contributors
-
-感谢大家的 pr，阿里嘎多！
-
-<a href="https://github.com/yisar/eplayer/graphs/contributors"><img src="https://opencollective.com/eplayer/contributors.svg?width=890&button=false" /></a>
 
