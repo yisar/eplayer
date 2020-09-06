@@ -95,10 +95,8 @@ class Eplayer extends HTMLElement {
   }
 
   down(e) {
-    e.stopPropagation()
     this.disX = e.clientX - this.$('.cycle').offsetLeft
     document.onmousemove = (e) => this.move(e)
-
     document.onmouseup = () => {
       document.onmousemove = null
       document.onmouseup = null
@@ -106,7 +104,6 @@ class Eplayer extends HTMLElement {
   }
 
   move(e) {
-    e.stopPropagation()
     let offset = e.clientX - this.disX + 7
     if (offset < 0) offset = 0
     if (offset > this.$('.progress').clientWidth) {
