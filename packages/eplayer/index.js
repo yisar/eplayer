@@ -98,8 +98,8 @@ export default class Eplayer extends HTMLElement {
     e.stopPropagation()
     this.disX = e.clientX - this.$('.cycle').offsetLeft
     document.onmousemove = (e) => this.move(e)
+
     document.onmouseup = () => {
-      e.stopPropagation()
       document.onmousemove = null
       document.onmouseup = null
     }
@@ -115,12 +115,7 @@ export default class Eplayer extends HTMLElement {
     this.$('.current').style.width = offset + 'px'
     this.video.currentTime = (offset / this.$('.progress').clientWidth) * this.video.duration
     document.onmousemove = null
-    setTimeout(
-      (document.onmousemove = (e) => {
-        if (e) this.move(e)
-      }),
-      30
-    )
+    setTimeout((document.onmousemove = (e) => this.move(e)), 30)
   }
 
   alow() {
@@ -193,7 +188,6 @@ export default class Eplayer extends HTMLElement {
     } else {
       panel.style.display = 'block'
       panel.style.height = panel.childElementCount * 24 + 'px'
-      // 40 是 controls 的高度
       if (panel.offsetHeight + e.offsetY + 40 > eplayer.offsetHeight) {
         panel.style.top = ''
         panel.style.bottom = ((eplayer.offsetHeight - e.offsetY) / eplayer.offsetHeight) * 100 + '%'
@@ -201,7 +195,6 @@ export default class Eplayer extends HTMLElement {
         panel.style.bottom = ''
         panel.style.top = (e.offsetY / eplayer.offsetHeight) * 100 + '%'
       }
-      // 10 是随便写的 margin，贴边不好看
       if (panel.offsetWidth + e.offsetX + 10 > eplayer.offsetWidth) {
         panel.style.left = ''
         panel.style.right = ((eplayer.offsetWidth - e.offsetX) / eplayer.offsetWidth) * 100 + '%'
@@ -212,10 +205,15 @@ export default class Eplayer extends HTMLElement {
     }
   }
 
+  speed(e) {
+    this.video.playbackRate === 2 ? (this.video.playbackRate = 1) : (this.video.playbackRate = this.video.playbackRate + 0.5)
+    this.$('.speed').innerText = this.video.playbackRate + 'x'
+  }
+
   init() {
     let html = `
       <style>
-        @import "https://at.alicdn.com/t/font_836948_6lbb2iu59.css";
+        @import "https://at.alicdn.com/t/font_836948_uhdb83b0e3m.css";
         *{
           padding:0;
           margin:0;
@@ -275,8 +273,11 @@ export default class Eplayer extends HTMLElement {
         .time b{
           font-weight:normal;
         }
+        .lines{
+          padding:0 10px;
+        }
         .line{
-          padding:0 1px;
+          padding:0;
           margin-bottom: -2px;
           cursor:pointer
         }
@@ -403,6 +404,18 @@ export default class Eplayer extends HTMLElement {
           border-radius:4px;
           background:rgba(0,0,0,.8)
         }
+        .speed{
+            font-size:10px;
+            font-style:italic;
+            width:22px;
+            text-align:center;
+            border-radius:11px;
+            color:rgba(0,0,0,.5);
+            font-weight:900;
+            background:var(--icons,rgba(255,255,255,.8));
+            margin-left:-10px;
+            display:inline-block;
+        }
       </style>
       <div class="eplayer">
         <video id="video" class="video" src="${this.src || ''}"></video>
@@ -425,16 +438,21 @@ export default class Eplayer extends HTMLElement {
             </div>
             <div class="right">
               <i class="epicon ep-volume is-volume"></i>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
+              <ol class="lines">
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+              </ol>
+              <i class="epicon ep-speed">              
+                <b class="speed">1x</b>
+              </i>
               <i class="epicon ep-full"></i>
             </div>
           </div>
@@ -473,6 +491,7 @@ export default class Eplayer extends HTMLElement {
       '.eplayer',
       '.ep-full',
       '.panel',
+      '.speed',
     ]
 
     for (const key of doms) {
@@ -491,34 +510,53 @@ export default class Eplayer extends HTMLElement {
     }
   }
 
+  delegate(type, map) {
+    const that = this
+    if (typeof map === 'function') {
+      this.shadowRoot.addEventListener(type, map.bind(that))
+    } else {
+      this.shadowRoot.addEventListener(type, (e) => {
+        for (const key in map) e.target.matches(key) && map[key].call(that, e)
+      })
+    }
+  }
+
   mount() {
     this.video = this.$('.video')
     this.video.volume = 0.5
     setVolume(this.video.volume * 10, this.$('.line'))
-    this.$('.is-volume').onclick = () => this.volume()
+    this.video.onwaiting = this.waiting.bind(this)
+    this.video.oncanplay = this.canplay.bind(this)
+    this.video.ontimeupdate = this.update.bind(this)
+    this.video.onended = this.ended.bind(this)
+    this.delegate('click', {
+      '.is-volume': this.volume,
+      '.ep-full': this.full,
+      '.ep-video': this.play,
+      '.is-play': this.play,
+      '.ep-speed': this.speed,
+      '.speed': this.speed,
+    })
+    this.delegate('mousedown', {
+      '.progress': this.progress,
+      '.cycle': this.down,
+      '.mark': this.panel,
+    })
+    this.delegate('dblclick', {
+      '.mark': (e) => {
+        clearTimeout(this.timer)
+        this.full()
+      },
+    })
+    this.delegate('keydown', this.keydown)
+    this.delegate('mousemove', this.alow)
     this.$('.line').forEach((item, index) => {
       item.onclick = () => {
         this.video.volume = (index + 1) / 10
         setVolume(index + 1, this.$('.line'))
       }
     })
-    this.$('.progress').onmousedown = (e) => this.progress(e)
-    this.video.onwaiting = () => this.waiting()
-    this.video.oncanplay = () => this.canplay()
-    this.video.ontimeupdate = () => this.update()
-    this.$('.cycle').onmousedown = (e) => this.down(e)
-
-    this.$('.eplayer').onmousemove = () => this.alow()
-    document.onkeydown = (e) => this.keydown(e)
-    this.$('.ep-full').onclick = () => this.full()
-    this.$('.ep-video').onclick = this.$('.is-play').onclick = () => this.play()
-    this.video.onended = () => this.ended()
-    this.$('.mark').ondblclick = () => {
-      clearTimeout(this.timer)
-      this.full()
-    }
-    this.$('.eplayer').oncontextmenu = (e) => false
-    this.$('.mark').onmousedown = (e) => this.panel(e)
+    document.oncontextmenu = () => false
   }
 }
 
@@ -553,7 +591,7 @@ function isFullScreen() {
 
 ;(function () {
   let link = document.createElement('link')
-  link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css')
+  link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_uhdb83b0e3m.css')
   link.setAttribute('rel', 'stylesheet')
   document.head.appendChild(link)
 })()
