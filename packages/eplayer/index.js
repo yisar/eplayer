@@ -210,7 +210,7 @@ export default class Eplayer extends HTMLElement {
   init() {
     let html = `
       <style>
-        @import "https://at.alicdn.com/t/font_836948_0k7fcxu9bfjo.css";
+        @import "https://at.alicdn.com/t/font_836948_g9fk6jqpl8l.css";
         *{
           padding:0;
           margin:0;
@@ -450,7 +450,7 @@ export default class Eplayer extends HTMLElement {
               <i class="epicon ep-speed">              
                 <b class="speed">1x</b>
               </i>
-              <i class="epicon ep-pip"></i>
+              ${document.pictureInPictureEnabled && `<i class="epicon ep-pip"></i>`}
               <i class="epicon ep-full"></i>
             </div>
           </div>
@@ -490,7 +490,7 @@ export default class Eplayer extends HTMLElement {
       '.ep-full',
       '.panel',
       '.speed',
-      '.pip'
+      '.pip',
     ]
 
     for (const key of doms) {
@@ -520,6 +520,14 @@ export default class Eplayer extends HTMLElement {
     }
   }
 
+  pip(e) {
+    if (!document.pictureInPictureElement) {
+      this.video.requestPictureInPicture()
+    } else {
+      document.exitPictureInPicture()
+    }
+  }
+
   mount() {
     this.video = this.$('.video')
     this.video.volume = 0.5
@@ -537,7 +545,7 @@ export default class Eplayer extends HTMLElement {
       '.speed': this.speed,
       '.bg': this.progress,
       '.buffer': this.progress,
-      '.pip':this.pip
+      '.ep-pip': this.pip,
     })
     this.delegate('mousedown', {
       '.cycle': this.down,
@@ -592,7 +600,7 @@ function isFullScreen() {
 
 ;(function () {
   let link = document.createElement('link')
-  link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_0k7fcxu9bfjo.css')
+  link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_g9fk6jqpl8l.css')
   link.setAttribute('rel', 'stylesheet')
   document.head.appendChild(link)
 })()
