@@ -95,10 +95,8 @@ export default class Eplayer extends HTMLElement {
   }
 
   down(e) {
-    e.stopPropagation()
     this.disX = e.clientX - this.$('.cycle').offsetLeft
     document.onmousemove = (e) => this.move(e)
-
     document.onmouseup = () => {
       document.onmousemove = null
       document.onmouseup = null
@@ -106,7 +104,6 @@ export default class Eplayer extends HTMLElement {
   }
 
   move(e) {
-    e.stopPropagation()
     let offset = e.clientX - this.disX + 7
     if (offset < 0) offset = 0
     if (offset > this.$('.progress').clientWidth) {
@@ -115,7 +112,7 @@ export default class Eplayer extends HTMLElement {
     this.$('.current').style.width = offset + 'px'
     this.video.currentTime = (offset / this.$('.progress').clientWidth) * this.video.duration
     document.onmousemove = null
-    setTimeout((document.onmousemove = (e) => this.move(e)), 30)
+    setTimeout((document.onmousemove = (e) => e && this.move(e)), 30)
   }
 
   alow() {
@@ -536,9 +533,10 @@ export default class Eplayer extends HTMLElement {
       '.is-play': this.play,
       '.ep-speed': this.speed,
       '.speed': this.speed,
+      '.bg': this.progress,
+      '.buffer': this.progress,
     })
     this.delegate('mousedown', {
-      '.progress': this.progress,
       '.cycle': this.down,
       '.mark': this.panel,
     })
