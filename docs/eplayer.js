@@ -205,10 +205,15 @@ class Eplayer extends HTMLElement {
     }
   }
 
+  speed(e) {
+    this.video.playbackRate === 2 ? (this.video.playbackRate = 1) : (this.video.playbackRate = this.video.playbackRate + 0.5)
+    this.$('.speed').innerText = this.video.playbackRate + 'x'
+  }
+
   init() {
     let html = `
       <style>
-        @import "https://at.alicdn.com/t/font_836948_6lbb2iu59.css";
+        @import "https://at.alicdn.com/t/font_836948_uhdb83b0e3m.css";
         *{
           padding:0;
           margin:0;
@@ -268,8 +273,11 @@ class Eplayer extends HTMLElement {
         .time b{
           font-weight:normal;
         }
+        .lines{
+          padding:0 10px;
+        }
         .line{
-          padding:0 1px;
+          padding:0;
           margin-bottom: -2px;
           cursor:pointer
         }
@@ -396,6 +404,18 @@ class Eplayer extends HTMLElement {
           border-radius:4px;
           background:rgba(0,0,0,.8)
         }
+        .speed{
+            font-size:10px;
+            font-style:italic;
+            width:22px;
+            text-align:center;
+            border-radius:11px;
+            color:rgba(0,0,0,.5);
+            font-weight:900;
+            background:var(--icons,rgba(255,255,255,.8));
+            margin-left:-10px;
+            display:inline-block;
+        }
       </style>
       <div class="eplayer">
         <video id="video" class="video" src="${this.src || ''}"></video>
@@ -418,16 +438,21 @@ class Eplayer extends HTMLElement {
             </div>
             <div class="right">
               <i class="epicon ep-volume is-volume"></i>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
-              <span class="line"><i></i></span>
+              <ol class="lines">
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+                <span class="line"><i></i></span>
+              </ol>
+              <i class="epicon ep-speed">              
+                <b class="speed">1x</b>
+              </i>
               <i class="epicon ep-full"></i>
             </div>
           </div>
@@ -466,6 +491,7 @@ class Eplayer extends HTMLElement {
       '.eplayer',
       '.ep-full',
       '.panel',
+      '.speed',
     ]
 
     for (const key of doms) {
@@ -485,7 +511,6 @@ class Eplayer extends HTMLElement {
   }
 
   delegate(type, map) {
-    console.log(type, 222)
     const that = this
     if (typeof map === 'function') {
       this.shadowRoot.addEventListener(type, map.bind(that))
@@ -509,6 +534,8 @@ class Eplayer extends HTMLElement {
       '.ep-full': this.full,
       '.ep-video': this.play,
       '.is-play': this.play,
+      '.ep-speed': this.speed,
+      '.speed': this.speed,
     })
     this.delegate('mousedown', {
       '.progress': this.progress,
@@ -564,7 +591,7 @@ function isFullScreen() {
 
 ;(function () {
   let link = document.createElement('link')
-  link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_6lbb2iu59.css')
+  link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_uhdb83b0e3m.css')
   link.setAttribute('rel', 'stylesheet')
   document.head.appendChild(link)
 })()
