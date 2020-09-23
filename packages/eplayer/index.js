@@ -161,8 +161,8 @@ export default class Eplayer extends HTMLElement {
   full() {
     let el = this.$('.eplayer')
     if (isFullScreen()) {
-      const efs = document.exitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen
-      return efs.call(el)
+      const efs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen
+      return efs()
     } else {
       let rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen
       return rfs.call(el)
