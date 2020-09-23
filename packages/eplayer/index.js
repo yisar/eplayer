@@ -159,18 +159,11 @@ export default class Eplayer extends HTMLElement {
   }
 
   full() {
+    let el = this.$('.eplayer')
     if (isFullScreen()) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen()
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen()
-      } else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen()
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen()
-      }
+      const efs = document.exitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen
+      return efs.call(el)
     } else {
-      let el = this.$('.eplayer')
       let rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen
       return rfs.call(el)
     }
