@@ -272,10 +272,11 @@ class Eplayer extends HTMLElement {
         }
         .lines{
           padding:0 10px;
+          display:flex;
+          align-items: center;
         }
         .line{
-          padding:0;
-          margin-bottom: -2px;
+          padding:0 2px;
           cursor:pointer
         }
         .line i{
