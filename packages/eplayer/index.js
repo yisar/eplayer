@@ -269,12 +269,11 @@ export default class Eplayer extends HTMLElement {
           align-items: center;
         }
         .line{
-          padding:0 2px;
+          padding:0 0.1rem;
           cursor:pointer
         }
         .line i{
           width:4px;
-          border-radius:4px;
           display: inline-block;
           background: var(--icons,rgba(255,255,255,0.6));
           height: 12px;
