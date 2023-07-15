@@ -558,7 +558,7 @@ export default class Eplayer extends HTMLElement {
         setVolume(index + 1, this.$('.line'))
       }
     })
-    document.oncontextmenu = () => false
+    this.$('.eplayer').oncontextmenu = () => false
   }
 }
 

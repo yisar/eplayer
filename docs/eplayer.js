@@ -138,13 +138,13 @@ class Eplayer extends HTMLElement {
       case 38:
         try {
           this.video.volume = parseInt(this.video.volume * 100) / 100 + 0.05
-        } catch (e) {}
+        } catch (e) { }
         setVolume(this.video.volume.toFixed(1) * 10, this.$('.line'))
         break
       case 40:
         try {
           this.video.volume = parseInt(this.video.volume * 100) / 100 - 0.05
-        } catch (e) {}
+        } catch (e) { }
         setVolume(this.video.volume.toFixed(1) * 10, this.$('.line'))
         break
       case 32:
@@ -566,7 +566,7 @@ class Eplayer extends HTMLElement {
         setVolume(index + 1, this.$('.line'))
       }
     })
-    document.oncontextmenu = () => false
+    this.$('.eplayer').oncontextmenu = () => false
   }
 }
 
@@ -599,7 +599,7 @@ function isFullScreen() {
   return document.isFullScreen || document.webkitIsFullScreen || document.mozIsFullScreen
 }
 
-;(function () {
+; (function () {
   let link = document.createElement('link')
   link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_g9fk6jqpl8l.css')
   link.setAttribute('rel', 'stylesheet')
