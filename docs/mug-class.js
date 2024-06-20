@@ -16,11 +16,12 @@ class Mug {
         this.container.appendChild(this.app.view)
         this.app.view.style.width = "100%"
 
-        this.app.ticker.add(this.animate.bind(this))
+
 
         this.drawUI()
 
         const buttonArray = this.buttonArray
+
 
         container.onkeydown = function (e) {
             if (e && e.keyCode == 68) {
@@ -44,6 +45,8 @@ class Mug {
                 buttonArray[3].keyUp()
             }
         }
+
+        this.app.ticker.add(this.animate.bind(this))
         // this.start()
     }
 
@@ -51,15 +54,17 @@ class Mug {
         if (this.gameStatus == 0) {
             return
         }
-        this.fps += 1
+        this.fps++
         //创建动物
 
-        for (let i = 0; i < this.beatMap.length; i++) {
-            if (this.fps == this.beatMap[i].fps) {
-                console.log(this.fps)
-                let button = this.buttonArray[this.beatMap[i].button - 1]
-                button.createAnimal()
-            }
+        const head = this.beatMap[0]
+
+
+        if (head && this.fps == head.fps) {
+            console.log(this.fps)
+            this.beatMap.shift()
+            let button = this.buttonArray[head.button - 1]
+            button.createAnimal()
         }
 
         //图片移动
@@ -70,16 +75,9 @@ class Mug {
             button.scoreMove()
         }
 
-        //判断游戏结束
-        let button1 = this.buttonArray[0]
-        let button2 = this.buttonArray[1]
-        let button3 = this.buttonArray[2]
-        let button4 = this.buttonArray[3]
-        const empty = button1.animalArray.length == 0 && button2.animalArray.length == 0 && button3.animalArray.length == 0 && button4.animalArray.length == 0
-        if (empty) {
+        if (!head) {
             this.over()
         }
-
     }
 
     drawUI() {
@@ -120,7 +118,6 @@ class Mug {
 
         for (let i = 0; i < 4; i++) {
             let button = new Button(this.imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, this.buttonX, this)
-            console.log(button)
             this.buttonX = button.bjt.x + 110
             this.imgNumber++
             this.buttonArray.push(button)
@@ -163,7 +160,7 @@ class Mug {
             startBtn.visible = false
             this.gameStatus = 1
         })
-        startBtn.x = 177
+        startBtn.x = 200
         startBtn.y = 400
 
     }
@@ -188,7 +185,7 @@ class Mug {
 
         let restartBtn = new PIXI.Sprite.fromImage("res/fanhuianniu.png")
         gameoverPanel.addChild(restartBtn)
-        restartBtn.x = 180
+        restartBtn.x = 200
         restartBtn.y = 330
         restartBtn.interactive = true
         restartBtn.on("click", function () {
