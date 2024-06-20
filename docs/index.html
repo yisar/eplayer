@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>eplayer</title>
+  <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/pixi.js/4.5.2/pixi.min.js"></script>
+  <script src="./mug-class.js"></script>
 </head>
 
 <body>
@@ -18,6 +20,7 @@
       width: 800px;
       margin: 100px auto;
       height: 450px;
+      position: relative;
     }
 
     @media screen and (max-width: 500px) {
@@ -95,19 +98,34 @@
         animation: octocat-wave 560ms ease-in-out;
       }
     }
+
+    .mug {
+      height: 450px;
+      width: 281px;
+      position: absolute;
+      z-index: 999;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
+    }
   </style>
   <div class="wrapper">
-    <e-player id="ep"
-      src="https://mp4.ziyuan.wang/view.php/67c796ed2dad70c429bda73a647704f0.mp4">
+    <div class="mug"></div>
+    <e-player id="ep" src="https://mp4.ziyuan.wang/view.php/67c796ed2dad70c429bda73a647704f0.mp4">
     </e-player>
     <a href="https://github.com/132yse/eplayer">github</a>
     <a href="https://github.com/132yse/eplayer/blob/master/README.md">README</a>
-    <a href="https://www.clicli.top">clicli.us</a>
+    <a href="https://www.clicli.cc">clicli.cc</a>
   </div>
   <script src="https://unpkg.com/@webcomponents/webcomponentsjs"></script>
   <script src="https://unpkg.com/hls.js"></script>
   <script src="./eplayer.js"></script>
-  <script src="./pic.js"></script>
+  <!-- <script src="./pic.js"></script> -->
+  <script>
+    const beatMap = [{ "fps": 180, "button": 2 }, { "fps": 221, "button": 1 }, { "fps": 332, "button": 3 }, { "fps": 373, "button": 4 },]
+    new Mug(beatMap, document.querySelector('.mug'))
+  </script>
 </body>
 
 </html>

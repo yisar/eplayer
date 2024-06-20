@@ -14,7 +14,8 @@ class Mug {
         this.str = "0"
         this.app = new PIXI.Application(500, 800)
         this.container.appendChild(this.app.view)
-        this.app.view.style.width = "100%"
+        console.log(container)
+        this.app.view.style.width = container.offsetWidth + 'px'
 
 
 
@@ -368,7 +369,4 @@ function Animal(type, animalX) {
     this.move = function () {
         this.animal.y += 3.33
     }
-
 }
-
-new Mug([{ "fps": 180, "button": 2 }, { "fps": 221, "button": 1 }, { "fps": 332, "button": 3 }, { "fps": 373, "button": 4 },], document.body)
