@@ -165,24 +165,12 @@ function Button() {
                 soft.animalArray.splice(i, 1)
                 this.scoreAction("bad")
             }
-            //soft.bjt.visible = false;
+
         }
     }
     //键盘点击事件
     this.keyDown = function () {
-        soft.bjt.visible = true
-        for (var i = 0; i < soft.animalArray.length; i++) {
-            if (soft.kong.y - 30 < soft.animalArray[i].animal.y && soft.kong.y + 30 > soft.animalArray[i].animal.y) {
-                score++
-                scoreTxt.text = score
-                animalCeng.removeChild(soft.animalArray[i].animal)
-                soft.animalArray.splice(i, 1)
-            }
-            //soft.bjt.visible = false;
-        }
-        // var str = {"zp":zp,"button":soft.type};
-        // musicArray.push(str);
-        // console.log(JSON.stringify(musicArray));
+        this.buttonClick()
     }
 
     this.keyUp = function () {
@@ -217,7 +205,7 @@ function Button() {
 }
 
 document.onkeydown = function (event) {
-    var e = event || window.event || arguments.callee.caller.arguments[0]
+    var e = event
     //console.log(e.keyCode + " - " + self.keyCode);
     if (e && e.keyCode == 68) {
         buttonArray[0].keyDown()
@@ -416,7 +404,8 @@ function animate() {
     var button2 = buttonArray[1]
     var button3 = buttonArray[2]
     var button4 = buttonArray[3]
-    if (button1.animalArray.length == 0 && button2.animalArray.length == 0 && button3.animalArray.length == 0 && button4.animalArray.length == 0) {
+    const empty = button1.animalArray.length == 0 && button2.animalArray.length == 0 && button3.animalArray.length == 0 && button4.animalArray.length == 0
+    if (empty) {
         //震屏
         isZhenping = true
         zhenping()
