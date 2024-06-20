@@ -348,7 +348,7 @@ function Button(imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, buttonX
 
 //动物对象
 function Animal(type, animalX) {
-    let number = Math.floor(Math.random() * 5 + 1)
+    let number = 3
     if (type == 1) {
         this.animal = new PIXI.Sprite.fromImage("res/lan" + number + ".png")
     }
