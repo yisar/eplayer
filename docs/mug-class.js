@@ -1,7 +1,7 @@
 
 
 class Mug {
-    constructor(beatMap, container) {
+    constructor(beatMap, container, video) {
         this.container = container
         this.beatMap = beatMap
         this.gameStatus = 0
@@ -16,6 +16,7 @@ class Mug {
         this.container.appendChild(this.app.view)
         console.log(container)
         this.app.view.style.width = container.offsetWidth + 'px'
+        this.video = video
 
 
 
@@ -24,7 +25,7 @@ class Mug {
         const buttonArray = this.buttonArray
 
 
-        container.onkeydown = function (e) {
+        document.onkeydown = function (e) {
             if (e && e.keyCode == 68) {
                 buttonArray[0].keyDown()
             } else if (e && e.keyCode == 70) {
@@ -35,7 +36,7 @@ class Mug {
                 buttonArray[3].keyDown()
             }
         }
-        container.onkeyup = function (e) {
+        document.onkeyup = function (e) {
             if (e && e.keyCode == 68) {
                 buttonArray[0].keyUp()
             } else if (e && e.keyCode == 70) {
@@ -155,6 +156,7 @@ class Mug {
         startBtn.on("click", () => {
             startBtn.visible = false
             this.gameStatus = 1
+            this.video.play()
         })
         startBtn.on("touchstart", () => {
             startBtn.visible = false
@@ -166,6 +168,7 @@ class Mug {
     }
 
     over() {
+        this.video.pause()
         let gameoverPanel = new PIXI.Sprite.fromImage("res/beiban.png")
         this.uiCeng.addChild(gameoverPanel)
         gameoverPanel.x = 20

@@ -4,6 +4,7 @@ class Eplayer extends HTMLElement {
     this.doms = {}
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
+    this.control = this.getAttribute('control')
 
     this.init()
     this.stream()
@@ -16,6 +17,7 @@ class Eplayer extends HTMLElement {
   attributeChangedCallback(name, _, newVal) {
     if (name === 'src') this.src = this.$('.video').src = newVal
     if (name === 'type') this.type = newVal
+    if (name === 'control') this.control = newVal
     this.stream()
     this.video.load()
   }
@@ -43,8 +45,10 @@ class Eplayer extends HTMLElement {
   }
 
   mark() {
-    clearTimeout(this.timer)
-    this.timer = setTimeout(() => this.play(), 200)
+    if (this.control) {
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => this.play(), 200)
+    }
   }
 
   canplay() {
@@ -55,6 +59,9 @@ class Eplayer extends HTMLElement {
   }
 
   play() {
+    if(!this.control){
+      return
+    }
     if (this.video.paused) {
       this.video.play()
       this.$('.ep-video').style.display = 'none'
@@ -231,6 +238,7 @@ class Eplayer extends HTMLElement {
           overflow: hidden;
         }
         .controls{
+          display:${this.control ? 'block' : 'none'};
           position:absolute;
           left:0;
           right:0;
@@ -376,6 +384,7 @@ class Eplayer extends HTMLElement {
         }
         .ep-video {
           position: absolute;
+          display:${this.control ? 'block' : 'none'};
           bottom: 25px;
           right: 20px;
           font-size:40px;

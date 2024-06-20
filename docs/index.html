@@ -104,7 +104,7 @@
       width: 281px;
       position: absolute;
       z-index: 999;
-      pointer-events: none;
+      /* pointer-events: none; */
       transform: translate(-50%, -50%);
       left: 50%;
       top: 50%;
@@ -123,8 +123,34 @@
   <script src="./eplayer.js"></script>
   <!-- <script src="./pic.js"></script> -->
   <script>
-    const beatMap = [{ "fps": 180, "button": 2 }, { "fps": 221, "button": 1 }, { "fps": 332, "button": 3 }, { "fps": 373, "button": 4 },]
-    new Mug(beatMap, document.querySelector('.mug'))
+    const beatMap = [
+      { "fps": 1, "button": 2 },
+      { "fps": 20, "button": 1 },
+      { "fps": 80, "button": 3 },
+      { "fps": 150, "button": 4 },
+      { "fps": 180, "button": 2 },
+      { "fps": 221, "button": 1 },
+      { "fps": 332, "button": 3 },
+      { "fps": 373, "button": 4 },
+      { "fps": 400, "button": 2 },
+      { "fps": 450, "button": 1 },
+      { "fps": 570, "button": 3 },
+      { "fps": 630, "button": 4 },
+      { "fps": 670, "button": 2 },
+      { "fps": 720, "button": 1 },
+      { "fps": 740, "button": 3 },
+      { "fps": 750, "button": 4 },
+      { "fps": 790, "button": 2 },
+      { "fps": 830, "button": 1 },
+      { "fps": 900, "button": 3 },
+      { "fps": 1000, "button": 4 },
+      { "fps": 1200, "button": 2 },
+      { "fps": 1400, "button": 1 },
+      { "fps": 1500, "button": 3 },
+      { "fps": 2000, "button": 4 },
+
+    ]
+    new Mug(beatMap, document.querySelector('.mug'), document.querySelector('e-player').shadowRoot.querySelector('video'))
   </script>
 </body>
 
