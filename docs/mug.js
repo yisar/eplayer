@@ -309,8 +309,7 @@ SoundManager.getInstance = function () {
     return soundManager
 }
 
-SoundManager.getInstance().addAudio("bgm", "res/tkzc.mp3")
-
+SoundManager.getInstance().addAudio("bgm", "https://mp4.ziyuan.wang/view.php/67c796ed2dad70c429bda73a647704f0.mp4")
 
 function setMusicTime() {
     //音乐播放位置
@@ -318,23 +317,7 @@ function setMusicTime() {
     //console.log(Math.ceil(num));  
 }
 
-//振屏效果
-let isZhenping = false
-let zhenpingTime = 10
-function zhenping() {
-    if (isZhenping == true) {
-        gameCeng.x = Math.random() * 10 - 5
-        gameCeng.y = Math.random() * 10 - 5
-        zhenpingTime--
-        if (zhenpingTime == 0) {
-            gameCeng.x = 0
-            gameCeng.y = 0
-            isZhenping = false
-            zhenpingTime = 10
-            over()
-        }
-    }
-}
+
 let audio = null
 function setMusic() {
     audio = SoundManager.getInstance().play("bgm")
@@ -356,7 +339,7 @@ function animate() {
         musicTime = 60
     }
 
-    //创建音乐图片
+    //创建动物
     for (let i = 0; i < musicArray.length; i++) {
         if (fps == musicArray[i].fps) {
             console.log(fps)
@@ -371,8 +354,6 @@ function animate() {
         button.animalMove()
         button.deleteAnimal()
         button.scoreMove()
-
-
     }
 
     //判断游戏结束
@@ -381,10 +362,9 @@ function animate() {
     let button3 = buttonArray[2]
     let button4 = buttonArray[3]
     const empty = button1.animalArray.length == 0 && button2.animalArray.length == 0 && button3.animalArray.length == 0 && button4.animalArray.length == 0
+    
     if (empty) {
-        //震屏
-        isZhenping = true
-        zhenping()
+        over()
     }
 
 
