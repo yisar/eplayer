@@ -163,7 +163,7 @@ class Mug {
             this.gameStatus = 1
         })
         startBtn.x = 200
-        startBtn.y = 400
+        startBtn.y = 345
 
     }
 
