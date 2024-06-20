@@ -18,9 +18,10 @@
 
     .wrapper {
       width: 800px;
-      margin: 100px auto;
-      height: 450px;
-      position: relative;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
     }
 
     @media screen and (max-width: 500px) {
@@ -42,16 +43,16 @@
       box-sizing: border-box;
     }
 
-    .wrapper a:nth-child(3) {
+    .wrapper a:nth-child(2) {
       background: #333;
     }
 
-    .wrapper a:nth-child(5) {
+    .wrapper a:nth-child(4) {
       margin-top: 30px;
       background: #946ce6;
     }
 
-    .wrapper a:nth-child(4) {
+    .wrapper a:nth-child(3) {
       background: #1ea6e9;
     }
   </style>
@@ -110,11 +111,17 @@
       top: 50%;
       opacity: 0.95;
     }
+    .wrap{
+      position: relative;
+      height: 450px;
+    }
   </style>
   <div class="wrapper">
-    <div class="mug"></div>
-    <e-player id="ep" src="https://mp4.ziyuan.wang/view.php/67c796ed2dad70c429bda73a647704f0.mp4">
-    </e-player>
+    <div class="wrap">
+      <div class="mug"></div>
+      <e-player id="ep" src="https://mp4.ziyuan.wang/view.php/67c796ed2dad70c429bda73a647704f0.mp4">
+      </e-player>
+    </div>
     <a href="https://github.com/132yse/eplayer">github</a>
     <a href="https://github.com/132yse/eplayer/blob/master/README.md">README</a>
     <a href="https://www.clicli.cc">clicli.cc</a>
