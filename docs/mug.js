@@ -323,22 +323,12 @@ function setMusic() {
     audio = SoundManager.getInstance().play("bgm")
 }
 
-let musicTime = 60
 let fps = 179
 function animate() {
     if (gameType == 0) {
         return
     }
     fps += 1
-    musicTime--
-    //一秒校正一次播放位置
-    if (musicTime == 0) {
-        let number = Math.round(audio.currentTime) * 60
-        fps = 180 + number
-        //	console.log(number);
-        musicTime = 60
-    }
-
     //创建动物
     for (let i = 0; i < musicArray.length; i++) {
         if (fps == musicArray[i].fps) {
@@ -362,7 +352,6 @@ function animate() {
     let button3 = buttonArray[2]
     let button4 = buttonArray[3]
     const empty = button1.animalArray.length == 0 && button2.animalArray.length == 0 && button3.animalArray.length == 0 && button4.animalArray.length == 0
-    
     if (empty) {
         over()
     }
@@ -386,7 +375,7 @@ let style = {
     wordWrapWidth: 150,//自动换行宽度
 }
 
-let score = 0
+var score = 0
 //文本
 let str = "0"
 let text = new PIXI.Text("得分 ", style)
