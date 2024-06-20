@@ -11,37 +11,39 @@ class Mug {
         this.imgNumber = 1
         this.fps = 0
         this.score = 0
-        this.str = ""
+        this.str = "0"
         this.app = new PIXI.Application(500, 800)
         this.container.appendChild(this.app.view)
         this.app.view.style.width = "100%"
 
         this.app.ticker.add(this.animate.bind(this))
 
+        this.drawUI()
+
+        const buttonArray = this.buttonArray
+
         container.onkeydown = function (e) {
             if (e && e.keyCode == 68) {
-                this.buttonArray[0].keyDown()
+                buttonArray[0].keyDown()
             } else if (e && e.keyCode == 70) {
-                this.buttonArray[1].keyDown()
+                buttonArray[1].keyDown()
             } else if (e && e.keyCode == 74) {
-                this.buttonArray[2].keyDown()
+                buttonArray[2].keyDown()
             } else if (e && e.keyCode == 75) {
-                this.buttonArray[3].keyDown()
+                buttonArray[3].keyDown()
             }
         }
         container.onkeyup = function (e) {
             if (e && e.keyCode == 68) {
-                this.buttonArray[0].keyUp()
+                buttonArray[0].keyUp()
             } else if (e && e.keyCode == 70) {
-                this.buttonArray[1].keyUp()
+                buttonArray[1].keyUp()
             } else if (e && e.keyCode == 74) {
-                this.buttonArray[2].keyUp()
+                buttonArray[2].keyUp()
             } else if (e && e.keyCode == 75) {
-                this.buttonArray[3].keyUp()
+                buttonArray[3].keyUp()
             }
         }
-
-        this.drawUI()
         // this.start()
     }
 
@@ -51,10 +53,10 @@ class Mug {
         }
         this.fps += 1
         //创建动物
-        console.log(this.beatMap)
+
         for (let i = 0; i < this.beatMap.length; i++) {
             if (this.fps == this.beatMap[i].fps) {
-                console.log(fps)
+                console.log(this.fps)
                 let button = this.buttonArray[this.beatMap[i].button - 1]
                 button.createAnimal()
             }
@@ -81,8 +83,6 @@ class Mug {
     }
 
     drawUI() {
-
-
         //游戏元素图层
         let gameCeng = new PIXI.Container()
         this.app.stage.addChild(gameCeng)
@@ -119,7 +119,8 @@ class Mug {
 
 
         for (let i = 0; i < 4; i++) {
-            let button = new Button(this.imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, this.buttonX)
+            let button = new Button(this.imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, this.buttonX, this)
+            console.log(button)
             this.buttonX = button.bjt.x + 110
             this.imgNumber++
             this.buttonArray.push(button)
@@ -146,6 +147,7 @@ class Mug {
 
         //创建文本
         let scoreTxt = new PIXI.Text(this.str, style)
+        this.scoreTxt = scoreTxt
         uiCeng.addChild(scoreTxt)
         scoreTxt.x = 130
         scoreTxt.y = 30
@@ -209,7 +211,7 @@ function getWorldPosition(displayObject) {
 }
 
 
-function Button(imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, buttonX) {
+function Button(imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, buttonX, that) {
     //背景
     this.bjt = new PIXI.Sprite.fromImage("res/bjt" + imgNumber + ".png")
     gameObjectCeng.addChild(this.bjt)
@@ -290,21 +292,21 @@ function Button(imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, buttonX
 
         for (let i = 0; i < soft.animalArray.length; i++) {
             if (soft.kong.y - 10 < soft.animalArray[i].animal.y && soft.kong.y + 10 > soft.animalArray[i].animal.y) {
-                score += 10
-                scoreTxt.text = score
+                that.score += 10
+                that.scoreTxt.text = that.score
                 animalCeng.removeChild(soft.animalArray[i].animal)
                 soft.animalArray.splice(i, 1)
                 this.scoreAction("perfect")
 
             } else if (soft.kong.y - 20 < soft.animalArray[i].animal.y && soft.kong.y + 20 > soft.animalArray[i].animal.y) {
-                score += 5
-                scoreTxt.text = score
+                that.score += 5
+                that.scoreTxt.text = that.score
                 animalCeng.removeChild(soft.animalArray[i].animal)
                 soft.animalArray.splice(i, 1)
                 this.scoreAction("good")
             } else if (soft.kong.y - 30 < soft.animalArray[i].animal.y && soft.kong.y + 30 > soft.animalArray[i].animal.y) {
-                score += 1
-                scoreTxt.text = score
+                that.score += 1
+                that.scoreTxt.text = that.score
                 animalCeng.removeChild(soft.animalArray[i].animal)
                 soft.animalArray.splice(i, 1)
                 this.scoreAction("bad")
