@@ -410,30 +410,6 @@ function gameStart(event) {
 
 }
 
-let zystyle = {
-    fontFamily: 'Arial',
-    fontSize: 16,
-    fontWeight: 'bold',
-    fill: '#ffffaa',
-    // 描边
-    stroke: '#000000',
-    // 描边宽度
-    strokeThickness: 2,
-    // 字体阴影
-    dropShadow: true,
-    // 阴影颜色
-    dropShadowColor: '#000000',
-    dropShadowBlur: 2,
-    // 阴影倾斜
-    dropShadowAngle: Math.PI / 6,
-    dropShadowDistance: 3,
-    // 字体换行
-    wordWrap: true,
-    wordWrapWidth: 200,
-    lineHeight: 22
-
-}
-
 
 function over() {
     let gameoverPanel = new PIXI.Sprite.fromImage("res/beiban.png")

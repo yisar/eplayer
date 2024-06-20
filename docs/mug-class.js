@@ -1,18 +1,22 @@
+
+
 class Mug {
     constructor(beatMap, container) {
         this.container = container
         this.beatMap = beatMap
         this.gameStatus = 0
         this.buttonX = 85
-        this.imgNum = 1
 
         this.buttonArray = []
+        this.imgNumber = 1
         this.fps = 0
         this.score = 0
         this.str = ""
+        this.app = new PIXI.Application(500, 800)
+        this.container.appendChild(this.app.view)
+        this.app.view.style.width = "100%"
 
-
-        this.app.ticker.add(animate)
+        this.app.ticker.add(this.animate.bind(this))
 
         container.onkeydown = function (e) {
             if (e && e.keyCode == 68) {
@@ -37,40 +41,17 @@ class Mug {
             }
         }
 
-        drawUI()
-
-        for (let i = 0; i < 4; i++) {
-            let button = new Button()
-            this.buttonX = button.bjt.x + 110
-            this.imgNumber++
-            this.buttonArray.push(button)
-
-        }
-
-        this.start()
-    }
-
-    start() {
-        let style = {
-            font: 'bold 40px 微软雅黑',//加粗 倾斜 字号 字体名称
-            fill: '#F7EDCA',//颜色
-            stroke: '#4a1850',//描边颜色
-            strokeThickness: 5,//描边宽度
-            dropShadow: true,//开启阴影
-            dropShadowColor: '#000000',//阴影颜色
-            dropShadowAngle: Math.PI / 6,//阴影角度
-            dropShadowDistance: 6,//投影距离
-            wordWrap: true,//开启自动换行(注：开启后在文本中空格处换行，如文本中没有空格则不换行)
-            wordWrapWidth: 150,//自动换行宽度
-        }
+        this.drawUI()
+        // this.start()
     }
 
     animate() {
-        if (this.gameType == 0) {
+        if (this.gameStatus == 0) {
             return
         }
         this.fps += 1
         //创建动物
+        console.log(this.beatMap)
         for (let i = 0; i < this.beatMap.length; i++) {
             if (this.fps == this.beatMap[i].fps) {
                 console.log(fps)
@@ -88,10 +69,10 @@ class Mug {
         }
 
         //判断游戏结束
-        let button1 = buttonArray[0]
-        let button2 = buttonArray[1]
-        let button3 = buttonArray[2]
-        let button4 = buttonArray[3]
+        let button1 = this.buttonArray[0]
+        let button2 = this.buttonArray[1]
+        let button3 = this.buttonArray[2]
+        let button4 = this.buttonArray[3]
         const empty = button1.animalArray.length == 0 && button2.animalArray.length == 0 && button3.animalArray.length == 0 && button4.animalArray.length == 0
         if (empty) {
             this.over()
@@ -100,19 +81,18 @@ class Mug {
     }
 
     drawUI() {
-        let app = new PIXI.Application(500, 800)
-        this.container.appendChild(app.view)
-        app.view.style.width = "100%"
+
 
         //游戏元素图层
         let gameCeng = new PIXI.Container()
-        app.stage.addChild(gameCeng)
+        this.app.stage.addChild(gameCeng)
         //游戏背景
         let bg = new PIXI.Sprite.fromImage("res/beijing.png")
         gameCeng.addChild(bg)
         //ui图层
         let uiCeng = new PIXI.Container()
-        app.stage.addChild(uiCeng)
+        this.app.stage.addChild(uiCeng)
+        this.uiCeng = uiCeng
 
         //游戏对象层
         let gameObjectCeng = new PIXI.Container()
@@ -137,13 +117,35 @@ class Mug {
         touming.x = 250
         touming.anchor.set(0.5, 0.5)
 
+
+        for (let i = 0; i < 4; i++) {
+            let button = new Button(this.imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, this.buttonX)
+            this.buttonX = button.bjt.x + 110
+            this.imgNumber++
+            this.buttonArray.push(button)
+        }
+
+
+        let style = {
+            font: 'bold 40px 微软雅黑',//加粗 倾斜 字号 字体名称
+            fill: '#F7EDCA',//颜色
+            stroke: '#4a1850',//描边颜色
+            strokeThickness: 5,//描边宽度
+            dropShadow: true,//开启阴影
+            dropShadowColor: '#000000',//阴影颜色
+            dropShadowAngle: Math.PI / 6,//阴影角度
+            dropShadowDistance: 6,//投影距离
+            wordWrap: true,//开启自动换行(注：开启后在文本中空格处换行，如文本中没有空格则不换行)
+            wordWrapWidth: 150,//自动换行宽度
+        }
+
         let text = new PIXI.Text("得分 ", style)
         uiCeng.addChild(text)
         text.x = 30
         text.y = 30
 
         //创建文本
-        let scoreTxt = new PIXI.Text(str, style)
+        let scoreTxt = new PIXI.Text(this.str, style)
         uiCeng.addChild(scoreTxt)
         scoreTxt.x = 130
         scoreTxt.y = 30
@@ -153,48 +155,20 @@ class Mug {
         startBtn.interactive = true
         startBtn.on("click", () => {
             startBtn.visible = false
-            gameType = 1
+            this.gameStatus = 1
         })
         startBtn.on("touchstart", () => {
             startBtn.visible = false
-            gameType = 1
+            this.gameStatus = 1
         })
         startBtn.x = 177
         startBtn.y = 400
-
-
-
-        let zystyle = {
-            fontFamily: 'Arial',
-            fontSize: 16,
-            fontWeight: 'bold',
-            fill: '#ffffaa',
-            // 描边
-            stroke: '#000000',
-            // 描边宽度
-            strokeThickness: 2,
-            // 字体阴影
-            dropShadow: true,
-            // 阴影颜色
-            dropShadowColor: '#000000',
-            dropShadowBlur: 2,
-            // 阴影倾斜
-            dropShadowAngle: Math.PI / 6,
-            dropShadowDistance: 3,
-            // 字体换行
-            wordWrap: true,
-            wordWrapWidth: 200,
-            lineHeight: 22
-
-        }
-
-
 
     }
 
     over() {
         let gameoverPanel = new PIXI.Sprite.fromImage("res/beiban.png")
-        uiCeng.addChild(gameoverPanel)
+        this.uiCeng.addChild(gameoverPanel)
         gameoverPanel.x = 20
         gameoverPanel.y = 100
         gameoverPanel.alpha = 0.9
@@ -205,7 +179,7 @@ class Mug {
         }
 
         //得分
-        let scoreTxt = new PIXI.Text(score, style)
+        let scoreTxt = new PIXI.Text(this.score, style)
         gameoverPanel.addChild(scoreTxt)
         scoreTxt.x = 210
         scoreTxt.y = 110
@@ -221,7 +195,7 @@ class Mug {
         restartBtn.on("touchstart", function () {
             window.location.reload()
         })
-        gameType = 0
+        this.gameStatus = 0
 
     }
 
@@ -235,7 +209,7 @@ function getWorldPosition(displayObject) {
 }
 
 
-function Button() {
+function Button(imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, buttonX) {
     //背景
     this.bjt = new PIXI.Sprite.fromImage("res/bjt" + imgNumber + ".png")
     gameObjectCeng.addChild(this.bjt)
@@ -268,7 +242,6 @@ function Button() {
     }
     //动物对象进行移动
     this.animalMove = function () {
-
         for (let i = 0; i < this.animalArray.length; i++) {
             let animal = this.animalArray[i]
             animal.move()
@@ -291,7 +264,6 @@ function Button() {
         }
     }
     let soft = this
-    let num = 1
     //鼠标按下
     this.button.on("mousedown", function () {
         soft.buttonClick()
@@ -302,9 +274,6 @@ function Button() {
     })
 
     this.button.on("click", function () {
-        //let str = {"zp":zp,"button":soft.type};
-        //musicArray.push(str);
-        //console.log(JSON.stringify(musicArray));
 
     })
     //移动端点击
@@ -403,3 +372,5 @@ function Animal(type, animalX) {
     }
 
 }
+
+new Mug([{ "fps": 180, "button": 2 }, { "fps": 221, "button": 1 }, { "fps": 332, "button": 3 }, { "fps": 373, "button": 4 },], document.body)
