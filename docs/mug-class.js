@@ -47,7 +47,6 @@ class Mug {
         }
 
         this.app.ticker.add(this.animate.bind(this))
-        // this.start()
     }
 
     animate() {
@@ -185,7 +184,7 @@ class Mug {
 
         let restartBtn = new PIXI.Sprite.fromImage("res/fanhuianniu.png")
         gameoverPanel.addChild(restartBtn)
-        restartBtn.x = 200
+        restartBtn.x = 185
         restartBtn.y = 330
         restartBtn.interactive = true
         restartBtn.on("click", function () {
