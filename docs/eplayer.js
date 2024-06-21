@@ -19,6 +19,7 @@ class Eplayer extends HTMLElement {
     if (name === 'type') this.type = newVal
     if (name === 'beatmap') this.beatmap = newVal
     this.stream()
+    this.mug()
     this.video.load()
   }
 
@@ -52,17 +53,12 @@ class Eplayer extends HTMLElement {
     this.timer = setTimeout(() => this.play(), 200)
   }
 
-  connectedCallback() {
-    console.log('emmm')
+  mug() {
     const beats = this.beatmap.split('|').map(item => {
       const [fps, button] = item.split(':')
-      return {
-        fps, button
-      }
+      return { fps, button }
     })
-
-
-    new Mug(beats,this.$('.mug'),this.video)
+    new Mug(beats, this.$('.mug'), this.video)
   }
 
   canplay() {
