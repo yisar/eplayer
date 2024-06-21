@@ -36,6 +36,7 @@ class Eplayer extends HTMLElement {
   }
 
   startMug() {
+    this.$('.mug').innerHTML = '' // 先清空
     this.$('.mug').style.display = 'block'
     this.$('.mug').style.height = this.height + 'px'
     this.$('.mug').style.width = (this.height / 8 * 5) + 'px'
