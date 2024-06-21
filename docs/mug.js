@@ -1,5 +1,3 @@
-
-
 class Mug {
     constructor(beatMap, container, video) {
         this.container = container
