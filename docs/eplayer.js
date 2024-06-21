@@ -4,7 +4,7 @@ class Eplayer extends HTMLElement {
     this.doms = {}
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
-    this.beatMap = this.getAttribute('beatmap')
+    this.beatmap = this.getAttribute('beatmap')
 
     this.init()
     this.stream()
@@ -17,7 +17,7 @@ class Eplayer extends HTMLElement {
   attributeChangedCallback(name, _, newVal) {
     if (name === 'src') this.src = this.$('.video').src = newVal
     if (name === 'type') this.type = newVal
-    if (name === 'beatmap') this.beatMap = newVal
+    if (name === 'beatmap') this.beatmap = newVal
     this.stream()
     this.video.load()
   }
@@ -47,14 +47,14 @@ class Eplayer extends HTMLElement {
   }
 
   mark() {
-    if (this.beatMap) return
+    if (this.beatmap) return
     clearTimeout(this.timer)
     this.timer = setTimeout(() => this.play(), 200)
   }
 
   connectedCallback() {
     console.log('emmm')
-    const beats = this.beatMap.split('|').map(item => {
+    const beats = this.beatmap.split('|').map(item => {
       const [fps, button] = item.split(':')
       return {
         fps, button
@@ -73,7 +73,7 @@ class Eplayer extends HTMLElement {
   }
 
   play() {
-    if (this.beatMap) return
+    if (this.beatmap) return
     if (this.video.paused) {
       this.video.play()
       this.$('.ep-video').style.display = 'none'
@@ -250,7 +250,7 @@ class Eplayer extends HTMLElement {
           overflow: hidden;
         }
         .controls{
-          display:${this.beatMap ? 'none' : 'block'};
+          display:${this.beatmap ? 'none' : 'block'};
           position:absolute;
           left:0;
           right:0;
@@ -396,7 +396,7 @@ class Eplayer extends HTMLElement {
         }
         .ep-video {
           position: absolute;
-          display:${this.beatMap ? 'none' : 'block'};
+          display:${this.beatmap ? 'none' : 'block'};
           bottom: 25px;
           right: 20px;
           font-size:40px;
@@ -445,6 +445,7 @@ class Eplayer extends HTMLElement {
           left: 50%;
           top: 50%;
           opacity: 0.95;
+         display: ${this.beatmap ? 'block' : 'none'}
         }
         .wrap{
           position: relative;

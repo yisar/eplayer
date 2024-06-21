@@ -1,4 +1,4 @@
-const assetUrl = 'https://registry.npmmirror.com/eplayer/1.5.4/files/docs/res/'
+const assetUrl = 'https://registry.npmmirror.com/eplayer/1.5.4/files/docs/res'
 
 class Mug {
     constructor(beatMap, container, video) {
