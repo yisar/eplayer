@@ -4,20 +4,20 @@ class Eplayer extends HTMLElement {
     this.doms = {}
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
-    this.beatMap = this.getAttribute('beatMap')
+    this.beatMap = this.getAttribute('beatmap')
 
     this.init()
     this.stream()
   }
 
   static get observedAttributes() {
-    return ['src', 'type', 'beatMap']
+    return ['src', 'type', 'beatmap']
   }
 
   attributeChangedCallback(name, _, newVal) {
     if (name === 'src') this.src = this.$('.video').src = newVal
     if (name === 'type') this.type = newVal
-    if (name === 'beatMap') this.beatMap = newVal
+    if (name === 'beatmap') this.beatMap = newVal
     this.stream()
     this.video.load()
   }

@@ -1,3 +1,5 @@
+const assetUrl = 'https://registry.npmmirror.com/eplayer/1.5.4/files/docs/res/'
+
 class Mug {
     constructor(beatMap, container, video) {
         this.container = container
@@ -79,7 +81,7 @@ class Mug {
         let gameCeng = new PIXI.Container()
         this.app.stage.addChild(gameCeng)
         //游戏背景
-        let bg = new PIXI.Sprite.fromImage("res/beijing.png")
+        let bg = new PIXI.Sprite.fromImage(`${assetUrl}/beijing.png`)
         gameCeng.addChild(bg)
         //ui图层
         let uiCeng = new PIXI.Container()
@@ -103,7 +105,7 @@ class Mug {
         gameObjectCeng.addChild(scoreCeng)
 
         //点击位置
-        let touming = new PIXI.Sprite.fromImage("res/touming.png")
+        let touming = new PIXI.Sprite.fromImage(`${assetUrl}/touming.png`)
         lineCeng.addChild(touming)
         touming.y = 600
         touming.x = 250
@@ -143,7 +145,7 @@ class Mug {
         scoreTxt.x = 130
         scoreTxt.y = 30
 
-        let startBtn = new PIXI.Sprite.fromImage("res/kaishianniu.png")
+        let startBtn = new PIXI.Sprite.fromImage(`${assetUrl}/kaishianniu.png`)
         uiCeng.addChild(startBtn)
         startBtn.interactive = true
         startBtn.on("pointerdown", () => {
@@ -159,7 +161,7 @@ class Mug {
 
     over() {
         this.video.pause()
-        let gameoverPanel = new PIXI.Sprite.fromImage("res/beiban.png")
+        let gameoverPanel = new PIXI.Sprite.fromImage(`${assetUrl}/beiban.png`)
         this.uiCeng.addChild(gameoverPanel)
         gameoverPanel.x = 20
         gameoverPanel.y = 100
@@ -174,7 +176,7 @@ class Mug {
         scoreTxt.x = 210
         scoreTxt.y = 110
 
-        let restartBtn = new PIXI.Sprite.fromImage("res/fanhuianniu.png")
+        let restartBtn = new PIXI.Sprite.fromImage(`${assetUrl}/fanhuianniu.png`)
         gameoverPanel.addChild(restartBtn)
         restartBtn.x = 185
         restartBtn.y = 330
@@ -201,7 +203,7 @@ function getWorldPosition(displayObject) {
 class Button {
     constructor(imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, buttonX, that) {
         this.gameObjectCeng = gameObjectCeng
-        this.bjt = new PIXI.Sprite.fromImage(`res/bjt${imgNumber}.png`)
+        this.bjt = new PIXI.Sprite.fromImage(`${assetUrl}/bjt${imgNumber}.png`)
         gameObjectCeng.addChild(this.bjt)
         this.bjt.anchor.set(0.5, 1)
         this.bjt.x = buttonX
@@ -209,14 +211,14 @@ class Button {
         this.bjt.visible = false
         this.animalCeng = animalCeng
 
-        this.button = new PIXI.Sprite.fromImage(`res/anniu${imgNumber}.png`)
+        this.button = new PIXI.Sprite.fromImage(`${assetUrl}/anniu${imgNumber}.png`)
         uiCeng.addChild(this.button)
         this.button.anchor.set(0.5, 0.5)
         this.button.y = 754
         this.button.x = this.bjt.x
         this.type = imgNumber
 
-        this.kong = new PIXI.Sprite.fromImage("res/kong.png")
+        this.kong = new PIXI.Sprite.fromImage(`${assetUrl}/kong.png`)
         lineCeng.addChild(this.kong)
         this.kong.anchor.set(0.5, 0.5)
         this.kong.x = this.bjt.x
@@ -310,7 +312,7 @@ class Button {
     }
 
     scoreAction(name) {
-        let score = new PIXI.Sprite.fromImage("res/" + name + ".png")
+        let score = new PIXI.Sprite.fromImage(`${assetUrl}/` + name + ".png")
         this.gameObjectCeng.addChild(score)
         score.y = 540
         score.x = this.bjt.x
@@ -344,7 +346,7 @@ class Animal {
             3: "hong",
             4: "huang"
         }
-        this.animal = new PIXI.Sprite.fromImage(`res/${typeMap[type]}${number}.png`)
+        this.animal = new PIXI.Sprite.fromImage(`${assetUrl}/${typeMap[type]}${number}.png`)
         this.animal.anchor.set(0.5, 0.5)
         this.animal.x = animalX
         this.animal.y = 0
