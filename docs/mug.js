@@ -48,20 +48,25 @@ class Mug {
             }
         }
 
+        const that = this
+
         this.app.ticker.add(this.animate.bind(this))
+
     }
 
-    animate() {
+    animate(e) {
         if (this.gameStatus == 0) {
             return
         }
-        this.fps++
-        //创建动物
 
+        this.fps = this.video.currentTime
+
+        console.log(this.fps)
+        //创建动物
         const head = this.beatMap[0]
 
 
-        if (head && this.fps == head.fps) {
+        if (head && this.fps >= head.fps) {
             console.log(this.fps)
             this.beatMap.shift()
             let button = this.buttonArray[head.button - 1]
@@ -153,15 +158,12 @@ class Mug {
         let startBtn = new PIXI.Sprite.fromImage("res/kaishianniu.png")
         uiCeng.addChild(startBtn)
         startBtn.interactive = true
-        startBtn.on("click", () => {
+        startBtn.on("pointerdown", () => {
             startBtn.visible = false
             this.gameStatus = 1
             this.video.play()
         })
-        startBtn.on("touchstart", () => {
-            startBtn.visible = false
-            this.gameStatus = 1
-        })
+
         startBtn.x = 200
         startBtn.y = 345
 

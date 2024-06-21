@@ -4,20 +4,20 @@ class Eplayer extends HTMLElement {
     this.doms = {}
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
-    this.control = this.getAttribute('control')
+    this.beatMap = this.getAttribute('beatMap')
 
     this.init()
     this.stream()
   }
 
   static get observedAttributes() {
-    return ['src', 'type']
+    return ['src', 'type', 'beatMap']
   }
 
   attributeChangedCallback(name, _, newVal) {
     if (name === 'src') this.src = this.$('.video').src = newVal
     if (name === 'type') this.type = newVal
-    if (name === 'control') this.control = newVal
+    if (name === 'beatMap') this.beatMap = newVal
     this.stream()
     this.video.load()
   }
@@ -25,6 +25,8 @@ class Eplayer extends HTMLElement {
   $(key) {
     return this.doms[key]
   }
+
+
 
   waiting() {
     this.$('.mark').removeEventListener('click', this.mark.bind(this))
@@ -45,10 +47,22 @@ class Eplayer extends HTMLElement {
   }
 
   mark() {
-    if (this.control) {
-      clearTimeout(this.timer)
-      this.timer = setTimeout(() => this.play(), 200)
-    }
+    if (this.beatMap) return
+    clearTimeout(this.timer)
+    this.timer = setTimeout(() => this.play(), 200)
+  }
+
+  connectedCallback() {
+    console.log('emmm')
+    const beats = this.beatMap.split('|').map(item => {
+      const [fps, button] = item.split(':')
+      return {
+        fps, button
+      }
+    })
+
+
+    new Mug(beats,this.$('.mug'),this.video)
   }
 
   canplay() {
@@ -59,9 +73,7 @@ class Eplayer extends HTMLElement {
   }
 
   play() {
-    if(!this.control){
-      return
-    }
+    if (this.beatMap) return
     if (this.video.paused) {
       this.video.play()
       this.$('.ep-video').style.display = 'none'
@@ -238,7 +250,7 @@ class Eplayer extends HTMLElement {
           overflow: hidden;
         }
         .controls{
-          display:${this.control ? 'block' : 'none'};
+          display:${this.beatMap ? 'none' : 'block'};
           position:absolute;
           left:0;
           right:0;
@@ -384,7 +396,7 @@ class Eplayer extends HTMLElement {
         }
         .ep-video {
           position: absolute;
-          display:${this.control ? 'block' : 'none'};
+          display:${this.beatMap ? 'none' : 'block'};
           bottom: 25px;
           right: 20px;
           font-size:40px;
@@ -423,7 +435,24 @@ class Eplayer extends HTMLElement {
             margin-left:-10px;
             display:inline-block;
         }
+        .mug {
+          height: 450px;
+          width: 281px;
+          position: absolute;
+          z-index: 999;
+          /* pointer-events: none; */
+          transform: translate(-50%, -50%);
+          left: 50%;
+          top: 50%;
+          opacity: 0.95;
+        }
+        .wrap{
+          position: relative;
+          height: 450px;
+        }
       </style>
+      <div class="wrap">
+      <div class="mug"></div>
       <div class="eplayer">
         <video id="video" class="video" src="${this.src || ''}"></video>
         <div class="mark loading"></div>
@@ -468,6 +497,7 @@ class Eplayer extends HTMLElement {
         <div class="epicon ep-video"></div>
         <div class="panel"></div>
       </div>
+      </div>
     `
     let template = document.createElement('template')
     template.innerHTML = html
@@ -501,6 +531,7 @@ class Eplayer extends HTMLElement {
       '.panel',
       '.speed',
       '.pip',
+      '.mug'
     ]
 
     for (const key of doms) {
@@ -540,6 +571,7 @@ class Eplayer extends HTMLElement {
 
   mount() {
     this.video = this.$('.video')
+    this.mug = this.$('.mug')
     this.video.volume = 0.5
     setVolume(this.video.volume * 10, this.$('.line'))
     this.video.onwaiting = this.waiting.bind(this)

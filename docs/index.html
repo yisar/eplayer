@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>eplayer</title>
   <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/pixi.js/4.5.2/pixi.min.js"></script>
-  <script src="./mug-class.js"></script>
+  <script src="./mug.js"></script>
 </head>
 
 <body>
@@ -99,29 +99,13 @@
         animation: octocat-wave 560ms ease-in-out;
       }
     }
-
-    .mug {
-      height: 450px;
-      width: 281px;
-      position: absolute;
-      z-index: 999;
-      /* pointer-events: none; */
-      transform: translate(-50%, -50%);
-      left: 50%;
-      top: 50%;
-      opacity: 0.95;
-    }
-    .wrap{
-      position: relative;
-      height: 450px;
-    }
   </style>
   <div class="wrapper">
-    <div class="wrap">
-      <div class="mug"></div>
-      <e-player id="ep" src="https://mp4.ziyuan.wang/view.php/67c796ed2dad70c429bda73a647704f0.mp4">
-      </e-player>
-    </div>
+
+    <e-player id="ep" src="https://mp4.ziyuan.wang/view.php/67c796ed2dad70c429bda73a647704f0.mp4"
+      beatMap="1:2|2:1|3:3|4:4|6:2|6:1|7:3|8:4|8:2|9:1|11:3|12:4|12:2|13:1|14:3|15:4|16:2|16:1|17:3|19:4|19:2|20:1|21:3|22:4">
+    </e-player>
+
     <a href="https://github.com/132yse/eplayer">github</a>
     <a href="https://github.com/132yse/eplayer/blob/master/README.md">README</a>
     <a href="https://www.clicli.cc">clicli.cc</a>
@@ -130,36 +114,6 @@
   <script src="https://unpkg.com/hls.js"></script>
   <script src="./eplayer.js"></script>
   <!-- <script src="./pic.js"></script> -->
-  <script>
-    const beatMap = [
-      { "fps": 1, "button": 2 },
-      { "fps": 20, "button": 1 },
-      { "fps": 80, "button": 3 },
-      { "fps": 150, "button": 4 },
-      { "fps": 180, "button": 2 },
-      { "fps": 221, "button": 1 },
-      { "fps": 332, "button": 3 },
-      { "fps": 373, "button": 4 },
-      { "fps": 400, "button": 2 },
-      { "fps": 450, "button": 1 },
-      { "fps": 570, "button": 3 },
-      { "fps": 630, "button": 4 },
-      { "fps": 670, "button": 2 },
-      { "fps": 720, "button": 1 },
-      { "fps": 740, "button": 3 },
-      { "fps": 750, "button": 4 },
-      { "fps": 790, "button": 2 },
-      { "fps": 830, "button": 1 },
-      { "fps": 900, "button": 3 },
-      { "fps": 1000, "button": 4 },
-      { "fps": 1200, "button": 2 },
-      { "fps": 1400, "button": 1 },
-      { "fps": 1500, "button": 3 },
-      { "fps": 2000, "button": 4 },
-
-    ]
-    new Mug(beatMap, document.querySelector('.mug'), document.querySelector('e-player').shadowRoot.querySelector('video'))
-  </script>
 </body>
 
 </html>
