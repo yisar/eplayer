@@ -1,6 +1,6 @@
 {
   "name": "eplayer",
-  "version": "1.5.8",
+  "version": "1.5.9",
   "description": "A web-components html5 video player facing future",
   "main": "./docs/eplayer.js",
   "module": "./docs/eplayer.js",
