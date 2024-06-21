@@ -18,13 +18,8 @@ class Mug {
         this.app.view.style.width = container.offsetWidth + 'px'
         this.video = video
 
-
-
         this.drawUI()
-
         const buttonArray = this.buttonArray
-
-
         document.onkeydown = function (e) {
             if (e && e.keyCode == 68) {
                 buttonArray[0].keyDown()
@@ -48,20 +43,15 @@ class Mug {
             }
         }
 
-        const that = this
-
         this.app.ticker.add(this.animate.bind(this))
-
     }
 
-    animate(e) {
+    animate() {
         if (this.gameStatus == 0) {
             return
         }
 
         this.fps = this.video.currentTime
-
-        console.log(this.fps)
         //创建动物
         const head = this.beatMap[0]
 
@@ -181,8 +171,6 @@ class Mug {
             font: 'bold 40px 微软雅黑',//加粗 倾斜 字号 字体名称
             fill: '#F7EDCA',//颜色
         }
-
-        //得分
         let scoreTxt = new PIXI.Text(this.score, style)
         gameoverPanel.addChild(scoreTxt)
         scoreTxt.x = 210
@@ -212,48 +200,59 @@ function getWorldPosition(displayObject) {
     return { "x": x, "y": y }
 }
 
+class Button {
+    constructor(imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, buttonX, that) {
+        this.gameObjectCeng = gameObjectCeng
+        this.bjt = new PIXI.Sprite.fromImage(`res/bjt${imgNumber}.png`)
+        gameObjectCeng.addChild(this.bjt)
+        this.bjt.anchor.set(0.5, 1)
+        this.bjt.x = buttonX
+        this.bjt.y = 800
+        this.bjt.visible = false
+        this.animalCeng = animalCeng
 
-function Button(imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, buttonX, that) {
-    //背景
-    this.bjt = new PIXI.Sprite.fromImage("res/bjt" + imgNumber + ".png")
-    gameObjectCeng.addChild(this.bjt)
-    this.bjt.anchor.set(0.5, 1)
-    this.bjt.x = buttonX
-    this.bjt.y = 800
-    this.bjt.visible = false
-    //按钮
-    this.button = new PIXI.Sprite.fromImage("res/anniu" + imgNumber + ".png")
-    uiCeng.addChild(this.button)
-    this.button.anchor.set(0.5, 0.5)
-    this.button.y = 754
-    this.button.x = this.bjt.x
-    this.type = imgNumber
-    //点击位置中心点
-    this.kong = new PIXI.Sprite.fromImage("res/kong.png")
-    lineCeng.addChild(this.kong)
-    this.kong.anchor.set(0.5, 0.5)
-    this.kong.x = this.bjt.x
-    this.kong.y = 600
+        this.button = new PIXI.Sprite.fromImage(`res/anniu${imgNumber}.png`)
+        uiCeng.addChild(this.button)
+        this.button.anchor.set(0.5, 0.5)
+        this.button.y = 754
+        this.button.x = this.bjt.x
+        this.type = imgNumber
 
-    this.button.interactive = true
-    this.animalArray = []
-    this.createAnimal = function () {
-        //调用创建动物对象
-        let animal = new Animal(this.type, this.button.x)
-        animalCeng.addChild(animal.animal)
-        this.animalArray.push(animal)
+        this.kong = new PIXI.Sprite.fromImage("res/kong.png")
+        lineCeng.addChild(this.kong)
+        this.kong.anchor.set(0.5, 0.5)
+        this.kong.x = this.bjt.x
+        this.kong.y = 600
 
+        this.button.interactive = true
+        this.animalArray = []
+
+        this.show = true
+
+        this.scoreArray = []
+
+        this.soft = that
+
+        // Handlers for button
+        this.button.on("pointerdown", this.buttonMouseHandler.bind(this))
+        this.button.on("pointerup", this.buttonMouseupHandler.bind(this))
+        this.button.on("click", this.buttonClick.bind(this))
     }
-    //动物对象进行移动
-    this.animalMove = function () {
+
+    createAnimal() {
+        let animal = new Animal(this.type, this.button.x)
+        this.animalCeng.addChild(animal.animal)
+        this.animalArray.push(animal)
+    }
+
+    animalMove() {
         for (let i = 0; i < this.animalArray.length; i++) {
             let animal = this.animalArray[i]
             animal.move()
         }
     }
-    //删除动物
-    this.show = true
-    this.deleteAnimal = function () {
+
+    deleteAnimal() {
         for (let i = this.animalArray.length - 1; i >= 0; i--) {
             let animal = this.animalArray[i]
             if (this.kong.y + 46 < animal.animal.y && this.show == true) {
@@ -262,81 +261,67 @@ function Button(imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, buttonX
             }
             if (animal.animal.y > 800) {
                 this.show = true
-                animalCeng.removeChild(animal.animal)
+                this.animalCeng.removeChild(animal.animal)
                 this.animalArray.splice(i, 1)
             }
         }
     }
-    let soft = this
-    //鼠标按下
-    this.button.on("mousedown", function () {
-        soft.buttonClick()
-    })
-    //鼠标抬起
-    this.button.on("mouseup", function () {
-        soft.bjt.visible = false
-    })
 
-    this.button.on("click", function () {
+    buttonMouseHandler() {
+        this.buttonClick()
+    }
 
-    })
-    //移动端点击
-    this.button.on("touchstart", function () {
-        soft.buttonClick()
-    })
-    //移动端抬起
-    this.button.on("touchend", function () {
-        soft.bjt.visible = false
-    })
-    //点击事件
-    this.buttonClick = function () {
-        soft.bjt.visible = true
+    buttonMouseupHandler() {
+        this.bjt.visible = false
+    }
+
+    buttonClick() {
+        const soft = this
+        this.bjt.visible = true
 
         for (let i = 0; i < soft.animalArray.length; i++) {
             if (soft.kong.y - 10 < soft.animalArray[i].animal.y && soft.kong.y + 10 > soft.animalArray[i].animal.y) {
-                that.score += 10
-                that.scoreTxt.text = that.score
-                animalCeng.removeChild(soft.animalArray[i].animal)
+                this.soft.score += 10
+                this.soft.scoreTxt.text = this.soft.score
+                this.animalCeng.removeChild(soft.animalArray[i].animal)
                 soft.animalArray.splice(i, 1)
                 this.scoreAction("perfect")
 
             } else if (soft.kong.y - 20 < soft.animalArray[i].animal.y && soft.kong.y + 20 > soft.animalArray[i].animal.y) {
-                that.score += 5
-                that.scoreTxt.text = that.score
-                animalCeng.removeChild(soft.animalArray[i].animal)
+                this.soft.score += 5
+                this.soft.scoreTxt.text = this.soft.score
+                this.animalCeng.removeChild(soft.animalArray[i].animal)
                 soft.animalArray.splice(i, 1)
                 this.scoreAction("good")
             } else if (soft.kong.y - 30 < soft.animalArray[i].animal.y && soft.kong.y + 30 > soft.animalArray[i].animal.y) {
-                that.score += 1
-                that.scoreTxt.text = that.score
-                animalCeng.removeChild(soft.animalArray[i].animal)
+                this.soft.score += 1
+                this.soft.scoreTxt.text = this.soft.score
+                this.animalCeng.removeChild(soft.animalArray[i].animal)
                 soft.animalArray.splice(i, 1)
                 this.scoreAction("bad")
             }
-
         }
     }
-    //键盘点击事件
-    this.keyDown = function () {
+
+    keyDown() {
         this.buttonClick()
     }
 
-    this.keyUp = function () {
-        soft.bjt.visible = false
+    keyUp() {
+        this.bjt.visible = false
     }
-    //记录点击之后结果
-    this.scoreArray = []
-    this.scoreAction = function (name) {
+
+    scoreAction(name) {
         let score = new PIXI.Sprite.fromImage("res/" + name + ".png")
-        gameObjectCeng.addChild(score)
+        this.gameObjectCeng.addChild(score)
         score.y = 540
         score.x = this.bjt.x
         score.anchor.set(0.5, 0.5)
         score.alpha = 1
         this.scoreArray.push(score)
     }
-    //成绩效果图片移动
-    this.scoreMove = function () {
+
+    scoreMove() {
         for (let i = 0; i < this.scoreArray.length; i++) {
             let score = this.scoreArray[i]
             score.alpha -= 0.01
@@ -345,33 +330,29 @@ function Button(imgNumber, gameObjectCeng, uiCeng, lineCeng, animalCeng, buttonX
         for (let i = this.scoreArray.length - 1; i >= 0; i--) {
             let score = this.scoreArray[i]
             if (score.y <= 400) {
-                gameObjectCeng.removeChild(score)
+                this.gameObjectCeng.removeChild(score)
                 this.scoreArray.splice(i, 1)
             }
         }
     }
 }
 
-//动物对象
-function Animal(type, animalX) {
-    let number = 3
-    if (type == 1) {
-        this.animal = new PIXI.Sprite.fromImage("res/lan" + number + ".png")
+class Animal {
+    constructor(type, animalX) {
+        let number = 3
+        let typeMap = {
+            1: "lan",
+            2: "lv",
+            3: "hong",
+            4: "huang"
+        }
+        this.animal = new PIXI.Sprite.fromImage(`res/${typeMap[type]}${number}.png`)
+        this.animal.anchor.set(0.5, 0.5)
+        this.animal.x = animalX
+        this.animal.y = 0
     }
-    if (type == 2) {
-        this.animal = new PIXI.Sprite.fromImage("res/lv" + number + ".png")
-    }
-    if (type == 3) {
-        this.animal = new PIXI.Sprite.fromImage("res/hong" + number + ".png")
-    }
-    if (type == 4) {
-        this.animal = new PIXI.Sprite.fromImage("res/huang" + number + ".png")
-    }
-    this.animal.anchor.set(0.5, 0.5)
-    this.animal.x = animalX
-    this.animal.y = 0
-    //动物对象移动
-    this.move = function () {
+
+    move() {
         this.animal.y += 3.33
     }
 }
