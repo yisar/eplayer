@@ -5,12 +5,12 @@ class Eplayer extends HTMLElement {
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
     this.beatmap = this.getAttribute('beatmap')
-    this.high = this.getAttribute('high')
+    this.height = this.getAttribute('height')
 
     this.init()
     this.stream()
   }
-  
+
   static get observedAttributes() {
     return ['src', 'type', 'beatmap']
   }
@@ -435,8 +435,8 @@ class Eplayer extends HTMLElement {
             display:inline-block;
         }
         .mug {
-          height: ${this.high}px;
-          width: ${this.high/8*5}px;
+          height: ${this.height}px;
+          width: ${this.height/8*5}px;
           position: absolute;
           z-index: 999;
           /* pointer-events: none; */
@@ -448,7 +448,7 @@ class Eplayer extends HTMLElement {
         }
         .wrap{
           position: relative;
-          // height: ${this.high}px;
+          // height: ${this.height}px;
         }
       </style>
       <div class="wrap">
