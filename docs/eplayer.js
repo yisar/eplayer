@@ -12,13 +12,14 @@ class Eplayer extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['src', 'type', 'beatmap']
+    return ['src', 'type', 'beatmap', 'height']
   }
 
   attributeChangedCallback(name, _, newVal) {
     if (name === 'src') this.src = this.$('.video').src = newVal
     if (name === 'type') this.type = newVal
     if (name === 'beatmap') this.beatmap = newVal
+    if (name === 'height') this.height = newVal
     this.stream()
     this.startMug()
     this.video.load()
@@ -36,6 +37,8 @@ class Eplayer extends HTMLElement {
 
   startMug() {
     this.$('.mug').style.display = 'block'
+    this.$('.mug').style.height = this.height + 'px'
+    this.$('.mug').style.width = (this.height / 8 * 5) + 'px'
     this.$('.ep-video').style.display = 'none'
     this.$('.controls').style.display = 'none'
     if (!this.beatmap) return
@@ -436,7 +439,7 @@ class Eplayer extends HTMLElement {
         }
         .mug {
           height: ${this.height}px;
-          width: ${this.height/8*5}px;
+          width: ${this.height / 8 * 5}px;
           position: absolute;
           z-index: 999;
           /* pointer-events: none; */
@@ -448,7 +451,6 @@ class Eplayer extends HTMLElement {
         }
         .wrap{
           position: relative;
-          // height: ${this.height}px;
         }
       </style>
       <div class="wrap">
