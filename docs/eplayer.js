@@ -19,7 +19,7 @@ class Eplayer extends HTMLElement {
     if (name === 'type') this.type = newVal
     if (name === 'beatmap') this.beatmap = newVal
     this.stream()
-    this.mug()
+    this.startMug()
     this.video.load()
   }
 
@@ -27,12 +27,22 @@ class Eplayer extends HTMLElement {
     return this.doms[key]
   }
 
-
-
   waiting() {
     this.$('.mark').removeEventListener('click', this.mark.bind(this))
     this.$('.mark').classList.remove('playing')
     this.$('.mark').classList.add('loading')
+  }
+
+  startMug() {
+    this.$('.mug').style.display = 'block'
+    this.$('.ep-video').style.display = 'none'
+    this.$('.controls').style.display = 'none'
+    if (!this.beatmap) return
+    const beats = this.beatmap.split('|').map(item => {
+      const [fps, button] = item.split(':')
+      return { fps, button }
+    })
+    new Mug(beats, this.$('.mug'), this.video)
   }
 
   stream() {
@@ -51,14 +61,6 @@ class Eplayer extends HTMLElement {
     if (this.beatmap) return
     clearTimeout(this.timer)
     this.timer = setTimeout(() => this.play(), 200)
-  }
-
-  mug() {
-    const beats = this.beatmap.split('|').map(item => {
-      const [fps, button] = item.split(':')
-      return { fps, button }
-    })
-    new Mug(beats, this.$('.mug'), this.video)
   }
 
   canplay() {
