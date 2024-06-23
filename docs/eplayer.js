@@ -36,6 +36,7 @@ class Eplayer extends HTMLElement {
   }
 
   startMug() {
+    if (!this.beatmap) return
     this.$('.mug').innerHTML = '' // 先清空
     this.$('.mug').style.display = 'block'
     this.$('.mug').style.height = this.height + 'px'
@@ -230,6 +231,7 @@ class Eplayer extends HTMLElement {
   }
 
   init() {
+    // console.log(this.beatmap)
     let html = `
       <style>
         @import "https://at.alicdn.com/t/font_836948_g9fk6jqpl8l.css";
