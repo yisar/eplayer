@@ -461,7 +461,7 @@ class Eplayer extends HTMLElement {
       <div class="eplayer">
         <video id="video" class="video" src="${this.src || ''}"></video>
         <div class="mark loading"></div>
-        <div class="controls" style="bottom:-50px">
+        <div class="controls" style="bottom:-70px">
           <div class="progress">
             <b class="bg"></b>
             <b class="buffer"></b>
