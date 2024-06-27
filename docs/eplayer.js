@@ -594,7 +594,7 @@ class Eplayer extends HTMLElement {
       },
     })
     this.delegate('keydown', this.keydown)
-    this.delegate('pointermove', this.alow)
+    this.delegate('pointerdown', this.alow)
     this.$('.eplayer').oncontextmenu = () => false
   }
 }
