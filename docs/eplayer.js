@@ -119,10 +119,10 @@ class Eplayer extends HTMLElement {
 
   down(e) {
     this.disX = e.clientX - this.$('.cycle').offsetLeft
-    document.onmousemove = (e) => this.move(e)
-    document.onmouseup = () => {
-      document.onmousemove = null
-      document.onmouseup = null
+    document.onpointermove = (e) => this.move(e)
+    document.onpointerup = () => {
+      document.onpointermove = null
+      document.onpointerup = null
     }
   }
 
@@ -134,8 +134,8 @@ class Eplayer extends HTMLElement {
     }
     this.$('.current').style.width = offset + 'px'
     this.video.currentTime = (offset / this.$('.progress').clientWidth) * this.video.duration
-    document.onmousemove = null
-    setTimeout((document.onmousemove = (e) => e && this.move(e)), 30)
+    document.onpointermove = null
+    setTimeout((document.onpointermove = (e) => e && this.move(e)), 30)
   }
 
   alow() {
@@ -190,13 +190,13 @@ class Eplayer extends HTMLElement {
       } else if (document.msExitFullscreen) {
         document.msExitFullscreen()
       }
-      screen.orientation.lock("landscape-primary")
+      
+      screen.orientation.lock("portrait-primary")
     } else {
       let el = this.$('.eplayer')
       let rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen
-      screen.orientation.lock("portrait-primary")
-
-      return rfs.call(el)
+      rfs.call(el)
+      screen.orientation.lock("landscape-primary")
     }
   }
 
@@ -583,7 +583,7 @@ class Eplayer extends HTMLElement {
       '.buffer': this.progress,
       '.ep-pip': this.pip,
     })
-    this.delegate('mousedown', {
+    this.delegate('pointerdown', {
       '.cycle': this.down,
       '.mark': this.panel,
     })
@@ -594,7 +594,7 @@ class Eplayer extends HTMLElement {
       },
     })
     this.delegate('keydown', this.keydown)
-    this.delegate('mousemove', this.alow)
+    this.delegate('pointermove', this.alow)
     this.$('.eplayer').oncontextmenu = () => false
   }
 }
