@@ -92,11 +92,11 @@ class Eplayer extends HTMLElement {
   volume() {
     if (this.video.muted) {
       this.video.muted = false
-      setVolume(this.video.volume * 10, this.$('.line'))
+
       this.$('.is-volume').classList.replace('ep-volume-off', 'ep-volume')
     } else {
       this.video.muted = true
-      setVolume(0, this.$('.line'))
+
       this.$('.is-volume').classList.replace('ep-volume', 'ep-volume-off')
     }
   }
@@ -162,13 +162,11 @@ class Eplayer extends HTMLElement {
         try {
           this.video.volume = parseInt(this.video.volume * 100) / 100 + 0.05
         } catch (e) { }
-        setVolume(this.video.volume.toFixed(1) * 10, this.$('.line'))
         break
       case 40:
         try {
           this.video.volume = parseInt(this.video.volume * 100) / 100 - 0.05
         } catch (e) { }
-        setVolume(this.video.volume.toFixed(1) * 10, this.$('.line'))
         break
       case 32:
         this.play()
@@ -192,9 +190,12 @@ class Eplayer extends HTMLElement {
       } else if (document.msExitFullscreen) {
         document.msExitFullscreen()
       }
+      screen.orientation.lock("landscape-primary")
     } else {
       let el = this.$('.eplayer')
       let rfs = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen
+      screen.orientation.lock("portrait-primary")
+
       return rfs.call(el)
     }
   }
@@ -479,18 +480,6 @@ class Eplayer extends HTMLElement {
             </div>
             <div class="right">
               <i class="epicon ep-volume is-volume"></i>
-              <ol class="lines">
-                <span class="line"><i></i></span>
-                <span class="line"><i></i></span>
-                <span class="line"><i></i></span>
-                <span class="line"><i></i></span>
-                <span class="line"><i></i></span>
-                <span class="line"><i></i></span>
-                <span class="line"><i></i></span>
-                <span class="line"><i></i></span>
-                <span class="line"><i></i></span>
-                <span class="line"><i></i></span>
-              </ol>
               <i class="epicon ep-speed">              
                 <b class="speed">1x</b>
               </i>
@@ -578,7 +567,7 @@ class Eplayer extends HTMLElement {
     this.video = this.$('.video')
     this.mug = this.$('.mug')
     this.video.volume = 0.5
-    setVolume(this.video.volume * 10, this.$('.line'))
+    // setVolume(this.video.volume * 10, this.$('.line'))
     this.video.onwaiting = this.waiting.bind(this)
     this.video.oncanplay = this.canplay.bind(this)
     this.video.ontimeupdate = this.update.bind(this)
@@ -606,12 +595,6 @@ class Eplayer extends HTMLElement {
     })
     this.delegate('keydown', this.keydown)
     this.delegate('mousemove', this.alow)
-    this.$('.line').forEach((item, index) => {
-      item.onclick = () => {
-        this.video.volume = (index + 1) / 10
-        setVolume(index + 1, this.$('.line'))
-      }
-    })
     this.$('.eplayer').oncontextmenu = () => false
   }
 }
@@ -630,15 +613,6 @@ function getTimeStr(time) {
   m = m >= 10 ? m : '0' + m
   s = s >= 10 ? s : '0' + s
   return h === '00' ? m + ':' + s : h + ':' + m + ':' + s
-}
-
-function setVolume(index, node) {
-  for (let j = index; j < node.length; j++) {
-    node[j].classList.remove('active')
-  }
-  for (let i = 0; i < index; i++) {
-    node[i].classList.add('active')
-  }
 }
 
 function isFullScreen() {
