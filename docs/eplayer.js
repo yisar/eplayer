@@ -235,7 +235,7 @@ class Eplayer extends HTMLElement {
     // console.log(this.beatmap)
     let html = `
       <style>
-        @import "https://at.alicdn.com/t/font_836948_g9fk6jqpl8l.css";
+        @import "https://at.alicdn.com/t/c/font_836948_ro9xopmggai.css";
         *{
           padding:0;
           margin:0;
