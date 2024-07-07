@@ -6,13 +6,14 @@ class Eplayer extends HTMLElement {
     this.type = this.getAttribute('type')
     this.beatmap = this.getAttribute('beatmap')
     this.height = this.getAttribute('height')
+    this.live = JSON.parse(this.getAttribute('live'))
 
     this.init()
     this.stream()
   }
 
   static get observedAttributes() {
-    return ['src', 'type', 'beatmap', 'height']
+    return ['src', 'type', 'beatmap', 'height','live']
   }
 
   attributeChangedCallback(name, _, newVal) {
@@ -20,6 +21,7 @@ class Eplayer extends HTMLElement {
     if (name === 'type') this.type = newVal
     if (name === 'beatmap') this.beatmap = newVal
     if (name === 'height') this.height = newVal
+    if (name === 'live') this.live = JSON.parse(newVal)
     this.stream()
     this.startMug()
     this.video.load()
@@ -267,6 +269,7 @@ class Eplayer extends HTMLElement {
           z-index:1;   
         }
         .progress{
+          display:${this.live?'none':'block'};
           position:relative;
           bottom:15px;
           left:0;
@@ -290,6 +293,7 @@ class Eplayer extends HTMLElement {
           color:#fff;
         }
         .time{
+        display:${this.live?'none':'inline-block'};
           position:relative;
           top:-2px;
         }
