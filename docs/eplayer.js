@@ -13,7 +13,7 @@ class Eplayer extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['src', 'type', 'beatmap', 'height','live']
+    return ['src', 'type', 'beatmap', 'height', 'live']
   }
 
   attributeChangedCallback(name, _, newVal) {
@@ -21,7 +21,14 @@ class Eplayer extends HTMLElement {
     if (name === 'type') this.type = newVal
     if (name === 'beatmap') this.beatmap = newVal
     if (name === 'height') this.height = newVal
-    if (name === 'live') this.live = JSON.parse(newVal)
+    if (name === 'live') {
+      this.live = JSON.parse(newVal)
+      if (this.live) {
+        this.$('.progress').style.display = 'none'
+        this.$('.time').style.display = 'none'
+      }
+    }
+
     this.stream()
     this.startMug()
     this.video.load()
@@ -192,7 +199,7 @@ class Eplayer extends HTMLElement {
       } else if (document.msExitFullscreen) {
         document.msExitFullscreen()
       }
-      
+
       screen.orientation.lock("portrait-primary")
     } else {
       let el = this.$('.eplayer')
@@ -269,7 +276,7 @@ class Eplayer extends HTMLElement {
           z-index:1;   
         }
         .progress{
-          display:${this.live?'none':'block'};
+          display:${this.live ? 'none' : 'block'};
           position:relative;
           bottom:15px;
           left:0;
@@ -293,7 +300,7 @@ class Eplayer extends HTMLElement {
           color:#fff;
         }
         .time{
-        display:${this.live?'none':'inline-block'};
+        display:${this.live ? 'none' : 'inline-block'};
           position:relative;
           top:-2px;
         }
@@ -510,6 +517,7 @@ class Eplayer extends HTMLElement {
       '.loading',
       '.total',
       '.now',
+      '.time',
       '.current',
       '.buffer',
       '.is-play',

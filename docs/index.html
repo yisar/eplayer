@@ -109,8 +109,7 @@
   <div class="wrapper">
 
     <e-player id="ep" 
-    src="https://a1.alibabausercontent.com/prod/feupload/user/edos8/2f0e7af0-29f1-11ef-b3cd-818e64ac843d.mp4" 
-    live="false">
+    src="https://a1.alibabausercontent.com/prod/feupload/user/edos8/2f0e7af0-29f1-11ef-b3cd-818e64ac843d.mp4">
     </e-player>
 
     <a href="https://github.com/132yse/eplayer">github</a>
@@ -120,6 +119,11 @@
   <script src="https://unpkg.com/@webcomponents/webcomponentsjs"></script>
   <script src="https://unpkg.com/hls.js"></script>
   <script src="./eplayer.js"></script>
+  <script>
+    setTimeout(() => {
+      document.querySelector('e-player').setAttribute('live',true)
+    }, 1000);
+  </script>
   <!-- <script src="./pic.js"></script> -->
 </body>
 
