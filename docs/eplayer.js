@@ -26,6 +26,9 @@ class Eplayer extends HTMLElement {
       if (this.live) {
         this.$('.progress').style.display = 'none'
         this.$('.time').style.display = 'none'
+      }else{
+        this.$('.progress').style.display = 'block'
+        this.$('.time').style.display = 'inline-block'
       }
     }
 
