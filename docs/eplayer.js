@@ -4,37 +4,43 @@ class Eplayer extends HTMLElement {
     this.doms = {}
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
-    this.beatmap = this.getAttribute('beatmap')
-    this.height = this.getAttribute('height')
     this.live = JSON.parse(this.getAttribute('live'))
+    this.danmaku = null
 
     this.init()
     this.stream()
   }
 
   static get observedAttributes() {
-    return ['src', 'type', 'beatmap', 'height', 'live']
+    return ['src', 'type', 'danma', 'live']
   }
 
-  attributeChangedCallback(name, _, newVal) {
-    if (name === 'src') this.src = this.$('.video').src = newVal
-    if (name === 'type') this.type = newVal
-    if (name === 'beatmap') this.beatmap = newVal
-    if (name === 'height') this.height = newVal
+  attributeChangedCallback(name, oldVal, newVal) {
+    if (name === 'src') {
+      this.src = this.$('.video').src = newVal
+      this.stream()
+      this.video.load()
+    }
+    if (name === 'type') {
+      this.type = newVal
+      this.stream()
+      this.video.load()
+    }
     if (name === 'live') {
       this.live = JSON.parse(newVal)
       if (this.live) {
         this.$('.progress').style.display = 'none'
         this.$('.time').style.display = 'none'
-      }else{
+      } else {
         this.$('.progress').style.display = 'block'
         this.$('.time').style.display = 'inline-block'
       }
     }
-
-    this.stream()
-    this.startMug()
-    this.video.load()
+    if (name === 'danma') {
+      this.danmaku.add({
+        msg: newVal
+      })
+    }
   }
 
   $(key) {
@@ -45,22 +51,6 @@ class Eplayer extends HTMLElement {
     this.$('.mark').removeEventListener('click', this.mark.bind(this))
     this.$('.mark').classList.remove('playing')
     this.$('.mark').classList.add('loading')
-  }
-
-  startMug() {
-    if (!this.beatmap) return
-    this.$('.mug').innerHTML = '' // 先清空
-    this.$('.mug').style.display = 'block'
-    this.$('.mug').style.height = this.height + 'px'
-    this.$('.mug').style.width = (this.height / 8 * 5) + 'px'
-    this.$('.ep-video').style.display = 'none'
-    this.$('.controls').style.display = 'none'
-    if (!this.beatmap) return
-    const beats = this.beatmap.split('|').map(item => {
-      const [fps, button] = item.split(':')
-      return { fps, button }
-    })
-    new Mug(beats, this.$('.mug'), this.video)
   }
 
   stream() {
@@ -76,7 +66,6 @@ class Eplayer extends HTMLElement {
   }
 
   mark() {
-    if (this.beatmap) return
     clearTimeout(this.timer)
     this.timer = setTimeout(() => this.play(), 200)
   }
@@ -89,13 +78,14 @@ class Eplayer extends HTMLElement {
   }
 
   play() {
-    if (this.beatmap) return
     if (this.video.paused) {
       this.video.play()
+      this.danmaku.resume()
       this.$('.ep-video').style.display = 'none'
       this.$('.is-play').classList.replace('ep-play', 'ep-pause')
     } else {
       this.video.pause()
+      this.danmaku.play()
       this.$('.ep-video').style.display = 'block'
       this.$('.is-play').classList.replace('ep-pause', 'ep-play')
     }
@@ -244,7 +234,6 @@ class Eplayer extends HTMLElement {
   }
 
   init() {
-    // console.log(this.beatmap)
     let html = `
       <style>
         @import "https://at.alicdn.com/t/c/font_836948_ro9xopmggai.css";
@@ -268,7 +257,6 @@ class Eplayer extends HTMLElement {
           overflow: hidden;
         }
         .controls{
-          display:${this.beatmap ? 'none' : 'block'};
           position:absolute;
           left:0;
           right:0;
@@ -416,7 +404,6 @@ class Eplayer extends HTMLElement {
         }
         .ep-video {
           position: absolute;
-          display:${this.beatmap ? 'none' : 'block'};
           bottom: 25px;
           right: 20px;
           font-size:40px;
@@ -455,24 +442,24 @@ class Eplayer extends HTMLElement {
             margin-left:-10px;
             display:inline-block;
         }
-        .mug {
-          height: ${this.height}px;
-          width: ${this.height / 8 * 5}px;
-          position: absolute;
-          z-index: 999;
-          /* pointer-events: none; */
-          transform: translate(-50%, -50%);
-          left: 50%;
-          top: 50%;
-          opacity: 0.95;
-         display: ${this.beatmap ? 'block' : 'none'}
-        }
+
         .wrap{
           position: relative;
         }
+
+        .danmaku {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 999;
+    }
       </style>
       <div class="wrap">
-      <div class="mug"></div>
+      <div class="danmaku"></div>
       <div class="eplayer">
         <video id="video" class="video" src="${this.src || ''}"></video>
         <div class="mark loading"></div>
@@ -540,7 +527,7 @@ class Eplayer extends HTMLElement {
       '.panel',
       '.speed',
       '.pip',
-      '.mug'
+      '.danmaku'
     ]
 
     for (const key of doms) {
@@ -580,8 +567,10 @@ class Eplayer extends HTMLElement {
 
   mount() {
     this.video = this.$('.video')
-    this.mug = this.$('.mug')
     this.video.volume = 0.5
+    this.danmaku = new Danmaku({
+      container: this.$('.danmaku')
+    })
     // setVolume(this.video.volume * 10, this.$('.line'))
     this.video.onwaiting = this.waiting.bind(this)
     this.video.oncanplay = this.canplay.bind(this)

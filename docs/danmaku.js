@@ -1,66 +1,41 @@
-const SPEED_ARG = 0.0058
-
-const DEFAULT_TRACK_SIZE = 12
-
-const DEFAULT_RENDER_INTERVAL = 150
+const SPEED_ARG = 0.009
 
 const defaultDanmakuData = {
     msg: '',
     fontSize: 24,
     fontColor: '#ffffff',
-    fontMode: 'roll',
-    fontArea: 'full',
-    fontAreaPercent: 0.25,
     rollTime: 0,
-    rolledDistance: 0,
-    top: 0
 }
 
 class Danmaku {
     constructor(options) {
-        // 弹幕容器（HTML 元素）
         this._container = options.container
-        // 容器宽度
         this._totalWidth = null
-        // 容器高度
         this._totalHeight = null
-        // 轨道高度
-        this._trackSize = options.trackSize || DEFAULT_TRACK_SIZE
-        // 队列轮询间隔
-        this._renderInterval = parseInt(options.renderInterval) || DEFAULT_RENDER_INTERVAL
-        // 队列轮询 setTimeout 计时器
+        this._trackSize = 12
         this._renderTimer = null
-        // 数据队列
         this._queue = []
-        // 轨道数据
         this._tracks = null
-        // 弹幕自编 id 累加器
         this._autoId = 0
-
-        // 初始化容器尺寸和轨道数据结构
+        this._paused = true
         this.resize()
         this._resetTracks()
+        console.log(this._container)
     }
 
-    // 弹幕容器大小变化时调用此方法
     resize() {
-        // 容器总宽度
         this._totalWidth = this._container.offsetWidth
-        // 容器总高度
         this._totalHeight = this._container.offsetHeight
-        // 避免当前屏的数据错乱，全部清掉
         this.clearScreen()
     }
 
-    // 清屏
     clearScreen() {
         this._clearDanmakuNodes()
         this._resetTracks()
     }
 
-    // 重置轨道数据
     _resetTracks() {
-        const count = Math.floor(this._totalHeight / this._trackSize)
+        const count = Math.floor(this._totalHeight / this._trackSize / 3)
         this._tracks = new Array(count)
         for (let i = 0; i < count; i++) {
             this._tracks[i] = []
@@ -81,7 +56,6 @@ class Danmaku {
         }
     }
 
-    // 清空所有播放中的弹幕节点
     _clearDanmakuNodes() {
         const nodes = []
         this._eachDanmakuNode((node) => {
@@ -92,14 +66,13 @@ class Danmaku {
         })
     }
 
-    // 数据解析与复制
     _parseData(data) {
         return Object.assign({
-            autoId: ++this._autoId
+            autoId: ++this._autoId,
+            fontSize: Math.floor(Math.random() * 20) + 20
         }, defaultDanmakuData, data)
     }
 
-    // 添加弹幕数据到队列
     add(data) {
         this._queue.push(this._parseData(data))
         // 如果队列轮询已经停止，则启动
@@ -187,6 +160,7 @@ class Danmaku {
 
     // 轮询渲染
     _render() {
+        if (this._paused) { return }
         try {
             this._renderToDOM()
         } finally {
@@ -195,11 +169,8 @@ class Danmaku {
     }
 
     _renderToDOM() {
-        // 根据轨道数量每次处理一定数量的弹幕数据
-        // 数量越大，弹幕越密集
-        let count = this._maxAmountPerRender || 500
+        let count = Math.floor(this._tracks.length / 3), i = 0
 
-        let i = 0
         while (count && i < this._queue.length) {
             const data = this._queue[i]
             let node = data.node
@@ -215,12 +186,6 @@ class Danmaku {
                 node.style.fontSize = data.fontSize + 'px'
                 node.style.willChange = 'transform'
                 this._container.appendChild(node)
-
-                node.ontransitionend = (e) => {
-                    console.log(this._queue.length)
-                    // this._container.removeChild(node)
-                    this._queue = this._queue.filter(item => item.autoId != data.autoId)
-                }
 
                 data.useTracks = Math.ceil(node.offsetHeight / this._trackSize)
                 // 占用的轨道数多于轨道总数，则忽略此数据
@@ -253,6 +218,7 @@ class Danmaku {
                 node.addEventListener('transitionend', () => {
                     this._removeFromTrack(data.y, data.autoId)
                     this._container.removeChild(node)
+                    this._queue = this._queue.filter(item => item.autoId != data.autoId)
                 }, false)
 
                 data.startTime = Date.now() + 80
@@ -262,7 +228,6 @@ class Danmaku {
                 i++
             }
 
-            // 处理一条，减掉一条
             count--
         }
     }
@@ -271,16 +236,54 @@ class Danmaku {
     // 轮询结束后，根据队列长度继续执行或停止执行
     _renderEnd() {
         if (this._queue.length > 0) {
-            this._renderTimer = setTimeout(() => {
+            this._renderTimer = requestAnimationFrame(() => {
                 this._render()
-            }, this._renderInterval)
+            })
         } else {
-            // 如果已经没有数据，就不再轮询了，等有数据时（add 方法中）再开启轮询
             this._renderTimer = null
         }
     }
+
+    pause() {
+        if (this._resumeTimer) { clearTimeout(this._resumeTimer) }
+        if (this._renderTimer) {
+            clearTimeout(this._renderTimer)
+            this._renderTimer = null
+        }
+
+        if (this._paused) { return }
+        this._paused = true
+
+        this._eachDanmakuNode((node, y, id) => {
+            const data = this._findData(y, id)
+            if (data) {
+                // 获取已滚动距离
+                data.rolledDistance = -getTranslateX(node)
+
+                // 移除动画，计算出弹幕所在的位置，固定样式
+                node.style.transition = ''
+                node.style.transform = `translateX(-${data.rolledDistance}px)`
+            }
+        })
+    }
+
+    // 继续滚动弹幕
+    resume() {
+        if (!this._paused) { return }
+
+        this._eachDanmakuNode((node, y, id) => {
+            const data = this._findData(y, id)
+            if (data) {
+                data.startTime = Date.now()
+                // 重新计算滚完剩余距离需要多少时间
+                data.rollTime = (data.totalDistance - data.rolledDistance) / data.rollSpeed
+                node.style.transition = `transform ${data.rollTime}s linear`
+                node.style.transform = `translateX(-${data.totalDistance}px)`
+            }
+        })
+
+        this._paused = false
+
+        if (!this._renderTimer) { this._render() }
+    }
 }
-
-
-
-
