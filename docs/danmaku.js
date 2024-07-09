@@ -94,7 +94,7 @@ class Danmaku {
         const now = Date.now()
 
         for (let i = 0; i < this._tracks.length; i++) {
-            track = this._tracks[i]
+            track = this._tracks[i] || []
 
             if (track.length) {
                 // 轨道被占用，要计算是否会重叠
