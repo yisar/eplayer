@@ -85,7 +85,7 @@ class Eplayer extends HTMLElement {
       this.$('.is-play').classList.replace('ep-play', 'ep-pause')
     } else {
       this.video.pause()
-      this.danmaku.play()
+      this.danmaku.pause()
       this.$('.ep-video').style.display = 'block'
       this.$('.is-play').classList.replace('ep-pause', 'ep-play')
     }

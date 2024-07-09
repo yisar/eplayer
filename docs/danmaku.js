@@ -258,7 +258,8 @@ class Danmaku {
             const data = this._findData(y, id)
             if (data) {
                 // 获取已滚动距离
-                data.rolledDistance = -getTranslateX(node)
+                const transform = getComputedStyle(node, null).getPropertyValue('transform')
+                data.rolledDistance = -Number(new DOMMatrix(transform).m41)
 
                 // 移除动画，计算出弹幕所在的位置，固定样式
                 node.style.transition = ''
