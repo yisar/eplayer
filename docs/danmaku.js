@@ -231,8 +231,6 @@ class Danmaku {
             count--
         }
     }
-
-
     // 轮询结束后，根据队列长度继续执行或停止执行
     _renderEnd() {
         if (this._queue.length > 0) {
@@ -245,12 +243,6 @@ class Danmaku {
     }
 
     pause() {
-        if (this._resumeTimer) { clearTimeout(this._resumeTimer) }
-        if (this._renderTimer) {
-            clearTimeout(this._renderTimer)
-            this._renderTimer = null
-        }
-
         if (this._paused) { return }
         this._paused = true
 

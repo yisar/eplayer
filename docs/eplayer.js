@@ -443,10 +443,6 @@ class Eplayer extends HTMLElement {
             display:inline-block;
         }
 
-        .wrap{
-          position: relative;
-        }
-
         .danmaku {
       position: absolute;
       top: 0;
@@ -456,11 +452,13 @@ class Eplayer extends HTMLElement {
       pointer-events: none;
       overflow: hidden;
       z-index: 999;
+      height:100%;
+      width:100%;
     }
       </style>
-      <div class="wrap">
-      <div class="danmaku"></div>
+      
       <div class="eplayer">
+      <div class="danmaku"></div>
         <video id="video" class="video" src="${this.src || ''}"></video>
         <div class="mark loading"></div>
         <div class="controls" style="bottom:-70px">
@@ -491,7 +489,6 @@ class Eplayer extends HTMLElement {
         </div>
         <div class="epicon ep-video"></div>
         <div class="panel"></div>
-      </div>
       </div>
     `
     let template = document.createElement('template')
@@ -534,7 +531,7 @@ class Eplayer extends HTMLElement {
       let dom = this.shadowRoot.querySelectorAll(key)
       this.doms[key] = dom.length > 1 ? [...dom] : dom[0]
     }
-    this.mount()
+
 
     for (const name in Eplayer.plugins) {
       const cb = Eplayer.plugins[name]
@@ -546,26 +543,7 @@ class Eplayer extends HTMLElement {
     }
   }
 
-  delegate(type, map) {
-    const that = this
-    if (typeof map === 'function') {
-      this.shadowRoot.addEventListener(type, map.bind(that))
-    } else {
-      this.shadowRoot.addEventListener(type, (e) => {
-        for (const key in map) e.target.matches(key) && map[key].call(that, e)
-      })
-    }
-  }
-
-  pip(e) {
-    if (!document.pictureInPictureElement) {
-      this.video.requestPictureInPicture()
-    } else {
-      document.exitPictureInPicture()
-    }
-  }
-
-  mount() {
+  connectedCallback() {
     this.video = this.$('.video')
     this.video.volume = 0.5
     this.danmaku = new Danmaku({
@@ -601,6 +579,26 @@ class Eplayer extends HTMLElement {
     this.delegate('pointerdown', this.alow)
     this.$('.eplayer').oncontextmenu = () => false
   }
+
+  delegate(type, map) {
+    const that = this
+    if (typeof map === 'function') {
+      this.shadowRoot.addEventListener(type, map.bind(that))
+    } else {
+      this.shadowRoot.addEventListener(type, (e) => {
+        for (const key in map) e.target.matches(key) && map[key].call(that, e)
+      })
+    }
+  }
+
+  pip(e) {
+    if (!document.pictureInPictureElement) {
+      this.video.requestPictureInPicture()
+    } else {
+      document.exitPictureInPicture()
+    }
+  }
+
 }
 
 Eplayer.plugins = {}
