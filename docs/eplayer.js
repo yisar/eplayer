@@ -425,7 +425,7 @@ class Eplayer extends HTMLElement {
               </span>
             </div>
             <div class="right">
-              <em>倍速</em>
+              <em class="speed">倍速</em>
               <em class="pip">画中画</em>
               <iconpark-icon icon-id="volume-ok" size="2rem" class="is-volume"></iconpark-icon>
               <iconpark-icon icon-id="web-fullscreen" size="2rem"></iconpark-icon>
