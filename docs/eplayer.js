@@ -253,11 +253,11 @@ class Eplayer extends HTMLElement {
           bottom:0;
           background:linear-gradient(transparent,rgba(0,0,0,.5));
           transition: .3s ease-out;
-          opacity:0.4;
+          bottom:-34px;
           z-index:1;   
         }
-          .controls:hover{
-          opacity:1;
+          .eplayer:hover .controls{
+          bottom:0;
           }
         .progress{
           display:${this.live ? 'none' : 'block'};
@@ -296,7 +296,7 @@ class Eplayer extends HTMLElement {
         }
         .bg,.current,.buffer{
           left:0;
-          height:2px;
+          height:3px;
           position:absolute;
           top:0;
           transition: .3s ease-out;
