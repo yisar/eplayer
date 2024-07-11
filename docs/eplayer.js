@@ -19,12 +19,12 @@ class Eplayer extends HTMLElement {
     if (name === 'src') {
       this.src = this.$('.video').src = newVal
       this.stream()
-      this.video.load()
+      this.$('.video').load()
     }
     if (name === 'type') {
       this.type = newVal
       this.stream()
-      this.video.load()
+      this.$('.video').load()
     }
     if (name === 'live') {
       this.live = JSON.parse(newVal)
@@ -81,25 +81,21 @@ class Eplayer extends HTMLElement {
     if (this.video.paused) {
       this.video.play()
       this.danmaku.resume()
-      this.$('.ep-video').style.display = 'none'
-      this.$('.is-play').classList.replace('ep-play', 'ep-pause')
+      this.$('.is-play').setAttribute('icon-id', 'pause')
     } else {
       this.video.pause()
       this.danmaku.pause()
-      this.$('.ep-video').style.display = 'block'
-      this.$('.is-play').classList.replace('ep-pause', 'ep-play')
+      this.$('.is-play').setAttribute('icon-id', 'play')
     }
   }
 
   volume() {
     if (this.video.muted) {
       this.video.muted = false
-
-      this.$('.is-volume').classList.replace('ep-volume-off', 'ep-volume')
+      this.$('.is-volume').setAttribute('icon-id', 'volume-ok')
     } else {
       this.video.muted = true
-
-      this.$('.is-volume').classList.replace('ep-volume', 'ep-volume-off')
+      this.$('.is-volume').setAttribute('icon-id', 'volume-x')
     }
   }
 
@@ -141,15 +137,8 @@ class Eplayer extends HTMLElement {
   }
 
   alow() {
-    clearTimeout(this.timer)
-    this.$('.controls').style.bottom = 0
-    this.$('.ep-video').style.bottom = 70 + 'px'
+    // this.$('.controls').style.bottom = 0
     this.$('.mark').style.cursor = 'default'
-    this.timer = setTimeout(() => {
-      this.$('.controls').style.bottom = -70 + 'px'
-      this.$('.ep-video').style.bottom = 25 + 'px'
-      this.$('.mark').style.cursor = 'none'
-    }, 5000)
   }
 
   keydown(e) {
@@ -178,7 +167,7 @@ class Eplayer extends HTMLElement {
   }
 
   ended() {
-    this.$('.is-play').classList.replace('ep-pause', 'ep-play')
+    // this.$('.is-play').classList.replace('ep-pause', 'ep-play')
   }
 
   full() {
@@ -245,6 +234,7 @@ class Eplayer extends HTMLElement {
           list-style:none;
         }
         .eplayer,video{
+        font-family:'黑体';
           height:100%;
           width:100%;
           color:var(--icons,rgba(255,255,255,0.6));
@@ -261,42 +251,36 @@ class Eplayer extends HTMLElement {
           left:0;
           right:0;
           bottom:0;
-          padding:10px;
           background:linear-gradient(transparent,rgba(0,0,0,.5));
-          transition: .3s ease-out;   
+          transition: .3s ease-out;
+          opacity:0.6;
           z-index:1;   
         }
+          .controls:hover{
+          opacity:1;
+          }
         .progress{
           display:${this.live ? 'none' : 'block'};
           position:relative;
-          bottom:15px;
+          bottom:5px;
           left:0;
           right:0;
           cursor:pointer;
+          transition: .3s ease-out;
+        }
+        .progress:hover .bg,.progress:hover .current,.progress:hover .buffer{
+          height:6px;
+        }
+          .progress:hover .dot,.progress:hover .cycle{
+          display:block;
         }
         .options{
           display:flex;
           align-items:center;
         }
-        .epicon{
-          color:var(--icons,rgba(255,255,255,0.6));
-          padding:0 10px;
-        }
-        .epicon{
-          font-size:18px;
-          transition: .3s;
-          cursor:pointer;
-        }
-        .epicon:hover{
-          color:#fff;
-        }
         .time{
-        display:${this.live ? 'none' : 'inline-block'};
+          display:${this.live ? 'none' : 'inline-block'};
           position:relative;
-          top:-2px;
-        }
-        .time b{
-          font-weight:normal;
         }
         .lines{
           padding:0 10px;
@@ -325,6 +309,8 @@ class Eplayer extends HTMLElement {
         }
         .left{
           flex:1;
+          display:flex;
+          align-items:center;
         }
         .right{
           flex:1;
@@ -337,6 +323,7 @@ class Eplayer extends HTMLElement {
           height:3px;
           position:absolute;
           top:0;
+          transition: .3s ease-out;
         }
         .bg{
           right:0;
@@ -349,10 +336,10 @@ class Eplayer extends HTMLElement {
           background:var(--buffer,rgba(255,255,255,.5));
         }
         .dot{
+          display:none;
           position:absolute;
           border-radius: 50%;
-          display: block;
-          background:var(--theme,#946ce6);
+          background:#fff;
           height: 9px;
           width:9px;
           right:-5px;
@@ -361,10 +348,10 @@ class Eplayer extends HTMLElement {
           z-index:1;
         }
         .cycle{
+          display:none;
           position:absolute;
           border-radius: 50%;
-          display: block;
-          background:var(--theme,#946ce6);
+          background:#fff;
           opacity:0.3;
           height: 15px;
           width:15px;
@@ -402,15 +389,6 @@ class Eplayer extends HTMLElement {
           border-radius: 50%;
           animation: loading 1s linear infinite;
         }
-        .ep-video {
-          position: absolute;
-          bottom: 25px;
-          right: 20px;
-          font-size:40px;
-          color:var(--icons,rgba(255,255,255,.6));
-          z-index:1;
-          cursor: pointer; 
-        }
         .panel {
           position: absolute;
           bottom: 200px;
@@ -430,38 +408,32 @@ class Eplayer extends HTMLElement {
           border-radius:4px;
           background:rgba(0,0,0,.8)
         }
-        .speed{
-            font-size:10px;
-            font-style:italic;
-            width:22px;
-            text-align:center;
-            border-radius:11px;
-            color:rgba(0,0,0,.5);
-            font-weight:900;
-            background:var(--icons,rgba(255,255,255,.8));
-            margin-left:-10px;
-            display:inline-block;
-        }
 
         .danmaku {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 999;
-      height:100%;
-      width:100%;
-    }
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          pointer-events: none;
+          overflow: hidden;
+          z-index: 999;
+          height:100%;
+          width:100%;
+        }
+
+        iconpark-icon{
+        margin-right:5px;
+        cursor:pointer;
+        }
+        
       </style>
       
       <div class="eplayer">
       <div class="danmaku"></div>
         <video id="video" class="video" src="${this.src || ''}"></video>
         <div class="mark loading"></div>
-        <div class="controls" style="bottom:-70px">
+        <div class="controls">
           <div class="progress">
             <b class="bg"></b>
             <b class="buffer"></b>
@@ -472,22 +444,19 @@ class Eplayer extends HTMLElement {
           </div>
           <div class="options">
             <div class="left">
-              <i class="epicon ep-play is-play"></i>
+              <iconpark-icon icon-id="play" size="2rem" class="is-play"></iconpark-icon>
               <span class="time">
                 <b class="now">00:00</b> / <b class="total">00:00</b>
               </span>
             </div>
             <div class="right">
-              <i class="epicon ep-volume is-volume"></i>
-              <i class="epicon ep-speed">              
-                <b class="speed">1x</b>
-              </i>
-              ${document.pictureInPictureEnabled && `<i class="epicon ep-pip"></i>`}
-              <i class="epicon ep-full"></i>
+              <iconpark-icon icon-id="volume-ok" size="2rem" class="is-volume"></iconpark-icon>
+              <iconpark-icon icon-id="web-fullscreen" size="2rem"></iconpark-icon>
+              <iconpark-icon icon-id="fullscreen" size="2rem" class="fullscreen"></iconpark-icon>
             </div>
           </div>
         </div>
-        <div class="epicon ep-video"></div>
+        <iconpark-icon icon-id="play"></iconpark-icon>
         <div class="panel"></div>
       </div>
     `
@@ -508,19 +477,14 @@ class Eplayer extends HTMLElement {
       '.current',
       '.buffer',
       '.is-play',
-      '.ep-video',
       '.is-volume',
       '.cycle',
       '.progress',
       '.controls',
       '.line',
-      '.ep-pause',
-      '.ep-play',
-      '.ep-volume-off',
-      '.ep-volume',
       '.bg',
       '.eplayer',
-      '.ep-full',
+      '.fullscreen',
       '.panel',
       '.speed',
       '.pip',
@@ -556,8 +520,7 @@ class Eplayer extends HTMLElement {
     this.video.onended = this.ended.bind(this)
     this.delegate('click', {
       '.is-volume': this.volume,
-      '.ep-full': this.full,
-      '.ep-video': this.play,
+      '.fullscreen': this.full,
       '.is-play': this.play,
       '.ep-speed': this.speed,
       '.speed': this.speed,
@@ -622,9 +585,8 @@ function isFullScreen() {
 }
 
 ; (function () {
-  let link = document.createElement('link')
-  link.setAttribute('href', 'https://at.alicdn.com/t/font_836948_g9fk6jqpl8l.css')
-  link.setAttribute('rel', 'stylesheet')
+  let link = document.createElement('script')
+  link.setAttribute('src', 'https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_34101_11.6161dfd06f46009a9dea0fcffc6234bf.js')
   document.head.appendChild(link)
 })()
 
