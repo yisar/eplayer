@@ -253,7 +253,7 @@ class Eplayer extends HTMLElement {
           bottom:0;
           background:linear-gradient(transparent,rgba(0,0,0,.5));
           transition: .3s ease-out;
-          opacity:0.6;
+          opacity:0.4;
           z-index:1;   
         }
           .controls:hover{
@@ -281,32 +281,7 @@ class Eplayer extends HTMLElement {
         .time{
           display:${this.live ? 'none' : 'inline-block'};
           position:relative;
-          font-size:16px;
-        }
-        .lines{
-          padding:0 10px;
-          display:flex;
-          align-items: center;
-        }
-        .line{
-          padding:0 2px;
-          cursor:pointer
-        }
-        .line i{
-          width:4px;
-          border-radius:4px;
-          display: inline-block;
-          background: var(--icons,rgba(255,255,255,0.6));
-          height: 12px;
-          transform:scaleX(0.7);
-          transition: .3s;
-        }
-        .line:hover i{
-          height:14px;
-          background:var(--theme,#946ce6);
-        }
-        .active i{
-          background:var(--theme,#946ce6);
+          font-size:15px;
         }
         .left{
           flex:1;
@@ -321,7 +296,7 @@ class Eplayer extends HTMLElement {
         }
         .bg,.current,.buffer{
           left:0;
-          height:3px;
+          height:2px;
           position:absolute;
           top:0;
           transition: .3s ease-out;
@@ -341,23 +316,11 @@ class Eplayer extends HTMLElement {
           position:absolute;
           border-radius: 50%;
           background:#fff;
-          height: 9px;
-          width:9px;
-          right:-5px;
-          top:-3px;
-          cursor:pointer;
-          z-index:1;
-        }
-        .cycle{
-          display:none;
-          position:absolute;
-          border-radius: 50%;
-          background:#fff;
-          opacity:0.3;
-          height: 15px;
-          width:15px;
-          right:-8px;
-          top:-6px;
+          height: 12px;
+          width:12px;
+          top:-50%;
+          right:0px;
+          transform: translate(50%,0);
           cursor:pointer;
           z-index:1;
         }
@@ -430,6 +393,14 @@ class Eplayer extends HTMLElement {
         margin-right:5px;
         cursor:pointer;
         }
+
+        em{
+          font-size: 16px;
+          font-weight:bold;
+          font-style:normal;
+          color:#fff;
+          margin-right:8px;
+        }
         
       </style>
       
@@ -443,7 +414,6 @@ class Eplayer extends HTMLElement {
             <b class="buffer"></b>
             <div class="current" style="width:0">
               <div class="dot"></div>
-              <div class="cycle"></div>
             </div>
           </div>
           <div class="options">
@@ -454,6 +424,7 @@ class Eplayer extends HTMLElement {
               </span>
             </div>
             <div class="right">
+              <em>倍速</em>
               <iconpark-icon icon-id="volume-ok" size="2rem" class="is-volume"></iconpark-icon>
               <iconpark-icon icon-id="web-fullscreen" size="2rem"></iconpark-icon>
               <iconpark-icon icon-id="fullscreen" size="2rem" class="fullscreen"></iconpark-icon>
