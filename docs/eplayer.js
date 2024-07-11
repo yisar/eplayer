@@ -399,7 +399,8 @@ class Eplayer extends HTMLElement {
           font-weight:bold;
           font-style:normal;
           color:#fff;
-          margin-right:8px;
+          margin:0 10px 0 8px;
+          cursor: pointer;
         }
         
       </style>
@@ -425,6 +426,7 @@ class Eplayer extends HTMLElement {
             </div>
             <div class="right">
               <em>倍速</em>
+              <em class="pip">画中画</em>
               <iconpark-icon icon-id="volume-ok" size="2rem" class="is-volume"></iconpark-icon>
               <iconpark-icon icon-id="web-fullscreen" size="2rem"></iconpark-icon>
               <iconpark-icon icon-id="fullscreen" size="2rem" class="fullscreen"></iconpark-icon>
@@ -501,7 +503,7 @@ class Eplayer extends HTMLElement {
       '.speed': this.speed,
       '.bg': this.progress,
       '.buffer': this.progress,
-      '.ep-pip': this.pip,
+      '.pip': this.pip,
     })
     this.delegate('pointerdown', {
       '.cycle': this.down,
