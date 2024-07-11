@@ -281,6 +281,7 @@ class Eplayer extends HTMLElement {
         .time{
           display:${this.live ? 'none' : 'inline-block'};
           position:relative;
+          font-size:16px;
         }
         .lines{
           padding:0 10px;
@@ -382,10 +383,13 @@ class Eplayer extends HTMLElement {
           top: 50%;
           left: 50%;
           margin:-20px 0 0 -20px;
-          width: 40px;
-          height: 40px;
+          width: 30px;
+          height: 30px;
           z-index:1;
-          box-shadow: 2px 0px rgba(255,255,255,.6);
+          border-top: 4px solid rgba(255, 255, 255, 0.2);
+          border-right: 4px solid rgba(255, 255, 255, 0.2);
+          border-bottom: 4px solid rgba(255, 255, 255, 0.2);
+          border-left: 4px solid #fff;
           border-radius: 50%;
           animation: loading 1s linear infinite;
         }
@@ -446,7 +450,7 @@ class Eplayer extends HTMLElement {
             <div class="left">
               <iconpark-icon icon-id="play" size="2rem" class="is-play"></iconpark-icon>
               <span class="time">
-                <b class="now">00:00</b> / <b class="total">00:00</b>
+                <b class="now">00:00</b>/<b class="total">00:00</b>
               </span>
             </div>
             <div class="right">
