@@ -100,6 +100,7 @@ class Eplayer extends HTMLElement {
   }
 
   update() {
+    if (this.moving) return
     let cTime = getTimeStr(this.video.currentTime)
     if (this.video.buffered.length) {
       let bufferEnd = this.video.buffered.end(this.video.buffered.length - 1)
@@ -116,19 +117,21 @@ class Eplayer extends HTMLElement {
   }
 
   down(e) {
-    this.disX = e.clientX - this.$('.cycle').offsetLeft
+    this.disX = e.clientX - this.$('.dot').offsetLeft
+    this.moving = true
     document.onpointermove = (e) => this.move(e)
     document.onpointerup = () => {
+      this.moveing = false
       document.onpointermove = null
       document.onpointerup = null
     }
   }
 
   move(e) {
-    let offset = e.clientX - this.disX + 7
+    let offset = e.clientX - this.disX + 12
     if (offset < 0) offset = 0
     if (offset > this.$('.progress').clientWidth) {
-      offset = this.$('.progress').clientWidth
+      this.offset = this.$('.progress').clientWidth
     }
     this.$('.current').style.width = offset + 'px'
     this.video.currentTime = (offset / this.$('.progress').clientWidth) * this.video.duration
@@ -137,8 +140,13 @@ class Eplayer extends HTMLElement {
   }
 
   alow() {
-    // this.$('.controls').style.bottom = 0
+    console.log(111)
+    clearTimeout(this.timer)
     this.$('.mark').style.cursor = 'default'
+    this.timer = setTimeout(() => {
+      this.$('.controls').style.bottom = -34 + 'px'
+      this.$('.mark').style.cursor = 'none'
+    }, 5000)
   }
 
   keydown(e) {
@@ -258,6 +266,9 @@ class Eplayer extends HTMLElement {
         }
           .eplayer:hover .controls{
           bottom:0;
+          animation: hidden 0s ease-in 5s forwards;
+          animation-fill-mode: forwards;
+          transition: .3s ease-out;
           }
         .progress{
           display:${this.live ? 'none' : 'block'};
@@ -271,7 +282,7 @@ class Eplayer extends HTMLElement {
         .progress:hover .bg,.progress:hover .current,.progress:hover .buffer{
           height:6px;
         }
-          .progress:hover .dot,.progress:hover .cycle{
+          .progress:hover .dot{
           display:block;
         }
         .options{
@@ -323,6 +334,13 @@ class Eplayer extends HTMLElement {
           transform: translate(50%,0);
           cursor:pointer;
           z-index:1;
+        }
+          @keyframes hidden {
+            to {
+                
+                transition: .3s ease-out;
+                bottom:-34px;
+            }
         }
         @keyframes loading{
           0%{
@@ -455,7 +473,7 @@ class Eplayer extends HTMLElement {
       '.buffer',
       '.is-play',
       '.is-volume',
-      '.cycle',
+      '.dot',
       '.progress',
       '.controls',
       '.line',
@@ -506,7 +524,7 @@ class Eplayer extends HTMLElement {
       '.pip': this.pip,
     })
     this.delegate('pointerdown', {
-      '.cycle': this.down,
+      '.dot': this.down,
       '.mark': this.panel,
     })
     this.delegate('dblclick', {
@@ -516,7 +534,7 @@ class Eplayer extends HTMLElement {
       },
     })
     this.delegate('keydown', this.keydown)
-    this.delegate('pointerdown', this.alow)
+    this.delegate('mouseleave', this.alow)
     this.$('.eplayer').oncontextmenu = () => false
   }
 
