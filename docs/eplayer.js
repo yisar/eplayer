@@ -226,7 +226,7 @@ class Eplayer extends HTMLElement {
   }
 
   speed(e) {
-    this.video.playbackRate === 2 ? (this.video.playbackRate = 1) : (this.video.playbackRate = this.video.playbackRate + 0.5)
+    this.video.playbackRate === 3 ? (this.video.playbackRate = 1) : (this.video.playbackRate = this.video.playbackRate + 0.25)
     this.$('.speed').innerText = this.video.playbackRate + 'x'
   }
 
