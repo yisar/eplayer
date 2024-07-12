@@ -140,11 +140,11 @@ class Eplayer extends HTMLElement {
   }
 
   alow() {
-    console.log(111)
     clearTimeout(this.timer)
     this.$('.mark').style.cursor = 'default'
+    this.$('.eplayer').classList.add('hover')
     this.timer = setTimeout(() => {
-      this.$('.controls').style.bottom = -34 + 'px'
+      this.$('.eplayer').classList.remove('hover')
       this.$('.mark').style.cursor = 'none'
     }, 5000)
   }
@@ -264,12 +264,9 @@ class Eplayer extends HTMLElement {
           bottom:-34px;
           z-index:1;   
         }
-          .eplayer:hover .controls{
+        .hover:hover .controls{
           bottom:0;
-          animation: hidden 0s ease-in 5s forwards;
-          animation-fill-mode: forwards;
-          transition: .3s ease-out;
-          }
+        }
         .progress{
           display:${this.live ? 'none' : 'block'};
           position:relative;
@@ -334,13 +331,6 @@ class Eplayer extends HTMLElement {
           transform: translate(50%,0);
           cursor:pointer;
           z-index:1;
-        }
-          @keyframes hidden {
-            to {
-                
-                transition: .3s ease-out;
-                bottom:-34px;
-            }
         }
         @keyframes loading{
           0%{
@@ -423,7 +413,7 @@ class Eplayer extends HTMLElement {
         
       </style>
       
-      <div class="eplayer">
+      <div class="eplayer hover">
       <div class="danmaku"></div>
         <video id="video" class="video" src="${this.src || ''}"></video>
         <div class="mark loading"></div>
@@ -451,7 +441,6 @@ class Eplayer extends HTMLElement {
             </div>
           </div>
         </div>
-        <iconpark-icon icon-id="play"></iconpark-icon>
         <div class="panel"></div>
       </div>
     `
@@ -534,7 +523,7 @@ class Eplayer extends HTMLElement {
       },
     })
     this.delegate('keydown', this.keydown)
-    this.delegate('mouseleave', this.alow)
+    this.delegate('mousemove', this.alow)
     this.$('.eplayer').oncontextmenu = () => false
   }
 
