@@ -6,6 +6,7 @@ class Eplayer extends HTMLElement {
     this.type = this.getAttribute('type')
     this.live = JSON.parse(this.getAttribute('live'))
     this.danmaku = null
+    this.subs = []
 
     this.init()
     this.stream()
@@ -82,10 +83,12 @@ class Eplayer extends HTMLElement {
       this.video.play()
       this.danmaku.resume()
       this.$('.is-play').setAttribute('icon-id', 'pause')
+      this.emit('play')
     } else {
       this.video.pause()
       this.danmaku.pause()
       this.$('.is-play').setAttribute('icon-id', 'play')
+      this.emit('pause')
     }
   }
 
@@ -479,16 +482,6 @@ class Eplayer extends HTMLElement {
       let dom = this.shadowRoot.querySelectorAll(key)
       this.doms[key] = dom.length > 1 ? [...dom] : dom[0]
     }
-
-
-    for (const name in Eplayer.plugins) {
-      const cb = Eplayer.plugins[name]
-      let node = document.createElement('li')
-      node.innerText = name
-      let panel = this.$('.panel')
-      panel.appendChild(node)
-      node.addEventListener('click', () => cb(this.shadowRoot))
-    }
   }
 
   connectedCallback() {
@@ -524,7 +517,6 @@ class Eplayer extends HTMLElement {
     })
     this.delegate('keydown', this.keydown)
     this.delegate('mousemove', this.alow)
-    this.$('.eplayer').oncontextmenu = () => false
   }
 
   delegate(type, map) {
@@ -546,13 +538,19 @@ class Eplayer extends HTMLElement {
     }
   }
 
+  emit (name) {
+    const fn = Eplayer.subs[name]
+    fn && fn.call(this, this.shadowRoot)
+  }
+
 }
 
-Eplayer.plugins = {}
+Eplayer.subs = {}
 
 Eplayer.use = function (name, cb) {
-  this.plugins[name] = cb
+  this.subs[name] = cb
 }
+
 
 function getTimeStr(time) {
   let h = Math.floor(time / 3600)
@@ -573,9 +571,5 @@ function isFullScreen() {
   link.setAttribute('src', 'https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/icons_34101_11.6161dfd06f46009a9dea0fcffc6234bf.js')
   document.head.appendChild(link)
 })()
-
-Eplayer.use('github源码', (ep) => {
-  window.location.href = 'https://github.com/132yse/eplayer'
-})
 
 customElements.define('e-player', Eplayer)
