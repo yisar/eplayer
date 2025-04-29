@@ -115,31 +115,61 @@ class Eplayer extends HTMLElement {
   }
 
   progress(e) {
-    let offset = e.offsetX / this.$('.progress').offsetWidth
-    this.video.currentTime = this.video.duration * offset
+    const progressBarRect = this.$('.progress').getBoundingClientRect()
+    let clickX = e.clientX - progressBarRect.left
+    clickX = Math.max(0, Math.min(clickX, progressBarRect.width))
+    const offsetRatio = clickX / progressBarRect.width
+
+    this.video.currentTime = this.video.duration * offsetRatio
+    this.$('.now').innerHTML = getTimeStr(this.video.currentTime)
+    this.$('.current').style.width = offsetRatio * 100 + '%'
   }
 
   down(e) {
-    this.disX = e.clientX - this.$('.dot').offsetLeft
+    e.preventDefault()
     this.moving = true
-    document.onpointermove = (e) => this.move(e)
-    document.onpointerup = () => {
-      this.moveing = false
-      document.onpointermove = null
-      document.onpointerup = null
-    }
+    const progressBarRect = this.$('.progress').getBoundingClientRect()
+    this.progressBarWidth = progressBarRect.width
+    this.initialClientX = e.clientX
+    const initialOffsetRatio = this.video.currentTime / this.video.duration
+    this.initialOffsetPixels = initialOffsetRatio * this.progressBarWidth
+
+    document.addEventListener('pointermove', this.handleMove)
+    document.addEventListener('pointerup', this.handleUp, { once: true })
+  }
+
+  handleMove = (e) => {
+    if (!this.moving) return
+
+    const deltaX = e.clientX - this.initialClientX
+    let newOffsetPixels = this.initialOffsetPixels + deltaX
+    newOffsetPixels = Math.max(0, Math.min(newOffsetPixels, this.progressBarWidth))
+
+    this.$('.current').style.width = (newOffsetPixels / this.progressBarWidth) * 100 + '%'
+
+    const newTime = (newOffsetPixels / this.progressBarWidth) * this.video.duration
+    this.video.currentTime = Math.max(0, Math.min(newTime, this.video.duration))
+
+    this.$('.now').innerHTML = getTimeStr(this.video.currentTime)
+  }
+
+  handleUp = (e) => {
+    this.moving = false
+    document.removeEventListener('pointermove', this.handleMove)
+    delete this.progressBarWidth
+    delete this.initialClientX
+    delete this.initialOffsetPixels
   }
 
   move(e) {
     let offset = e.clientX - this.disX + 12
     if (offset < 0) offset = 0
     if (offset > this.$('.progress').clientWidth) {
-      this.offset = this.$('.progress').clientWidth
+      offset = this.$('.progress').clientWidth
     }
     this.$('.current').style.width = offset + 'px'
     this.video.currentTime = (offset / this.$('.progress').clientWidth) * this.video.duration
-    document.onpointermove = null
-    setTimeout((document.onpointermove = (e) => e && this.move(e)), 30)
+    this.$('.now').innerHTML = getTimeStr(this.video.currentTime)
   }
 
   alow() {
@@ -148,7 +178,6 @@ class Eplayer extends HTMLElement {
     this.$('.eplayer').classList.add('hover')
     this.timer = setTimeout(() => {
       this.$('.eplayer').classList.remove('hover')
-      this.$('.mark').style.cursor = 'none'
     }, 5000)
   }
 
@@ -261,14 +290,17 @@ class Eplayer extends HTMLElement {
           position:absolute;
           left:0;
           right:0;
-          bottom:0;
-          background:linear-gradient(transparent,rgba(0,0,0,.5));
-          transition: .3s ease-out;
           bottom:-34px;
-          z-index:1;   
+          background:linear-gradient(transparent,rgba(0,0,0,.5));
+          transition: bottom .3s ease-out, opacity .3s ease-out;
+          opacity: 0;
+          pointer-events: none;
+          z-index:1;
         }
-        .hover:hover .controls{
+        .hover .controls{
           bottom:0;
+          opacity: 1;
+          pointer-events: auto;
         }
         .progress{
           display:${this.live ? 'none' : 'block'};
@@ -503,6 +535,7 @@ class Eplayer extends HTMLElement {
       '.speed': this.speed,
       '.bg': this.progress,
       '.buffer': this.progress,
+      '.current': this.progress,
       '.pip': this.pip,
     })
     this.delegate('pointerdown', {
