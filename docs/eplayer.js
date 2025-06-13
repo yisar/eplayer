@@ -7,6 +7,13 @@ class Eplayer extends HTMLElement {
     this.live = JSON.parse(this.getAttribute('live'))
     this.danmaku = null
     this.subs = []
+    
+    // 添加长按右箭头3倍速相关状态
+    this.rightKeyHoldTimer = null
+    this.rightKeyPressTime = null
+    this.originalPlaybackRate = 1
+    this.isRightKeyPressed = false
+    this.isSpeedModeActive = false
 
     this.init()
     this.stream()
@@ -182,25 +189,73 @@ class Eplayer extends HTMLElement {
   }
 
   keydown(e) {
+    e.preventDefault()
     switch (e.keyCode) {
-      case 37:
-        this.video.currentTime -= 10
+      case 37: // 左箭头 - 后退10秒
+        this.video.currentTime = Math.max(0, this.video.currentTime - 10)
         break
-      case 39:
-        this.video.currentTime += 10
+      case 39: // 右箭头 - 前进10秒 (支持长按3倍速)
+        if (!this.isRightKeyPressed) {
+          this.isRightKeyPressed = true
+          this.rightKeyPressTime = Date.now()
+          this.originalPlaybackRate = this.video.playbackRate
+          
+          // 设置定时器，如果持续按住超过500ms则开启3倍速
+          this.rightKeyHoldTimer = setTimeout(() => {
+            this.isSpeedModeActive = true
+            this.video.playbackRate = 3
+            this.$('.speed').innerText = '3x'
+            this.$('.speed-indicator').style.display = 'block'
+          }, 500)
+        }
         break
-      case 38:
-        try {
-          this.video.volume = parseInt(this.video.volume * 100) / 100 + 0.05
-        } catch (e) { }
+      case 38: // 上箭头 - 增加音量5%
+        e.preventDefault()
+        this.video.volume = Math.min(1, this.video.volume + 0.05)
         break
-      case 40:
-        try {
-          this.video.volume = parseInt(this.video.volume * 100) / 100 - 0.05
-        } catch (e) { }
+      case 40: // 下箭头 - 减少音量5%
+        e.preventDefault()
+        this.video.volume = Math.max(0, this.video.volume - 0.05)
         break
-      case 32:
+      case 32: // 空格键 - 播放/暂停
+        e.preventDefault()
         this.play()
+        break
+      case 77: // M键 - 静音/取消静音
+        this.volume()
+        break
+      default:
+    }
+  }
+
+  keyup(e) {
+    switch (e.keyCode) {
+      case 39: // 右箭头松开
+        if (this.isRightKeyPressed) {
+          const pressDuration = Date.now() - this.rightKeyPressTime
+          this.isRightKeyPressed = false
+          
+          // 清除定时器
+          if (this.rightKeyHoldTimer) {
+            clearTimeout(this.rightKeyHoldTimer)
+            this.rightKeyHoldTimer = null
+          }
+          
+          // 判断是短按还是长按
+          if (pressDuration < 500 && !this.isSpeedModeActive) {
+            // 短按：只快进10秒
+            this.video.currentTime = Math.min(this.video.duration, this.video.currentTime + 10)
+          } else if (this.isSpeedModeActive) {
+            // 长按结束：恢复原播放速度并隐藏提示
+            this.video.playbackRate = this.originalPlaybackRate
+            this.$('.speed').innerText = this.originalPlaybackRate + 'x'
+            this.$('.speed-indicator').style.display = 'none'
+            this.isSpeedModeActive = false
+          }
+          
+          // 重置状态
+          this.rightKeyPressTime = null
+        }
         break
       default:
     }
@@ -295,7 +350,7 @@ class Eplayer extends HTMLElement {
           transition: bottom .3s ease-out, opacity .3s ease-out;
           opacity: 0;
           pointer-events: none;
-          z-index:1;
+          z-index:1000;
         }
         .hover .controls{
           bottom:0;
@@ -427,9 +482,26 @@ class Eplayer extends HTMLElement {
           bottom: 0;
           pointer-events: none;
           overflow: hidden;
-          z-index: 999;
+          z-index: 0;
           height:100%;
           width:100%;
+        }
+
+        .speed-indicator {
+          position: absolute;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(148, 108, 230, 0.9);
+          color: white;
+          padding: 8px 16px;
+          border-radius: 20px;
+          font-size: 14px;
+          font-weight: bold;
+          z-index: 999;
+          display: none;
+          pointer-events: none;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         iconpark-icon{
@@ -452,6 +524,7 @@ class Eplayer extends HTMLElement {
       <div class="danmaku"></div>
         <video id="video" class="video" src="${this.src || ''}"></video>
         <div class="mark loading"></div>
+        <div class="speed-indicator">倍速中</div>
         <div class="controls">
           <div class="progress">
             <b class="bg"></b>
@@ -468,7 +541,7 @@ class Eplayer extends HTMLElement {
               </span>
             </div>
             <div class="right">
-              <em class="speed">倍速</em>
+              <em class="speed">1x</em>
               <em class="pip">画中画</em>
               <iconpark-icon icon-id="volume-ok" size="2rem" class="is-volume"></iconpark-icon>
               <iconpark-icon icon-id="web-fullscreen" size="2rem"></iconpark-icon>
@@ -507,7 +580,8 @@ class Eplayer extends HTMLElement {
       '.panel',
       '.speed',
       '.pip',
-      '.danmaku'
+      '.danmaku',
+      '.speed-indicator'
     ]
 
     for (const key of doms) {
@@ -548,8 +622,33 @@ class Eplayer extends HTMLElement {
         this.full()
       },
     })
-    this.delegate('keydown', this.keydown)
+    
+    // 使用全局键盘监听以确保按键事件能在任何地方被捕获
+    this.keydownHandler = this.keydown.bind(this)
+    this.keyupHandler = this.keyup.bind(this)
+    document.addEventListener('keydown', this.keydownHandler)
+    document.addEventListener('keyup', this.keyupHandler)
+    
     this.delegate('mousemove', this.alow)
+  }
+
+  disconnectedCallback() {
+    // 清理全局键盘事件监听器
+    if (this.keydownHandler) {
+      document.removeEventListener('keydown', this.keydownHandler)
+    }
+    if (this.keyupHandler) {
+      document.removeEventListener('keyup', this.keyupHandler)
+    }
+    
+    // 清理长按定时器和状态
+    if (this.rightKeyHoldTimer) {
+      clearTimeout(this.rightKeyHoldTimer)
+      this.rightKeyHoldTimer = null
+    }
+    this.isRightKeyPressed = false
+    this.isSpeedModeActive = false
+    this.rightKeyPressTime = null
   }
 
   delegate(type, map) {
