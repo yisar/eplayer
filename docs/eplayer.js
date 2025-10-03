@@ -21,7 +21,7 @@ class Eplayer extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['src', 'type', 'danma', 'live']
+    return ['src', 'type', 'danma', 'live','cover']
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
@@ -52,6 +52,8 @@ class Eplayer extends HTMLElement {
     }
     if (name === 'cover') {
       this.cover = newVal
+      this.$('.rotate-img').setAttribute('src', newVal)
+      this.$('.cover').style.background=`url(${newVal || ''}) center/cover no-repeat #fff`
     }
   }
 
@@ -94,13 +96,13 @@ class Eplayer extends HTMLElement {
     if (this.video.paused) {
       this.video.play()
       this.danmaku.resume()
-      this.$('.img-container').classList.add('is-playing');
+      this.$('.img-container').classList.add('is-playing')
       this.$('.is-play').setAttribute('icon-id', 'pause')
       this.emit('play')
     } else {
       this.video.pause()
       this.danmaku.pause()
-      this.$('.img-container').classList.remove('is-playing');
+      this.$('.img-container').classList.remove('is-playing')
       this.$('.is-play').setAttribute('icon-id', 'play')
       this.emit('pause')
     }
@@ -669,7 +671,9 @@ class Eplayer extends HTMLElement {
       '.speed',
       '.pip',
       '.danmaku',
-      '.speed-indicator'
+      '.speed-indicator',
+      '.rotate-img',
+      '.cover'
     ]
 
     for (const key of doms) {
