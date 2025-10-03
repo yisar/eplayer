@@ -4,10 +4,11 @@ class Eplayer extends HTMLElement {
     this.doms = {}
     this.src = this.getAttribute('src')
     this.type = this.getAttribute('type')
+    this.cover = this.getAttribute('cover')
     this.live = JSON.parse(this.getAttribute('live'))
     this.danmaku = null
     this.subs = []
-    
+
     // 添加长按右箭头3倍速相关状态
     this.rightKeyHoldTimer = null
     this.rightKeyPressTime = null
@@ -44,10 +45,13 @@ class Eplayer extends HTMLElement {
         this.$('.time').style.display = 'inline-block'
       }
     }
-    if (name === 'danma') {
+    if (name === 'danmu') {
       this.danmaku.add({
         msg: newVal
       })
+    }
+    if (name === 'cover') {
+      this.cover = newVal
     }
   }
 
@@ -183,9 +187,11 @@ class Eplayer extends HTMLElement {
     clearTimeout(this.timer)
     this.$('.mark').style.cursor = 'default'
     this.$('.eplayer').classList.add('hover')
-    this.timer = setTimeout(() => {
-      this.$('.eplayer').classList.remove('hover')
-    }, 5000)
+    if (!this.cover) {
+      this.timer = setTimeout(() => {
+        this.$('.eplayer').classList.remove('hover')
+      }, 5000)
+    }
   }
 
   keydown(e) {
@@ -199,7 +205,7 @@ class Eplayer extends HTMLElement {
           this.isRightKeyPressed = true
           this.rightKeyPressTime = Date.now()
           this.originalPlaybackRate = this.video.playbackRate
-          
+
           // 设置定时器，如果持续按住超过500ms则开启3倍速
           this.rightKeyHoldTimer = setTimeout(() => {
             this.isSpeedModeActive = true
@@ -234,13 +240,13 @@ class Eplayer extends HTMLElement {
         if (this.isRightKeyPressed) {
           const pressDuration = Date.now() - this.rightKeyPressTime
           this.isRightKeyPressed = false
-          
+
           // 清除定时器
           if (this.rightKeyHoldTimer) {
             clearTimeout(this.rightKeyHoldTimer)
             this.rightKeyHoldTimer = null
           }
-          
+
           // 判断是短按还是长按
           if (pressDuration < 500 && !this.isSpeedModeActive) {
             // 短按：只快进10秒
@@ -252,7 +258,7 @@ class Eplayer extends HTMLElement {
             this.$('.speed-indicator').style.display = 'none'
             this.isSpeedModeActive = false
           }
-          
+
           // 重置状态
           this.rightKeyPressTime = null
         }
@@ -329,12 +335,32 @@ class Eplayer extends HTMLElement {
           list-style:none;
         }
         .eplayer,video{
-        font-family:'黑体';
+          font-family:'黑体';
           height:100%;
           width:100%;
           color:var(--icons,rgba(255,255,255,0.6));
           font-size:12px;
-          background:#000
+          background:var(--bg,#000);       
+        }
+        .eplayer .cover{
+          position: absolute;
+          z-index: 1;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background:url(${this.cover || ''}) center/cover no-repeat #fff;
+          filter:blur(8px);
+        }
+        .eplayer .cover-img{
+          position: absolute;
+          z-index: 1;
+          width:250px;
+          height:250px;
+          border-radius:125px;
+          left:50%;
+          top:50%;
+          transform:translate(-50%,-50%);
         }
         .eplayer{
           user-select:none;
@@ -523,6 +549,8 @@ class Eplayer extends HTMLElement {
       <div class="eplayer hover">
       <div class="danmaku"></div>
         <video id="video" class="video" src="${this.src || ''}"></video>
+        <div class="cover"></div>
+        <img src="${this.cover || ''}" class="cover-img"/>
         <div class="mark loading"></div>
         <div class="speed-indicator">倍速中</div>
         <div class="controls">
@@ -622,13 +650,13 @@ class Eplayer extends HTMLElement {
         this.full()
       },
     })
-    
+
     // 使用全局键盘监听以确保按键事件能在任何地方被捕获
     this.keydownHandler = this.keydown.bind(this)
     this.keyupHandler = this.keyup.bind(this)
     document.addEventListener('keydown', this.keydownHandler)
     document.addEventListener('keyup', this.keyupHandler)
-    
+
     this.delegate('mousemove', this.alow)
   }
 
@@ -640,7 +668,7 @@ class Eplayer extends HTMLElement {
     if (this.keyupHandler) {
       document.removeEventListener('keyup', this.keyupHandler)
     }
-    
+
     // 清理长按定时器和状态
     if (this.rightKeyHoldTimer) {
       clearTimeout(this.rightKeyHoldTimer)
@@ -670,7 +698,7 @@ class Eplayer extends HTMLElement {
     }
   }
 
-  emit (name) {
+  emit(name) {
     const fn = Eplayer.subs[name]
     fn && fn.call(this, this.shadowRoot)
   }
