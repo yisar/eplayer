@@ -90,14 +90,17 @@ class Eplayer extends HTMLElement {
   }
 
   play() {
+    console.log(this.$('.img-container'))
     if (this.video.paused) {
       this.video.play()
       this.danmaku.resume()
+      this.$('.img-container').classList.add('is-playing');
       this.$('.is-play').setAttribute('icon-id', 'pause')
       this.emit('play')
     } else {
       this.video.pause()
       this.danmaku.pause()
+      this.$('.img-container').classList.remove('is-playing');
       this.$('.is-play').setAttribute('icon-id', 'play')
       this.emit('pause')
     }
@@ -352,16 +355,7 @@ class Eplayer extends HTMLElement {
           background:url(${this.cover || ''}) center/cover no-repeat #fff;
           filter:blur(8px);
         }
-        .eplayer .cover-img{
-          position: absolute;
-          z-index: 1;
-          width:250px;
-          height:250px;
-          border-radius:125px;
-          left:50%;
-          top:50%;
-          transform:translate(-50%,-50%);
-        }
+
         .eplayer{
           user-select:none;
           position: relative;
@@ -543,14 +537,79 @@ class Eplayer extends HTMLElement {
           margin:0 10px 0 8px;
           cursor: pointer;
         }
-        
+
+                .eplayer .img-container{
+          position: absolute;
+          z-index: 1;
+          width:250px;
+          height:250px;
+          border-radius:125px;
+          left:50%;
+          top:50%;
+          transform:translate(-50%,-50%);
+        }
+
+        .rotate-img {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      animation: rotate 10s linear infinite;
+      object-fit: cover;
+      animation-play-state: paused; /* 默认暂停 */
+    }
+
+    .img-container::after,
+    .img-container::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      animation: wave 2s infinite;
+      animation-play-state: paused; /* 默认暂停 */
+    }
+
+    .img-container::after {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .img-container::before {
+      background: rgba(255, 255, 255, 0.2);
+      animation-delay: 1s;
+    }
+
+    /* 播放状态 */
+    .is-playing .rotate-img,
+    .is-playing::after,
+    .is-playing::before {
+      animation-play-state: running;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes wave {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+      }
+    }
       </style>
       
       <div class="eplayer hover">
       <div class="danmaku"></div>
         <video id="video" class="video" src="${this.src || ''}"></video>
         <div class="cover"></div>
-        <img src="${this.cover || ''}" class="cover-img"/>
+        <div class="img-container"><img src="${this.cover || ''}" class="rotate-img"/></div>
         <div class="mark loading"></div>
         <div class="speed-indicator">倍速中</div>
         <div class="controls">
@@ -587,6 +646,7 @@ class Eplayer extends HTMLElement {
     }).appendChild(template.content.cloneNode(true))
 
     const doms = [
+      '.img-container',
       '.video',
       '.mark',
       '.playing',
