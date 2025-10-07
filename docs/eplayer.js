@@ -329,6 +329,7 @@ class Eplayer extends HTMLElement {
   }
 
   init() {
+    console.log(this.cover)
     let html = `
       <style>
         @import "https://at.alicdn.com/t/c/font_836948_ro9xopmggai.css";
@@ -543,17 +544,17 @@ class Eplayer extends HTMLElement {
                 .eplayer .img-container{
           position: absolute;
           z-index: 1;
-          width:250px;
-          height:250px;
-          border-radius:125px;
+          height:60%;
+          aspect-ratio: 1/1;
+          border-radius:50%;
           left:50%;
           top:50%;
           transform:translate(-50%,-50%);
         }
 
         .rotate-img {
-      width: 250px;
-      height: 250px;
+      aspect-ratio: 1/1;
+      height: 100%;
       border-radius: 50%;
       animation: rotate 10s linear infinite;
       object-fit: cover;
@@ -631,10 +632,10 @@ class Eplayer extends HTMLElement {
             </div>
             <div class="right">
               <em class="speed">1x</em>
-              <em class="pip">画中画</em>
+              ${this.cover ? `<em class="pip">画中画</em>`:''}
               <iconpark-icon icon-id="volume-ok" size="2rem" class="is-volume"></iconpark-icon>
-              <iconpark-icon icon-id="web-fullscreen" size="2rem"></iconpark-icon>
-              <iconpark-icon icon-id="fullscreen" size="2rem" class="fullscreen"></iconpark-icon>
+              ${this.cover ? `<iconpark-icon icon-id="web-fullscreen" size="2rem"></iconpark-icon>`:''}
+              ${this.cover ?`<iconpark-icon icon-id="fullscreen" size="2rem" class="fullscreen"></iconpark-icon>`:""}
             </div>
           </div>
         </div>
