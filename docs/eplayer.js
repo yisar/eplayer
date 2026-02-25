@@ -21,7 +21,7 @@ class Eplayer extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['src', 'type', 'danma', 'live','cover']
+    return ['src', 'type', 'danma', 'live', 'cover']
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
@@ -53,7 +53,7 @@ class Eplayer extends HTMLElement {
     if (name === 'cover') {
       this.cover = newVal
       this.$('.rotate-img').setAttribute('src', newVal)
-      this.$('.cover').style.background=`url(${newVal || ''}) center/cover no-repeat #fff`
+      this.$('.cover').style.background = `url(${newVal || ''}) center/cover no-repeat #fff`
     }
   }
 
@@ -196,79 +196,6 @@ class Eplayer extends HTMLElement {
       this.timer = setTimeout(() => {
         this.$('.eplayer').classList.remove('hover')
       }, 5000)
-    }
-  }
-
-  keydown(e) {
-    e.preventDefault()
-    switch (e.keyCode) {
-      case 37: // 左箭头 - 后退10秒
-        this.video.currentTime = Math.max(0, this.video.currentTime - 10)
-        break
-      case 39: // 右箭头 - 前进10秒 (支持长按3倍速)
-        if (!this.isRightKeyPressed) {
-          this.isRightKeyPressed = true
-          this.rightKeyPressTime = Date.now()
-          this.originalPlaybackRate = this.video.playbackRate
-
-          // 设置定时器，如果持续按住超过500ms则开启3倍速
-          this.rightKeyHoldTimer = setTimeout(() => {
-            this.isSpeedModeActive = true
-            this.video.playbackRate = 3
-            this.$('.speed').innerText = '3x'
-            this.$('.speed-indicator').style.display = 'block'
-          }, 500)
-        }
-        break
-      case 38: // 上箭头 - 增加音量5%
-        e.preventDefault()
-        this.video.volume = Math.min(1, this.video.volume + 0.05)
-        break
-      case 40: // 下箭头 - 减少音量5%
-        e.preventDefault()
-        this.video.volume = Math.max(0, this.video.volume - 0.05)
-        break
-      case 32: // 空格键 - 播放/暂停
-        e.preventDefault()
-        this.play()
-        break
-      case 77: // M键 - 静音/取消静音
-        this.volume()
-        break
-      default:
-    }
-  }
-
-  keyup(e) {
-    switch (e.keyCode) {
-      case 39: // 右箭头松开
-        if (this.isRightKeyPressed) {
-          const pressDuration = Date.now() - this.rightKeyPressTime
-          this.isRightKeyPressed = false
-
-          // 清除定时器
-          if (this.rightKeyHoldTimer) {
-            clearTimeout(this.rightKeyHoldTimer)
-            this.rightKeyHoldTimer = null
-          }
-
-          // 判断是短按还是长按
-          if (pressDuration < 500 && !this.isSpeedModeActive) {
-            // 短按：只快进10秒
-            this.video.currentTime = Math.min(this.video.duration, this.video.currentTime + 10)
-          } else if (this.isSpeedModeActive) {
-            // 长按结束：恢复原播放速度并隐藏提示
-            this.video.playbackRate = this.originalPlaybackRate
-            this.$('.speed').innerText = this.originalPlaybackRate + 'x'
-            this.$('.speed-indicator').style.display = 'none'
-            this.isSpeedModeActive = false
-          }
-
-          // 重置状态
-          this.rightKeyPressTime = null
-        }
-        break
-      default:
     }
   }
 
@@ -632,10 +559,10 @@ class Eplayer extends HTMLElement {
             </div>
             <div class="right">
               <em class="speed">1x</em>
-              ${this.cover ? `<em class="pip">画中画</em>`:''}
+              ${this.cover ? `<em class="pip">画中画</em>` : ''}
               <iconpark-icon icon-id="volume-ok" size="2rem" class="is-volume"></iconpark-icon>
-              ${this.cover ? `<iconpark-icon icon-id="web-fullscreen" size="2rem"></iconpark-icon>`:''}
-              ${this.cover ?`<iconpark-icon icon-id="fullscreen" size="2rem" class="fullscreen"></iconpark-icon>`:""}
+              ${this.cover ? `<iconpark-icon icon-id="web-fullscreen" size="2rem"></iconpark-icon>` : ''}
+              ${this.cover ? `<iconpark-icon icon-id="fullscreen" size="2rem" class="fullscreen"></iconpark-icon>` : ""}
             </div>
           </div>
         </div>
@@ -686,7 +613,7 @@ class Eplayer extends HTMLElement {
   connectedCallback() {
     this.video = this.$('.video')
     this.video.volume = 0.5
-    this.danmaku = new Danmaku({
+    this.danmaku = Danmaku && new Danmaku({
       container: this.$('.danmaku')
     })
     // setVolume(this.video.volume * 10, this.$('.line'))
@@ -716,23 +643,10 @@ class Eplayer extends HTMLElement {
       },
     })
 
-    // 使用全局键盘监听以确保按键事件能在任何地方被捕获
-    this.keydownHandler = this.keydown.bind(this)
-    this.keyupHandler = this.keyup.bind(this)
-    document.addEventListener('keydown', this.keydownHandler)
-    document.addEventListener('keyup', this.keyupHandler)
-
     this.delegate('mousemove', this.alow)
   }
 
   disconnectedCallback() {
-    // 清理全局键盘事件监听器
-    if (this.keydownHandler) {
-      document.removeEventListener('keydown', this.keydownHandler)
-    }
-    if (this.keyupHandler) {
-      document.removeEventListener('keyup', this.keyupHandler)
-    }
 
     // 清理长按定时器和状态
     if (this.rightKeyHoldTimer) {
